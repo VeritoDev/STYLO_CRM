@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TFG" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_gradient_dark</item>
+        <item name="colorSurface">@color/gris_oscuro_card</item>
+        <item name="colorSurfaceVariant">@color/gris_oscuro_input</item>
+        <item name="colorSurfaceContainer">@color/gris_oscuro_fondo</item>
+        <item name="colorPrimary">@color/morado_boton</item>
+        <item name="colorOnSurface">@color/blanco_puro</item>
+    </style>
+</resources>

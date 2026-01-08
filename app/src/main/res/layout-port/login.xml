@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?android:attr/windowBackground"
+    tools:ignore="MissingDefaultResource">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="8dp">
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="500dp"
+            android:layout_marginStart="30dp"
+            android:orientation="vertical"
+            android:padding="24dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="104dp">
+
+            <ImageView
+                android:id="@+id/icon_login"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/login_icon"
+                android:layout_marginStart="55dp"
+                app:tint="?attr/colorOnSurface"/>
+
+            <TextView
+                android:id="@+id/tituloLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="LOGIN"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/nomUsuario"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/background_rounded"
+                android:text="@string/loginUser"
+                android:backgroundTint="?attr/colorSurfaceContainer"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:id="@+id/contraseña"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_rounded"
+                android:text="@string/loginPassword"
+                android:backgroundTint="?attr/colorSurfaceContainer"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textStyle="italic|bold" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="30sp"
+                android:text="@string/enter"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

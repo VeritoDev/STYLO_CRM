@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TFG</string>
+    <string name="language">ES</string>
+    <string name="loginUser">NOMBRE DE USUARIO</string>
+    <string name="loginPassword">CONTRASEÑA</string>
+    <string name="enter">ENTRAR</string>
+</resources>
