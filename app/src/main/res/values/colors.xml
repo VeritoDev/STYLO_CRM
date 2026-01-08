@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="purple">#6734C7</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="grey">#BFBFBF</color>
-    <color name="dark_grey">#4E4E4E</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="morado_claro_fondo">#EC5BFF</color>
+    <color name="blanco_card">#FFFFFF</color>
+    <color name="morado_boton">#A000D7</color>
+    <color name="gris_input">#4E4E4E</color>
+    <color name="gris_fondo">#BFBFBF</color>
+
+    <color name="morado_oscuro_fondo">#4A148C</color>
+    <color name="gris_oscuro_card">#353043</color>
+    <color name="gris_oscuro_input">#BFBFBF</color>
+    <color name="gris_oscuro_fondo">#1D1D1D</color>
+    <color name="blanco_puro">#FFFFFF</color>
 </resources>
