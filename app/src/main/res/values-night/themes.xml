@@ -6,6 +6,7 @@
         <item name="colorSurfaceVariant">@color/gris_oscuro_input</item>
         <item name="colorSurfaceContainer">@color/gris_oscuro_fondo</item>
         <item name="colorPrimary">@color/morado_boton</item>
+        <item name="colorOnPrimary">@color/toolbar_oscuro</item>
         <item name="colorOnSurface">@color/blanco_puro</item>
     </style>
 </resources>
