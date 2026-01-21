@@ -49,7 +49,7 @@
                 android:background="@drawable/background_rounded"
                 android:text="@string/loginUser"
                 android:backgroundTint="?attr/colorSurfaceContainer"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="italic|bold" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:background="@drawable/background_rounded"
                 android:text="@string/loginPassword"
                 android:backgroundTint="?attr/colorSurfaceContainer"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="italic|bold" />
 
             <Button

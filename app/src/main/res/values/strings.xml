@@ -4,4 +4,13 @@
     <string name="loginUser">USERNAME</string>
     <string name="loginPassword">PASSWORD</string>
     <string name="enter">ENTER</string>
+    <string name="home">Home</string>
+    <string name="clientes">Clients</string>
+    <string name="citas">Appointments</string>
+    <string name="inicio">Welcome</string>
+    <string name="afluencia">Customer Influx</string>
+    <string name="accionRapido">Quick Access</string>
+    <string name="nuevoCliente">New Customer</string>
+    <string name="nuevaCita">New Appointment</string>
+    <string name="proximasCitas">Next Appointments</string>
 </resources>
