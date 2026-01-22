@@ -2,15 +2,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="MissingDefaultResource">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/inicioFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/clientesFragment"
         android:icon="@drawable/ic_clientes"
         android:title="@string/clientes" />
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/citasFragment"
         android:icon="@drawable/ic_citas"
         android:title="@string/citas" />
 </menu>

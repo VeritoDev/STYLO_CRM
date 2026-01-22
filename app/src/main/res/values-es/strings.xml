@@ -13,4 +13,21 @@
     <string name="nuevoCliente">Nuevo Cliente</string>
     <string name="nuevaCita">Nueva Cita</string>
     <string name="proximasCitas">Próximas Citas</string>
+    <string name="errorLoginCamposVacios">Por favor, rellena todos los campos</string>
+    <string name="errorLogin">Error Desconocido</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

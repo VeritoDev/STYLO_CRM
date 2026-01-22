@@ -10,4 +10,14 @@
         android:name="com.example.tfg.InicioFragment"
         android:label="fragment_inicio"
         tools:layout="@layout/fragment_inicio" />
+    <fragment
+        android:id="@+id/clientesFragment"
+        android:name="com.example.tfg.ClientesFragment"
+        android:label="fragment_clientes"
+        tools:layout="@layout/fragment_clientes" />
+    <fragment
+        android:id="@+id/citasFragment"
+        android:name="com.example.tfg.CitasFragment"
+        android:label="fragment_citas"
+        tools:layout="@layout/fragment_citas" />
 </navigation>
