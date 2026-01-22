@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "527862722714",
+    "project_id": "stylo-f9670",
+    "storage_bucket": "stylo-f9670.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527862722714:android:cc853f3d75993dd5d42f23",
+        "android_client_info": {
+          "package_name": "com.example.tfg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY8PGYY51xOL0H4iNfOyYPIQVPhZLNJwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
