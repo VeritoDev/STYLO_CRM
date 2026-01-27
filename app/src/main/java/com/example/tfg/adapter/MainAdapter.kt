@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Item
 
-class Adapter(private val items: List<Item>) : RecyclerView.Adapter<Adapter.ViewHolder>(){
+class MainAdapter(private val items: List<Item>) : RecyclerView.Adapter<MainAdapter.ViewHolder>(){
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val tvTitulo = view.findViewById<TextView>(R.id.tvTituloTarjeta)

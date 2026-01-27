@@ -1,59 +1,52 @@
 package com.example.tfg
 
-import android.annotation.SuppressLint
-import com.example.tfg.R
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.Firebase
+import com.example.tfg.databinding.ActivityRegistroBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class RegistroActivity : AppCompatActivity() {
 
-    // Inicializamos la base de datos
-    private val database = Firebase.firestore
+    private lateinit var binding: ActivityRegistroBinding
+    private val auth = FirebaseAuth.getInstance()
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnRegistrar = findViewById<Button>(R.id.btnFinalizarRegistro)
-        val etNombre = findViewById<EditText>(R.id.etNombreRegistro)
-        val etCorreo = findViewById<EditText>(R.id.etCorreoRegistro)
-        val etPass = findViewById<EditText>(R.id.etPasswordRegistro)
-
-        btnRegistrar.setOnClickListener {
-            val nombre = etNombre.text.toString()
-            val correo = etCorreo.text.toString()
-            val pass = etPass.text.toString()
-
-            if (nombre.isNotEmpty() && correo.isNotEmpty() && pass.isNotEmpty()) {
-                guardarEnFirebase(nombre, correo, pass)
-            } else {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
-            }
+        binding.btnFinalizarRegistro.setOnClickListener {
+            registrarUsuario()
         }
     }
 
-    private fun guardarEnFirebase(nombre: String, correo: String, pass: String) {
-        // Creamos el mapa de datos
-        val usuario = hashMapOf(
-            "nombre" to nombre,
-            "correo" to correo,
-            "password" to pass // Nota: En una app real, la pass no se guarda así en Firestore
-        )
+    private fun registrarUsuario() {
+        val correo = binding.etCorreoRegistro.text.toString().trim()
+        val pass = binding.etPasswordRegistro.text.toString().trim()
+        val nombre = binding.etNombreRegistro.text.toString().trim()
 
-        database.collection("usuarios")
-            .add(usuario)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Registro completado", Toast.LENGTH_SHORT).show()
-                finish() // Cierra esta actividad y vuelve al Login
+        // VALIDACIÓN PASO A PASO
+        if (correo.isNotEmpty() && pass.isNotEmpty() && nombre.isNotEmpty()) {
+            if (pass.length >= 6) {
+                // CREAR CUENTA EN FIREBASE
+                auth.createUserWithEmailAndPassword(correo, pass)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+            } else {
+                //DEBERÍA SER EN INGLÉS Y ESPAÑOL
+                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
-            }
+        } else {
+            //AQUI IGUAL
+            Toast.makeText(this, "Rellena todos los campos, por favor", Toast.LENGTH_SHORT).show()
+        }
     }
 }

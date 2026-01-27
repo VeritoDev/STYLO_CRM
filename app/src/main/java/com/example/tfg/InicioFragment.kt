@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tfg.adapter.Adapter
+import com.example.tfg.adapter.MainAdapter
 import com.example.tfg.model.Item
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
@@ -26,6 +26,6 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         )
 
         // 3. Le pasamos los datos al adaptador
-        recyclerView.adapter = Adapter(listaTarjetas)
+        recyclerView.adapter = MainAdapter(listaTarjetas)
     }
 }

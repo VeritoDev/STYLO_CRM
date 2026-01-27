@@ -3,17 +3,16 @@ package com.example.tfg
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.example.tfg.R
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tfg.databinding.FragmentFormularioClientesBinding
 import com.example.tfg.model.Cliente
-import com.example.tfg.repository.Repository
+import com.example.tfg.repository.MainRepository
 
 class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_clientes) {
 
     private lateinit var binding: FragmentFormularioClientesBinding
-    private val repository = Repository() // Usamos tu clase de confianza
+    private val mainRepository = MainRepository() // Usamos tu clase de confianza
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +39,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                 ultimaCita = "Pendiente"
             )
 
-           repository.insertarCliente(nuevoCliente)
+           mainRepository.insertarCliente(nuevoCliente)
 
             Toast.makeText(requireContext(), "Cliente guardado con éxito", Toast.LENGTH_SHORT)
                 .show()

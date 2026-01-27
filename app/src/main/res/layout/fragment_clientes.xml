@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,19 +25,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvClientes"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
         android:paddingHorizontal="16dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="24dp"
         android:contentDescription="ADD"
         android:src="@drawable/ic_add"
         app:backgroundTint="?attr/colorOnPrimary"
         app:tint="@color/white"
         tools:ignore="HardcodedText" />
-</LinearLayout>
+</FrameLayout>

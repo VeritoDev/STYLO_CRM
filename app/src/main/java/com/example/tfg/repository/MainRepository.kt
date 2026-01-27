@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 
-class Repository() {
+class MainRepository() {
     //HACEMOS REFERENCIA A LA BASE DE DATOS
     private val database = Firebase.database
     private val database_cliente: DatabaseReference = FirebaseDatabase.getInstance().reference

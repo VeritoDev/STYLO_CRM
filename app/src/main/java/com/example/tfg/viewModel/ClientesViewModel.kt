@@ -3,10 +3,10 @@ package com.example.tfg.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tfg.model.Cliente
-import com.example.tfg.repository.Repository
+import com.example.tfg.repository.MainRepository
 
 class ClientesViewModel {
-    private val repository = Repository()
+    private val mainRepository = MainRepository()
 
     //LISTA ORIGINAL EN LA FIREBASE
     private var listaCompleta = listOf<Cliente>()
@@ -20,7 +20,7 @@ class ClientesViewModel {
     }
 
     private fun cargarClientes() {
-        repository.getClientes { lista ->
+        mainRepository.getClientes { lista ->
             listaCompleta = lista
             _clientesMostrados.value = lista
         }
@@ -29,7 +29,7 @@ class ClientesViewModel {
 
     // LÓGICA PARA EL BOTÓN ELIMINAR
     fun eliminarCliente(id: String) {
-        repository.eliminarCliente(id)
+        mainRepository.eliminarCliente(id)
         // Firebase actualizará la lista automáticamente gracias al Listener
     }
 }

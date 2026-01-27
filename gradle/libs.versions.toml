@@ -42,7 +42,7 @@ androidx-navigation-fragment = { group = "androidx.navigation", name = "navigati
 androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

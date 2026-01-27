@@ -2,9 +2,16 @@ package com.example.tfg
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.tfg.databinding.LoginBinding
 import com.example.tfg.viewModel.LoginViewModel
 
@@ -20,6 +27,35 @@ class LoginActivity : AppCompatActivity() {
 
         //CONFIGURAMOS LOS OBSERVERS
         setupObservers()
+
+        //LÓGICA DE REGISTRO
+        val textView = binding.tvIrARegistro
+        val textCompleto = "¿No tienes cuenta? Regístrate"
+        val spannable = SpannableString(textCompleto)
+
+        val inicio = textCompleto.indexOf("Regístrate")
+        val fin = inicio + "Regístrate".length
+
+        val colorResaltado = ContextCompat.getColor(this, R.color.blanco_puro)
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // Navegamos al registro
+                val intent = Intent(this@LoginActivity, RegistroActivity::class.java)
+                startActivity(intent)
+            }
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.color = colorResaltado
+                ds.isFakeBoldText = true
+            }
+        }
+
+        spannable.setSpan(clickableSpan, inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textView?.text = spannable
+        textView?.movementMethod = LinkMovementMethod.getInstance()
+
 
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()

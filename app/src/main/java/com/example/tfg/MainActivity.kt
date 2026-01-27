@@ -34,78 +34,18 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val textView = findViewById<TextView>(R.id.tvIrARegistro)
-        val textCompleto = "¿No tienes cuenta? Login"
-
-        //LÓGICA DE FORMULARIO PARA REGISTRARSE
-        //CREAMOS EL OBJETO SPANNABLE
-        val sp = SpannableString(textCompleto)
-
-        //ENCONTRAMOS LOS ÍNDICES DE LA PALABRA REGISTRATE
-        val inicio = textCompleto.indexOf("Login")
-        val fin = inicio + "Login".length
-
-        //EXTRAEMOS LOS COLORES DEL TEMA ACTUAL
-        val colorTextoBase = obtenerColorDeAttr(com.google.android.material.R.attr.colorOnSurface)
-        val colorResaltado = obtenerColorDeAttr(com.google.android.material.R.attr.colorSurface)
-
-        val textoCompleto = "¿No tienes cuenta? Regístrate"
-        val spannable = SpannableString(textoCompleto)
-
-        //APLICAMOS EL COLOR QUE CAMBIA CON EL TEMA AL TEXTO
-        spannable.setSpan(
-            ForegroundColorSpan(colorTextoBase),
-            0,
-            inicio,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        //APLICAMOS EL COLOR DE MARCA DE REGISTRATE
-        spannable.setSpan(
-            ForegroundColorSpan(colorResaltado),
-            inicio,
-            fin,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                val intent = Intent(this@MainActivity, RegistroActivity::class.java)
-                startActivity(intent)
-            }
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = false
-                ds.color = colorResaltado
-            }
-        }
-
-        spannable.setSpan(clickableSpan, inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        textView.text = spannable
-        textView.movementMethod = LinkMovementMethod.getInstance()
-
-
         //CONECTAMOS EL BOTTOMNAVIGATION CON EL NAVCONTROLLER
         binding.bottomNavigation.setupWithNavController(navController)
 
         binding.btnLoginToolbar.setOnClickListener {
-            // 1. Cerramos sesión en Firebase
             FirebaseAuth.getInstance().signOut()
 
-            // 2. Avisamos al usuario
             Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
 
-            // 3. Volvemos al Login y cerramos esta pantalla
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-    }
-    fun obtenerColorDeAttr(attr: Int): Int{
-        val typedValue = TypedValue()
-        theme.resolveAttribute(attr, typedValue, true)
-        return typedValue.data
     }
 }
 

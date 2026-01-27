@@ -3,10 +3,10 @@ package com.example.tfg.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tfg.repository.Repository
+import com.example.tfg.repository.MainRepository
 
 class LoginViewModel: ViewModel() {
-    private val repository = Repository()
+    private val mainRepository = MainRepository()
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> = _loginResult
     private val _errorMessage = MutableLiveData<String>()
@@ -21,7 +21,7 @@ class LoginViewModel: ViewModel() {
             return
         }
 
-        repository.login(email, pass) {success, error ->
+        mainRepository.login(email, pass) { success, error ->
             if(success){
                 _loginResult.value = true
             }else{
@@ -30,7 +30,7 @@ class LoginViewModel: ViewModel() {
         }
     }
     fun comprobarSesion(){
-        if(repository.isUsuarioLogueado()){
+        if(mainRepository.isUsuarioLogueado()){
             _sesionActiva.value = true
         }
     }

@@ -8,14 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.databinding.FragmentClientesBinding
-import com.example.tfg.repository.Repository
+import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.ClientesAdapter
 
 class ClientesFragment : Fragment(R.layout.fragment_clientes) {
 
     private lateinit var binding: FragmentClientesBinding
     private lateinit var adapter: ClientesAdapter
-    private val repository = Repository()
+    private val mainRepository = MainRepository()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +50,7 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
     }
 
     private fun cargarDatosDeFirebase() {
-        repository.getClientes { listaClientes ->
+        mainRepository.getClientes { listaClientes ->
             adapter.actualizarLista(listaClientes)
         }
     }
