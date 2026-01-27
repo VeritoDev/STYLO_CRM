@@ -16,6 +16,18 @@
     <string name="errorLoginCamposVacios">Por favor, rellena todos los campos</string>
     <string name="errorLogin">Error Desconocido</string>
     <string name="cliente">BUSCAR CLIENTES</string>
+    <string name="label_nombre">NOMBRE CLIENTE: %1$s</string>
+    <string name="label_servicio">ÚLTIMO SERVICIO: %1$s</string>
+    <string name="label_fecha">ÚLTIMA CITA: %1$s</string>
+    <string name="cliente_nuevo">NUEVO CLIENTE</string>
+    <string name="telefono">TELÉFONO</string>
+    <string name="email">EMAIL</string>
+    <string name="notas">NOTAS</string>
+    <string name="guardar">GUARDAR CLIENTE</string>
+    <string name="detalle_cliente">DETALLE CLIENTE</string>
+    <string name="historial">HISTORIAL</string>
+    <string name="editar">EDITAR</string>
+    <string name="eliminar">ELIMINAR</string>
 
 
 

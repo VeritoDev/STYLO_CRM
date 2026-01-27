@@ -16,6 +16,16 @@
     <string name="errorLoginCamposVacios">Please, enter all the fields</string>
     <string name="errorLogin">Unknown error</string>
     <string name="cliente">SEARCH CLIENTS</string>
-
-
+    <string name="label_nombre">CLIENT NAME: %1$s</string>
+    <string name="label_servicio">LAST SERVICE: %1$s</string>
+    <string name="label_fecha">LAST APPOINTMENT: %1$s</string>
+    <string name="cliente_nuevo">NEW CLIENT</string>
+    <string name="telefono">TELEPHONE</string>
+    <string name="email">EMAIL</string>
+    <string name="notas">NOTES</string>
+    <string name="guardar">SAVE CLIENT</string>
+    <string name="detalle_cliente">DETAIL CLIENT</string>
+    <string name="historial">HISTORY</string>
+    <string name="editar">EDIT</string>
+    <string name="eliminar">DELETE</string>
 </resources>

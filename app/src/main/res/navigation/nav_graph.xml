@@ -14,10 +14,23 @@
         android:id="@+id/clientesFragment"
         android:name="com.example.tfg.ClientesFragment"
         android:label="fragment_clientes"
-        tools:layout="@layout/fragment_clientes" />
+        tools:layout="@layout/fragment_clientes"/>
+        <action
+            android:id="@+id/action_clientesFragment_to_formularioClientesFragment"
+            app:destination="@id/formularioClientesFragment"/>
     <fragment
         android:id="@+id/citasFragment"
         android:name="com.example.tfg.CitasFragment"
         android:label="fragment_citas"
         tools:layout="@layout/fragment_citas" />
+    <fragment
+        android:id="@+id/formularioClientesFragment"
+        android:name="com.example.tfg.FormularioClientesFragment"
+        android:label="fragment_formulario_clientes"
+        tools:layout="@layout/fragment_formulario_clientes" />
+    <fragment
+        android:id="@+id/detalleClienteFragment"
+        android:name="com.example.tfg.DetalleClienteFragment"
+        android:label="fragment_detalle_cliente"
+        tools:layout="@layout/fragment_detalle_cliente" />
 </navigation>

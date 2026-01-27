@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.databinding.FragmentClientesBinding
@@ -22,22 +23,30 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
 
         setupRecyclerView()
         cargarDatosDeFirebase()
+
+        binding.fabAddCliente?.setOnClickListener {
+            findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment)
+        }
     }
 
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation
 
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvClientes.layoutManager = GridLayoutManager(requireContext(), 2)
+            binding.rvClientes?.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
-            binding.rvClientes.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvClientes?.layoutManager = LinearLayoutManager(requireContext())
         }
 
         adapter = ClientesAdapter(emptyList()) { cliente ->
-            // Aquí programaremos qué pasa al tocar a un cliente (ver detalle)
+            val bundle = Bundle().apply {
+                putString("clienteId", cliente.id)
+            }
+            findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment, bundle)
+
         }
 
-        binding.rvClientes.adapter = adapter
+        binding.rvClientes?.adapter = adapter
     }
 
     private fun cargarDatosDeFirebase() {
