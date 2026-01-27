@@ -6,5 +6,7 @@ data class Cliente(
     val telefono: String = "",
     val email: String = "",
     val notas: String = "",
+    val ultimoServicio: String = "",
+    val ultimaCita: String = "",
     val historial: Map<String, String>? = null
 )

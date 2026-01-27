@@ -6,12 +6,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 
 class Repository() {
     //HACEMOS REFERENCIA A LA BASE DE DATOS
     private val database = Firebase.database
+    private val database_cliente: DatabaseReference = FirebaseDatabase.getInstance().reference
     private val auth = FirebaseAuth.getInstance()
 
 
@@ -39,13 +42,19 @@ class Repository() {
     // --- LÓGICA DE CLIENTES ---
 
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
-        refClientes.addValueEventListener(object : ValueEventListener {
+        database_cliente.child("clientes").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // mapNotNull convierte los datos de Firebase en objetos Cliente automáticamente
-                val lista = snapshot.children.mapNotNull { it.getValue(Cliente::class.java) }
-                onResult(lista)
+                val listaClientes = mutableListOf<Cliente>()
+                for (datos in snapshot.children) {
+                    val cliente = datos.getValue(Cliente::class.java)
+                    cliente?.let { listaClientes.add(it.copy(id = datos.key ?: "")) }
+                }
+                onResult(listaClientes)
             }
-            override fun onCancelled(error: DatabaseError) {}
+
+            override fun onCancelled(error: DatabaseError) {
+                onResult(emptyList())
+            }
         })
     }
 
