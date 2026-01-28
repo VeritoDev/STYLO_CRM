@@ -31,6 +31,10 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             findNavController().navigateUp()
         }
 
+        binding.btnEditar.setOnClickListener {
+            //LÓGICA PARA EDITAR EL CLIENTE
+        }
+
         binding.btnEliminar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
                 repository.eliminarCliente(clienteId)

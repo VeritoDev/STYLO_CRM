@@ -9,7 +9,11 @@
         android:id="@+id/inicioFragment"
         android:name="com.example.tfg.InicioFragment"
         android:label="fragment_inicio"
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_inicioFragment_to_formularioClientesFragment"
+            app:destination="@id/formularioClientesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/clientesFragment"
         android:name="com.example.tfg.ClientesFragment"

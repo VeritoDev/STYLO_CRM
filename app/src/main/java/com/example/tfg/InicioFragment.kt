@@ -3,29 +3,53 @@ package com.example.tfg
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.tfg.adapter.MainAdapter
-import com.example.tfg.model.Item
+import androidx.navigation.fragment.findNavController
+import com.example.tfg.databinding.FragmentInicioBinding
+import com.example.tfg.repository.MainRepository
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
+    private lateinit var binding: FragmentInicioBinding
+    private val mainRepository = MainRepository()
+    //private lateinit var citasAdapter: CitasAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentInicioBinding.bind(view)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rvDashboard)
+        setupUI()
+        setupRecyclerView()
+        cargarDatos()
+    }
 
-        // 1. Configuramos cómo se verán las tarjetas (una debajo de otra)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    private fun setupUI() {
+        val usuario = mainRepository.getUsuarioActual()
+        binding.tvNombreUsuario.text = usuario?.email ?: "Usuario"
 
-        // 2. Definimos qué tarjetas queremos ver
-        val listaTarjetas = listOf(
-            Item("PRÓXIMAS CITAS", isCita = true),
-            Item("RESUMEN DIARIO", "Has atendido a 12 clientes hoy"),
-            Item("CAJA", "Total acumulado: 450.00€")
-        )
+        binding.cardAgregarCliente.setOnClickListener {
+            findNavController().navigate(R.id.action_inicioFragment_to_formularioClientesFragment)
+        }
 
-        // 3. Le pasamos los datos al adaptador
-        recyclerView.adapter = MainAdapter(listaTarjetas)
+        binding.cardAgregarCita.setOnClickListener {
+            //findNavController().navigate(R.id.action_inicioFragment_to_citasFragment)
+        }
+    }
+
+    private fun setupRecyclerView() {
+        //citasAdapter = CitasAdapter(emptyList())
+        //binding.rvDashboard.adapter = citasAdapter
+    }
+
+    private fun cargarDatos() {
+        mainRepository.getCitasHoy { listaCitas ->
+            if (listaCitas.isEmpty()) {
+                binding.tvSinCitas.visibility = View.VISIBLE
+                binding.rvDashboard.visibility = View.GONE
+            } else {
+                binding.tvSinCitas.visibility = View.GONE
+                binding.rvDashboard.visibility = View.VISIBLE
+            }
+            //citasAdapter.actualizarLista(listaCitas)
+        }
     }
 }

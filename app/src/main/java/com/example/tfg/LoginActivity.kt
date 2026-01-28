@@ -40,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Navegamos al registro
                 val intent = Intent(this@LoginActivity, RegistroActivity::class.java)
                 startActivity(intent)
             }

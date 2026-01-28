@@ -17,7 +17,7 @@ class MainRepository {
     // --- REFERENCIAS DINÁMICAS ---
     private fun getBaseRef(): DatabaseReference {
         val uid = auth.currentUser?.uid ?: "anónimo"
-        return database.child("usuarios").child(uid)
+        return database.child("clientes").child(uid)
     }
 
     private fun getRefClientes() = getBaseRef().child("clientes")

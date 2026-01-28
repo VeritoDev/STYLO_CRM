@@ -30,4 +30,5 @@
     <string name="eliminar">DELETE</string>
     <string name="nuevo_usuario">NEW USER</string>
     <string name="guardar_usuario">SAVE USER</string>
+    <string name="citas_vacio">NO APPOINTMENT FOR TODAY</string>
 </resources>
