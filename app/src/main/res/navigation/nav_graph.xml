@@ -14,10 +14,15 @@
         android:id="@+id/clientesFragment"
         android:name="com.example.tfg.ClientesFragment"
         android:label="fragment_clientes"
-        tools:layout="@layout/fragment_clientes"/>
+        tools:layout="@layout/fragment_clientes">
         <action
             android:id="@+id/action_clientesFragment_to_formularioClientesFragment"
             app:destination="@id/formularioClientesFragment"/>
+        <action
+            android:id="@+id/action_clientesFragment_to_detalleClienteFragment"
+            app:destination="@id/detalleClienteFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/citasFragment"
         android:name="com.example.tfg.CitasFragment"

@@ -32,20 +32,12 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         val email = binding.etNuevoEmail.text.toString()
         val notas = binding.etNuevoNotas.text.toString()
 
-        if (nombre.isNotEmpty() && telefono.isNotEmpty()) {
-            val nuevoCliente = Cliente(
-                nombreCliente = nombre,
-                telefono = telefono,
-                email = email,
-                notas = notas,
-                ultimoServicio = "Nuevo Cliente",
-                ultimaCita = "Pendiente"
-            )
+        if (nombre.isNotEmpty()) {
+            val nuevoCliente = Cliente(nombreCliente = nombre, telefono = telefono, email = email, notas = notas)
 
-           mainRepository.insertarCliente(nuevoCliente)
-
-            Toast.makeText(requireContext(), "Cliente guardado con éxito", Toast.LENGTH_SHORT)
-                .show()
+            android.util.Log.d("FIREBASE_TEST", "Intentando guardar cliente...")
+            mainRepository.insertarCliente(nuevoCliente)
+            android.util.Log.d("FIREBASE_TEST", "Función ejecutada")
 
             findNavController().navigateUp()
         } else {

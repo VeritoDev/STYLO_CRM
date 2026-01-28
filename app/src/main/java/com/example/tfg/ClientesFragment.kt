@@ -42,7 +42,7 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
             val bundle = Bundle().apply {
                 putString("clienteId", cliente.id)
             }
-            findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment, bundle)
+            findNavController().navigate(R.id.action_clientesFragment_to_detalleClienteFragment, bundle)
 
         }
 

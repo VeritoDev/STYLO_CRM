@@ -5,20 +5,25 @@ import com.example.tfg.model.Cliente
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class MainRepository {
 
     private val auth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance()
+    private val database = FirebaseDatabase.getInstance().reference
 
     // --- REFERENCIAS DINÁMICAS ---
-    private fun getBaseRef() = database.getReference("usuarios").child(auth.currentUser?.uid ?: "anonimo")
+    private fun getBaseRef(): DatabaseReference {
+        val uid = auth.currentUser?.uid ?: "anónimo"
+        return database.child("usuarios").child(uid)
+    }
+
     private fun getRefClientes() = getBaseRef().child("clientes")
     private fun getRefCitas() = getBaseRef().child("citas")
 
-    // --- LÓGICA DE CLIENTES (PRIVADA) ---
+    // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -39,17 +44,20 @@ class MainRepository {
             onResult(snapshot.getValue(Cliente::class.java))
         }
     }
+
     fun insertarCliente(cliente: Cliente) {
         val key = getRefClientes().push().key
-        key?.let {
-            getRefClientes().child(it).setValue(cliente.copy(id = it))
+        key?.let { id ->
+            getRefClientes().child(id).setValue(cliente.copy(id = id))
         }
     }
+
     fun actualizarCliente(cliente: Cliente) {
         if (cliente.id.isNotEmpty()) {
             getRefClientes().child(cliente.id).setValue(cliente)
         }
     }
+
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()
     }
@@ -64,6 +72,7 @@ class MainRepository {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+
     fun insertarCita(cita: Cita) {
         val key = getRefCitas().push().key
         key?.let { getRefCitas().child(it).setValue(cita) }
@@ -76,6 +85,7 @@ class MainRepository {
                 onResult(task.isSuccessful, task.exception?.message)
             }
     }
+
     fun isUsuarioLogueado(): Boolean = auth.currentUser != null
 
     fun getUsuarioActual() = auth.currentUser
