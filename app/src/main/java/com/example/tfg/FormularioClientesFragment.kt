@@ -18,6 +18,9 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFormularioClientesBinding.bind(view)
 
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
         binding.btnGuardarCliente.setOnClickListener {
             guardarNuevoCliente()
         }
