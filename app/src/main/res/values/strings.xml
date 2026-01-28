@@ -28,4 +28,6 @@
     <string name="historial">HISTORY</string>
     <string name="editar">EDIT</string>
     <string name="eliminar">DELETE</string>
+    <string name="nuevo_usuario">NEW USER</string>
+    <string name="guardar_usuario">SAVE USER</string>
 </resources>

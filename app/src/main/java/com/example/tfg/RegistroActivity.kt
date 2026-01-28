@@ -17,23 +17,26 @@ class RegistroActivity : AppCompatActivity() {
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnFinalizarRegistro.setOnClickListener {
+        binding.btnBack.setOnClickListener {
+            finish() //CIERRA LA PANTALLA Y VUELVE A LA ANTERIOR
+        }
+
+        binding.btnGuardarCliente.setOnClickListener {
             registrarUsuario()
         }
     }
 
     private fun registrarUsuario() {
-        val correo = binding.etCorreoRegistro.text.toString().trim()
-        val pass = binding.etPasswordRegistro.text.toString().trim()
-        val nombre = binding.etNombreRegistro.text.toString().trim()
+        val nombre = binding.etNuevoNombre.text.toString().trim()
+        val correo = binding.etNuevoEmail.text.toString().trim()
+        val pass = binding.etNuevaContrasena.text.toString().trim() // Asegúrate de que el ID sea este
 
-        // VALIDACIÓN PASO A PASO
         if (correo.isNotEmpty() && pass.isNotEmpty() && nombre.isNotEmpty()) {
             if (pass.length >= 6) {
-                // CREAR CUENTA EN FIREBASE
                 auth.createUserWithEmailAndPassword(correo, pass)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            Toast.makeText(this, "Bienvenido/a $nombre", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         } else {
@@ -41,12 +44,10 @@ class RegistroActivity : AppCompatActivity() {
                         }
                     }
             } else {
-                //DEBERÍA SER EN INGLÉS Y ESPAÑOL
-                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Mínimo 6 caracteres / Minimum 6 characters", Toast.LENGTH_SHORT).show()
             }
         } else {
-            //AQUI IGUAL
-            Toast.makeText(this, "Rellena todos los campos, por favor", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Rellena todos los campos / Please fill all fields", Toast.LENGTH_SHORT).show()
         }
     }
 }
