@@ -6,17 +6,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical"
         android:padding="24dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/card_background">
+        android:layout_marginTop="50dp">
 
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_back"
-            app:tint="?attr/colorOnSurface" />
+            app:tint="@color/toolbar_claro" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:textColor="?attr/colorOnSurface"
+            android:textColor="@color/toolbar_claro"
             android:layout_marginBottom="24dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,6 +34,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoNombre"
                 android:layout_width="match_parent"
+                android:textColor="@color/toolbar_claro"
                 android:layout_height="wrap_content"
                 android:hint="@string/loginUser"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -46,9 +47,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoTelefono"
                 android:layout_width="match_parent"
+                android:textColor="@color/toolbar_claro"
                 android:layout_height="wrap_content"
                 android:hint="@string/telefono"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:maxLength="8"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,6 +62,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoEmail"
                 android:layout_width="match_parent"
+                android:textColor="@color/toolbar_claro"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress" />
@@ -74,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/notas"
+                android:textColor="@color/toolbar_claro"
                 android:gravity="top"
                 android:lines="4" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -84,8 +89,9 @@
             android:layout_height="60dp"
             android:layout_marginTop="32dp"
             android:text="@string/guardar"
+            android:textColor="@color/toolbar_claro"
             android:textSize="18sp"
-            android:background="?attr/colorOnSurface"
+            android:backgroundTint="@color/toolbar_oscuro"
             app:cornerRadius="15dp" />
 
     </LinearLayout>
