@@ -3,179 +3,159 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"> <com.google.android.material.card.MaterialCardView
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="8dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/colorPrimary"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="Volver"
-                    android:src="@drawable/ic_back"
-                    app:tint="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/detalle_cliente"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic" />
-            </RelativeLayout>
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/colorPrimary"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home"
-                    app:tint="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:id="@+id/tvNombreDetalle"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    tools:text="Laura Ejemplo" />
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/btnBack"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/toolbar_claro" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/detalle_cliente"
+                        android:textColor="@color/toolbar_claro"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+                </RelativeLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_home" app:tint="@color/toolbar_claro"/>
+                            <TextView android:id="@+id/tvNombreDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="Nombre Ejemplo" android:textColor="@color/toolbar_claro" />
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_phone" app:tint="@color/toolbar_claro"/>
+                            <TextView android:id="@+id/tvTelefonoDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="612 345 678" android:textColor="@color/toolbar_claro" />
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
+                            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_email" app:tint="@color/toolbar_claro"/>
+                            <TextView android:id="@+id/tvEmailDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="email@ejemplo.com" android:textColor="@color/toolbar_claro" />
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_notes" app:tint="@color/toolbar_claro"/>
+                            <TextView android:id="@+id/tvNotasDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="Notas del cliente..." android:textColor="@color/toolbar_claro" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_phone"
-                    app:tint="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:id="@+id/tvTelefonoDetalle"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    tools:text="612 345 678" />
-            </LinearLayout>
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/historial"
+                        android:textStyle="bold|italic"
+                        android:textColor="?attr/colorPrimary"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEliminar"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:padding="0dp"
+                        app:icon="@drawable/ic_delete"
+                        app:iconSize="20dp"
+                        app:iconTint="?attr/colorPrimary" />
+                </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_notes"
-                    app:tint="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:id="@+id/tvNotasDetalle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:textColor="?attr/colorOnPrimary"
-                    tools:text="Notas: Alérgica al amoniaco" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.2"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/historial"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/toolbar_claro"
+                    android:padding="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="02/11/2025 - CORTE DE PELO - 20 EUROS"
+                        android:textStyle="bold"
+                        android:textColor="@color/toolbar_oscuro"
+                        android:textSize="12sp"/>
+                </androidx.core.widget.NestedScrollView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btnEditar"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#F0F0F0"
-                        android:padding="10dp"
-                        android:text="02/11/2025 - Mechas - 45€"
-                        android:textSize="12sp" />
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/editar"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:textColor="@color/toolbar_claro"
+                        app:icon="@drawable/ic_edit" />
+                    <Button
+                        android:id="@+id/btnAñadirCita"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/añadirCita"
+                        android:backgroundTint="?attr/colorPrimary"
+                        android:textColor="@color/toolbar_claro"
+                        app:icon="@drawable/ic_calendar" />
                 </LinearLayout>
-            </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnEditar"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/editar"
-                    app:icon="@drawable/ic_edit" />
-
-                <Button
-                    android:id="@+id/btnEliminar"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/eliminar"
-                    android:textColor="#FF5252"
-                    app:icon="@drawable/ic_delete"
-                    app:iconTint="#FF5252" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
     private fun guardarNuevoCliente() {
         val nombre = binding.etNuevoNombre.text.toString()
         val telefono = binding.etNuevoTelefono.text.toString()
-        val email = binding.etNuevoEmail.text.toString()
+        val email = binding.etNuevoEmail?.text.toString()
         val notas = binding.etNuevoNotas.text.toString()
 
         if (nombre.isNotEmpty()) {

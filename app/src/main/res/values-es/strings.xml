@@ -31,6 +31,11 @@
     <string name="nuevo_usuario">NUEVO USUARIO</string>
     <string name="guardar_usuario">GUARDAR USUARIO</string>
     <string name="citas_vacio">NO HAY CITAS PARA HOY</string>
+    <string name="buscarCita">BUSCAR CITA</string>
+    <string name="añadirCita">AÑADIR CITA</string>
+
+
+
 
 
 

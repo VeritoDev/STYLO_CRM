@@ -31,4 +31,7 @@
     <string name="nuevo_usuario">NEW USER</string>
     <string name="guardar_usuario">SAVE USER</string>
     <string name="citas_vacio">NO APPOINTMENT FOR TODAY</string>
+    <string name="buscarCita">SEARCH APPOINTMENT</string>
+    <string name="añadirCita">ADD APPOINTMENT</string>
+
 </resources>
