@@ -33,6 +33,12 @@
     <string name="citas_vacio">NO HAY CITAS PARA HOY</string>
     <string name="buscarCita">BUSCAR CITA</string>
     <string name="añadirCita">AÑADIR CITA</string>
+    <string name="nombre_cliente">NOMBRE DEL CLIENTE</string>
+    <string name="servicio">SERVICIO</string>
+    <string name="fecha">SELECCIONE DÍA</string>
+    <string name="hora">SELECCIONE HORA</string>
+    <string name="ultimoDia">ÚLTIMA CITA</string>
+    <string name="estado">ESTADO</string>
 
 
 

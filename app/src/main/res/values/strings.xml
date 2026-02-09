@@ -33,5 +33,11 @@
     <string name="citas_vacio">NO APPOINTMENT FOR TODAY</string>
     <string name="buscarCita">SEARCH APPOINTMENT</string>
     <string name="añadirCita">ADD APPOINTMENT</string>
+    <string name="nombre_cliente">CLIENT NAME</string>
+    <string name="servicio">SERVICE</string>
+    <string name="fecha">SELECT DATE</string>
+    <string name="hora">SELECT TIME</string>
+    <string name="ultimoDia">LAST APPOINTMENT</string>
+    <string name="estado">STATUS</string>
 
 </resources>

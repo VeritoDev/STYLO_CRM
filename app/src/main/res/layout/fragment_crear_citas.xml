@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?attr/colorPrimary"
+    android:padding="24dp"
+    android:layout_marginTop="50dp">
+
+    <ImageView
+        android:id="@+id/btnBackCita"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_back"
+        app:tint="@color/toolbar_claro" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nuevaCita"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textColor="@color/toolbar_claro"
+        android:layout_marginBottom="24dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/toolbar_claro"
+        app:hintTextColor="@color/toolbar_claro"
+        app:boxStrokeColor="@color/toolbar_claro"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCitaCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/toolbar_claro"
+            android:hint="@string/nombre_cliente"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/toolbar_claro"
+        app:hintTextColor="@color/toolbar_claro"
+        app:boxStrokeColor="@color/toolbar_claro"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCitaServicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/toolbar_claro"
+            android:hint="@string/servicio"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/toolbar_claro"
+        app:hintTextColor="@color/toolbar_claro"
+        app:boxStrokeColor="@color/toolbar_claro"
+        app:startIconDrawable="@drawable/ic_calendar"
+        app:startIconTint="@color/toolbar_claro"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCitaFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/toolbar_claro"
+            android:focusable="false"
+            android:hint="@string/fecha"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/toolbar_claro"
+        app:hintTextColor="@color/toolbar_claro"
+        app:boxStrokeColor="@color/toolbar_claro"
+        app:startIconDrawable="@drawable/ic_notes"
+        app:startIconTint="@color/toolbar_claro"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCitaHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:textColor="@color/toolbar_claro"
+            android:focusable="false"
+            android:hint="@string/hora"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnGuardarCita"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/añadirCita"
+        android:textColor="@color/toolbar_claro"
+        android:textSize="18sp"
+        android:backgroundTint="@color/toolbar_oscuro"
+        app:cornerRadius="15dp" />
+
+</LinearLayout>
+</ScrollView>
