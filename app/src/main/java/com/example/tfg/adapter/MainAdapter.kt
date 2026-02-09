@@ -36,9 +36,9 @@ class MainAdapter(private val items: List<Item>) : RecyclerView.Adapter<MainAdap
 
             //DATOS DE PRUEBA (EN UN FUTURO SERÁ DONDE SE CONECTE LA BASE DE DATOS)
             val listaCitas = listOf(
-                Cita("10:00", "Ana García", "Corte + Tinte"),
-                Cita("11:30", "Marta López", "Peinado"),
-                Cita("14:15", "Carlos Rodríguez", "Corte"),
+                Cita("10:00", "Ana García", "Corte + Tinte", "15:00"),
+                Cita("11:30", "Marta López", "Peinado", "11:15"),
+                Cita("14:15", "Carlos Rodríguez", "Corte", "09:00"),
             )
 
             //INFLAMOS CADA CITA DENTRO DEL CONTENEDOR

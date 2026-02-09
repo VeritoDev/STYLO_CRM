@@ -29,7 +29,7 @@ class ClientesAdapter(
         val contexto = holder.itemView.context
 
         //VARIABLES DE FIREBASE
-        holder.nombre.text = contexto.getString(R.string.label_nombre, cliente.nombreCliente)
+        holder.nombre.text = contexto.getString(R.string.label_nombre, cliente.nombre)
         holder.servicio.text = contexto.getString(R.string.label_servicio, cliente.ultimoServicio)
         holder.fecha.text = contexto.getString(R.string.label_fecha, cliente.ultimaCita)
 

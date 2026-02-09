@@ -1,59 +1,37 @@
 package com.example.tfg
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.databinding.FragmentCitasBinding
+import com.example.tfg.repository.MainRepository
+import com.example.tfg.adapter.CitasAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class CitasFragment : Fragment(R.layout.fragment_citas) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CitasFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class CitasFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentCitasBinding
+    private val mainRepository = MainRepository()
+    private lateinit var citasAdapter: CitasAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentCitasBinding.bind(view)
+
+        setupRecyclerView()
+
+        binding.fabAddCita.setOnClickListener {
+            findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_citas, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CitasFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CitasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setupRecyclerView() {
+        citasAdapter = CitasAdapter(emptyList()) { cita ->
+        }
+        binding.rvCitas.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = citasAdapter
+        }
     }
 }

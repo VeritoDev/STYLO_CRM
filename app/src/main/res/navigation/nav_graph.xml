@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_inicioFragment_to_citasFragment"
             app:destination="@id/citasFragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_crearCitasFragment"
+            app:destination="@id/crearCitasFragment" />
     </fragment>
     <fragment
         android:id="@+id/clientesFragment"
@@ -34,7 +37,11 @@
         android:id="@+id/citasFragment"
         android:name="com.example.tfg.CitasFragment"
         android:label="fragment_citas"
-        tools:layout="@layout/fragment_citas" />
+        tools:layout="@layout/fragment_citas" >
+        <action
+            android:id="@+id/action_citasFragment_to_crearCitasFragment"
+            app:destination="@id/crearCitasFragment" />
+    </fragment>
     <fragment
         android:id="@+id/formularioClientesFragment"
         android:name="com.example.tfg.FormularioClientesFragment"

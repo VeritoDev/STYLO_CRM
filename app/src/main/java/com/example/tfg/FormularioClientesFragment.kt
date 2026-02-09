@@ -33,7 +33,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         val notas = binding.etNuevoNotas.text.toString()
 
         if (nombre.isNotEmpty()) {
-            val nuevoCliente = Cliente(nombreCliente = nombre, telefono = telefono, email = email, notas = notas)
+            val nuevoCliente = Cliente(nombre = nombre, telefono = telefono, email = email, notas = notas)
 
             android.util.Log.d("FIREBASE_TEST", "Intentando guardar cliente...")
             mainRepository.insertarCliente(nuevoCliente)

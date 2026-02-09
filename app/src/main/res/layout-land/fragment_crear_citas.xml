@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
     app:cardCornerRadius="30dp"
-    app:cardElevation="10dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -33,9 +32,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="AGENDAR CITA"
+                android:text="@string/nuevaCita"
                 android:textColor="@color/toolbar_claro"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:textStyle="bold|italic" />
         </RelativeLayout>
 
@@ -94,14 +93,18 @@
                 android:paddingEnd="0dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/iconFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    app:startIconTint="@color/toolbar_claro"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconTint="@color/toolbar_claro"
+
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaFecha"
                         android:layout_width="match_parent"
@@ -118,9 +121,12 @@
                     android:textColorHint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
-                    app:startIconDrawable="@drawable/ic_notes"
-                    app:startIconTint="@color/toolbar_claro"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_clock"
+                    app:endIconTint="@color/toolbar_claro"
+
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaHora"
                         android:layout_width="match_parent"

@@ -1,7 +1,9 @@
 package com.example.tfg.model
 
 data class Cita(
-    val hora: String,
-    val nombre: String,
-    val servicio: String
+    val id: String = "",
+    val nombre: String = "",
+    val servicio: String = "",
+    val fecha: String = "",
+    val hora: String = ""
 )

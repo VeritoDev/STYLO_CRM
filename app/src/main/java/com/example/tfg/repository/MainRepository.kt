@@ -17,7 +17,7 @@ class MainRepository {
     // --- REFERENCIAS DINÁMICAS ---
     private fun getBaseRef(): DatabaseReference {
         val uid = auth.currentUser?.uid ?: "anónimo"
-        return database.child("clientes").child(uid)
+        return database.child("usuario").child(uid)
     }
 
     private fun getRefClientes() = getBaseRef().child("clientes")
@@ -69,13 +69,35 @@ class MainRepository {
                 val listaCitas = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
                 onResult(listaCitas)
             }
-            override fun onCancelled(error: DatabaseError) {}
+            override fun onCancelled(error: DatabaseError) {
+                onResult(emptyList())
+            }
         })
     }
+    fun crearCita(cita: Cita, callback: (Boolean) -> Unit) {
+        val dbRef = getRefCitas()
+        val idCita = dbRef.push().key
 
-    fun insertarCita(cita: Cita) {
-        val key = getRefCitas().push().key
-        key?.let { getRefCitas().child(it).setValue(cita) }
+        if (idCita != null) {
+            val citaConId = cita.copy(id = idCita)
+            dbRef.child(idCita).setValue(citaConId)
+                .addOnSuccessListener { callback(true) }
+                .addOnFailureListener { callback(false) }
+        } else {
+            callback(false)
+        }
+    }
+    fun verificarClienteExiste(nombreABuscar: String, callback: (Boolean) -> Unit) {
+        val dbRef = getRefClientes()
+
+        dbRef.orderByChild("nombre").equalTo(nombreABuscar).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                callback(snapshot.exists())
+            }
+            override fun onCancelled(error: DatabaseError) {
+                callback(false)
+            }
+        })
     }
 
     // --- LÓGICA DE USUARIOS ---

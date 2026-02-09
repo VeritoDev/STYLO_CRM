@@ -44,7 +44,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
     }
 
     private fun rellenarInterfaz(cliente: Cliente) {
-        binding.tvNombreDetalle.text = "NOMBRE CLIENTE: ${cliente.nombreCliente.uppercase()}"
+        binding.tvNombreDetalle.text = "NOMBRE CLIENTE: ${cliente.nombre.uppercase()}"
         binding.tvTelefonoDetalle.text = "TELÉFONO: ${cliente.telefono}"
         binding.tvEmailDetalle?.text = "EMAIL: ${cliente.email.uppercase()}"
         binding.tvNotasDetalle.text = "NOTAS: ${cliente.notas}"
