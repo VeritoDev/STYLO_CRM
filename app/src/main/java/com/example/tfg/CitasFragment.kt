@@ -41,10 +41,10 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         }
 
         citasAdapter = CitasAdapter(emptyList()) { cita ->
-            val bundel = Bundle().apply {
-                putString("citaId", cita.id)
+            val bundle = Bundle().apply {
+                putString("clienteId", cita.idCliente)
             }
-            findNavController().navigate((R.id.action_citasFragment_to_detalleClienteFragment))
+            findNavController().navigate((R.id.action_citasFragment_to_detalleClienteFragment), bundle)
         }
         binding.rvCitas.adapter = citasAdapter
     }

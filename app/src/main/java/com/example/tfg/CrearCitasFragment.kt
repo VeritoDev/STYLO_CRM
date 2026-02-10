@@ -20,6 +20,12 @@ class CrearCitasFragment : Fragment() {
     private var _binding: FragmentCrearCitasBinding? = null
     private val binding get() = _binding!!
     private val mainRepository = MainRepository()
+    private val duracionServicios = mapOf(
+        "Corte" to 30,
+        "Tinte" to 60,
+        "Barba" to 20,
+        "Peinado" to 45
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +40,7 @@ class CrearCitasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupListeners()
+        configurarSpinner()
     }
 
     @SuppressLint("DefaultLocale")
@@ -53,10 +60,15 @@ class CrearCitasFragment : Fragment() {
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+            val picker = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
                 val date = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
                 binding.etCitaFecha.setText(date)
-            }, year, month, day).show()
+            }, year, month, day)
+
+            //LÓGICA PARA QUE NO TE DEJE ELEGIR LOS DÍAS ANTERIORES
+            picker.datePicker.minDate = System.currentTimeMillis()
+
+            picker.show()
         }
 
         binding.etCitaHora.setOnClickListener {
@@ -73,40 +85,78 @@ class CrearCitasFragment : Fragment() {
 
     private fun validarYGuardarCita() {
         val nombreCliente = binding.etCitaCliente.text.toString().trim()
-        val servicio = binding.etCitaServicio.text.toString().trim()
+        val servicio = binding.spinnerServicios?.selectedItem.toString().trim()
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
+        if (binding.spinnerServicios?.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), "Por favor, selecciona un servicio", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val duracion = duracionServicios[servicio] ?: 30
 
-        // Paso 1: Verificar que no haya campos vacíos
-        if (nombreCliente.isEmpty() || servicio.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
+        if (nombreCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
             Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
-            return // Si entra aquí, no sigue
+            return
         }
 
-        // Paso 2: Verificar si el cliente existe
-        mainRepository.verificarClienteExiste(nombreCliente) { existe ->
-            if (existe) {
-                val nuevaCita = Cita(
-                    nombre = nombreCliente,
-                    servicio = servicio,
-                    fecha = fecha,
-                    hora = hora
-                )
+        mainRepository.verificarClienteExiste(nombreCliente) { idRecuperado ->
+            if (idRecuperado == null) {
+                Toast.makeText(requireContext(), "El cliente no existe", Toast.LENGTH_SHORT).show()
+                return@verificarClienteExiste
+            }
 
-                // Paso 3: Guardar la cita
-                mainRepository.crearCita(nuevaCita) { exitoso ->
-                    if (exitoso) {
-                        // ESTO ES LO QUE HACE QUE LA PANTALLA REACCIONE
-                        Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
-                    } else {
-                        Toast.makeText(requireContext(), "Error al guardar en la base de datos", Toast.LENGTH_SHORT).show()
+            mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
+                if (choque) {
+                    Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG).show()
+                } else {
+                    val nuevaCita = Cita(
+                        id = "",
+                        idCliente = idRecuperado,
+                        nombre = nombreCliente,
+                        servicio = servicio,
+                        fecha = fecha,
+                        hora = hora
+                    )
+
+                    mainRepository.crearCita(nuevaCita) { exitoso ->
+                        if (exitoso) {
+                            Toast.makeText(requireContext(), "Cita confirmada", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
                     }
                 }
-            } else {
-                Toast.makeText(requireContext(), "Error: El cliente '$nombreCliente' no existe", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun configurarSpinner() {
+        val placeholder = getString(R.string.servicio)
+        val serviciosConHint = mutableListOf<String>(placeholder)
+        serviciosConHint.addAll(duracionServicios.keys)
+
+        val adapter = object : android.widget.ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            serviciosConHint
+        ) {
+            override fun isEnabled(position: Int): Boolean {
+                return position != 0
+            }
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val tv = view as android.widget.TextView
+
+                if (position == 0) {
+                    tv.setTextColor(android.graphics.Color.GRAY)
+                } else {
+                    tv.setTextColor(android.graphics.Color.BLACK)
+                }
+                return view
+            }
+        }
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerServicios?.adapter = adapter
     }
 
     override fun onDestroyView() {

@@ -33,6 +33,7 @@ class CitasAdapter(
             tvEstadoItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
             root.setOnClickListener { onCitaClick(cita) }
         }
+
     }
 
     override fun getItemCount(): Int = listaCitas.size

@@ -38,11 +38,27 @@ class MainRepository {
             }
         })
     }
-
-    fun getDetalleCliente(clienteId: String, onResult: (Cliente?) -> Unit) {
-        getRefClientes().child(clienteId).get().addOnSuccessListener { snapshot ->
-            onResult(snapshot.getValue(Cliente::class.java))
+    fun obtenerDetalleCliente(id: String, callback: (Cliente?) -> Unit) {
+        getRefClientes().child(id).get().addOnSuccessListener { snapshot ->
+            val cliente = snapshot.getValue(Cliente::class.java)
+            callback(cliente)
+        }.addOnFailureListener {
+            callback(null)
         }
+    }
+    fun verificarClienteExiste(nombre: String, callback: (String?) -> Unit) {
+        getRefClientes().orderByChild("nombre").equalTo(nombre)
+            .get().addOnSuccessListener { snapshot ->
+                if (snapshot.exists() && snapshot.childrenCount > 0) {
+                    // El ID es la key del nodo (ej: -Ol5dbV9...)
+                    val id = snapshot.children.first().key
+                    callback(id)
+                } else {
+                    callback(null)
+                }
+            }.addOnFailureListener {
+                callback(null)
+            }
     }
 
     fun insertarCliente(cliente: Cliente) {
@@ -51,13 +67,6 @@ class MainRepository {
             getRefClientes().child(id).setValue(cliente.copy(id = id))
         }
     }
-
-    fun actualizarCliente(cliente: Cliente) {
-        if (cliente.id.isNotEmpty()) {
-            getRefClientes().child(cliente.id).setValue(cliente)
-        }
-    }
-
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()
     }
@@ -90,7 +99,7 @@ class MainRepository {
         val id = dbRef.push().key
 
         if (id != null) {
-            val citaConId = cita.copy(id)
+            val citaConId = cita.copy(id = id)
             dbRef.child(id).setValue(citaConId)
                 .addOnSuccessListener { callback(true) }
                 .addOnFailureListener { callback(false) }
@@ -98,17 +107,48 @@ class MainRepository {
             callback(false)
         }
     }
-    fun verificarClienteExiste(nombreABuscar: String, callback: (Boolean) -> Unit) {
-        val dbRef = getRefClientes()
+    //LÓGICA PARA COMPARAR TODAS LAS HORAS DE LAS CITAS EXISTENTES
+    fun verificarHorasCitas(fecha: String, horaNueva: String, duracionNueva: Int, onResult: (Boolean) -> Unit) {
+        getRefCitas().orderByChild("fecha").equalTo(fecha)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val inicioNueva = horaAMinutos(horaNueva)
+                    val finNueva = inicioNueva + duracionNueva
 
-        dbRef.orderByChild("nombre").equalTo(nombreABuscar).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                callback(snapshot.exists())
-            }
-            override fun onCancelled(error: DatabaseError) {
-                callback(false)
-            }
-        })
+                    var hayChoque = false
+
+                    for (data in snapshot.children) {
+                        val citaExistente = data.getValue(Cita::class.java) ?: continue
+
+                        val duracionExistente = extraerDuracion(citaExistente.servicio)
+                        val inicioExistente = horaAMinutos(citaExistente.hora)
+                        val finExistente = inicioExistente + duracionExistente
+
+                        //LÓGICA PARA COMPARAR LAS HORAS DE LAS CITAS
+                        if (inicioNueva < finExistente && finNueva > inicioExistente) {
+                            hayChoque = true
+                            break
+                        }
+                    }
+                    onResult(hayChoque)
+                }
+                override fun onCancelled(error: DatabaseError) = onResult(true)
+            })
+    }
+
+    //FUNCIONES AUXILIARES
+    private fun horaAMinutos(hora: String): Int {
+        val partes = hora.split(":")
+        return partes[0].toInt() * 60 + partes[1].toInt()
+    }
+
+    private fun extraerDuracion(servicio: String): Int {
+        return when {
+            servicio.contains("60") -> 60
+            servicio.contains("45") -> 45
+            servicio.contains("20") -> 20
+            else -> 30
+        }
     }
 
     // --- LÓGICA DE USUARIOS ---

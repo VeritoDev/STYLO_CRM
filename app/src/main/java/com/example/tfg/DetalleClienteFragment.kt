@@ -11,6 +11,7 @@ import com.example.tfg.repository.MainRepository
 class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     private lateinit var binding: FragmentDetalleClienteBinding
+    private val mainRepository = MainRepository()
     private val repository = MainRepository()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -19,9 +20,9 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         val clienteId = arguments?.getString("clienteId") ?: ""
 
-        if (clienteId.isNotEmpty()) {
-            repository.getDetalleCliente(clienteId) { cliente ->
-                if (cliente != null) {
+        if(clienteId.isNotEmpty()){
+            mainRepository.obtenerDetalleCliente(clienteId){ cliente ->
+                if (cliente != null){
                     rellenarInterfaz(cliente)
                 }
             }
