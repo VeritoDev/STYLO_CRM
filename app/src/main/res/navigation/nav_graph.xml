@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_citasFragment_to_crearCitasFragment"
             app:destination="@id/crearCitasFragment" />
+        <action
+            android:id="@+id/action_citasFragment_to_detalleClienteFragment"
+            app:destination="@id/detalleClienteFragment" />
     </fragment>
     <fragment
         android:id="@+id/formularioClientesFragment"

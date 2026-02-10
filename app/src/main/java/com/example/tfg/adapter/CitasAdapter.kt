@@ -23,7 +23,6 @@ class CitasAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = listaCitas[position]
-
         //VARIABLES DE FIREBASE
         holder.binding.apply {
             val contexto = root.context
@@ -34,9 +33,6 @@ class CitasAdapter(
             tvEstadoItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
             root.setOnClickListener { onCitaClick(cita) }
         }
-
-
-
     }
 
     override fun getItemCount(): Int = listaCitas.size

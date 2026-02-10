@@ -1,13 +1,16 @@
 package com.example.tfg
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.databinding.FragmentCitasBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.CitasAdapter
+import com.google.firebase.firestore.core.ComponentProvider
 
 class CitasFragment : Fragment(R.layout.fragment_citas) {
 
@@ -28,12 +31,22 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
     }
 
     private fun setupRecyclerView() {
+        val orientation = resources.configuration.orientation
+
+        //LÓGICA PARA QUE SALGAN EN DOS COLUMNAS LAS CITAS EN HORIZONTAL SOLO
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+            binding.rvCitas.layoutManager = GridLayoutManager(requireContext(), 2)
+        } else {
+            binding.rvCitas.layoutManager = LinearLayoutManager(requireContext())
+        }
+
         citasAdapter = CitasAdapter(emptyList()) { cita ->
+            val bundel = Bundle().apply {
+                putString("citaId", cita.id)
+            }
+            findNavController().navigate((R.id.action_citasFragment_to_detalleClienteFragment))
         }
-        binding.rvCitas.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = citasAdapter
-        }
+        binding.rvCitas.adapter = citasAdapter
     }
 
     private fun cargarCitas(){

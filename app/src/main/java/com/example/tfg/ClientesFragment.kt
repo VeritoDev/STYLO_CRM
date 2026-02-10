@@ -32,10 +32,11 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation
 
+        //LÓGICA PARA QUE SALGAN EN DOS COLUMNAS LOS CLIENTES EN HORIZONTAL SOLO
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvClientes?.layoutManager = GridLayoutManager(requireContext(), 2)
+            binding.rvClientes.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
-            binding.rvClientes?.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvClientes.layoutManager = LinearLayoutManager(requireContext())
         }
 
         adapter = ClientesAdapter(emptyList()) { cliente ->
@@ -46,7 +47,7 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
 
         }
 
-        binding.rvClientes?.adapter = adapter
+        binding.rvClientes.adapter = adapter
     }
 
     private fun cargarDatosDeFirebase() {
