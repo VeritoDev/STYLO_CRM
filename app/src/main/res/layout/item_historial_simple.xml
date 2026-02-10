@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/toolbar_claro"
+    android:layout_marginBottom="4dp">
+
+    <TextView
+        android:id="@+id/tvFechaHistorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="#777777"
+        android:text="@string/fecha" />
+
+    <TextView
+        android:id="@+id/tvServicioHistorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/toolbar_oscuro"
+        android:text="@string/servicio" />
+</LinearLayout>

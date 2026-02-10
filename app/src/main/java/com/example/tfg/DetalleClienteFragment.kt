@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.adapter.HistorialAdapter
 import com.example.tfg.databinding.FragmentDetalleClienteBinding
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository
@@ -24,6 +26,14 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             mainRepository.obtenerDetalleCliente(clienteId){ cliente ->
                 if (cliente != null){
                     rellenarInterfaz(cliente)
+                }
+                repository.getHistorialCitasCliente(clienteId) { lista ->
+                    if (lista.isNotEmpty()) {
+                        val adapter = HistorialAdapter(lista)
+                        binding.rvHistorialCitas?.layoutManager =
+                            LinearLayoutManager(requireContext())
+                        binding.rvHistorialCitas?.adapter = adapter
+                    }
                 }
             }
         }

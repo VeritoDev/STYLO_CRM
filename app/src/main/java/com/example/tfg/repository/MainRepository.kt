@@ -135,6 +135,20 @@ class MainRepository {
                 override fun onCancelled(error: DatabaseError) = onResult(true)
             })
     }
+    //LÓGICA PARA PONER EL HISTORIAL DEL CLIENTE
+    fun getHistorialCitasCliente(idCliente: String, onResult: (List<Cita>) -> Unit) {
+        getRefCitas().orderByChild("idCliente").equalTo(idCliente)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val historial = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
+                    // Ordenamos por fecha (opcional)
+                    onResult(historial.sortedByDescending { it.fecha })
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    onResult(emptyList())
+                }
+            })
+    }
 
     //FUNCIONES AUXILIARES
     private fun horaAMinutos(hora: String): Int {

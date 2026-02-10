@@ -15,8 +15,7 @@ class ClientesAdapter(
 
     class ClienteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nombre = view.findViewById<TextView>(R.id.tvNombreItem)
-        val servicio = view.findViewById<TextView>(R.id.tvServicioItem)
-        val fecha = view.findViewById<TextView>(R.id.tvFechaItem)
+        val telefono = view.findViewById<TextView>(R.id.tvTelefonoDetalle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
@@ -30,9 +29,7 @@ class ClientesAdapter(
 
         //VARIABLES DE FIREBASE
         holder.nombre.text = contexto.getString(R.string.label_nombre, cliente.nombre)
-        holder.servicio.text = contexto.getString(R.string.label_servicio, cliente.ultimoServicio)
-        holder.fecha.text = contexto.getString(R.string.label_fecha, cliente.ultimaCita)
-
+        holder.telefono.text = contexto.getString(R.string.label_telefono, cliente.telefono)
         holder.itemView.setOnClickListener { onClick(cliente) }
     }
 

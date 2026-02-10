@@ -17,8 +17,7 @@
     <string name="errorLogin">Unknown error</string>
     <string name="cliente">SEARCH CLIENTS</string>
     <string name="label_nombre">CLIENT NAME: %1$s</string>
-    <string name="label_servicio">LAST SERVICE: %1$s</string>
-    <string name="label_fecha">LAST APPOINTMENT: %1$s</string>
+    <string name="label_telefono">TELEPHONE: %1$s</string>
     <string name="cliente_nuevo">NEW CLIENT</string>
     <string name="telefono">TELEPHONE</string>
     <string name="email">EMAIL</string>

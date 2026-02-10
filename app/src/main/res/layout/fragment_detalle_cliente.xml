@@ -149,20 +149,18 @@
                 android:textColor="@color/toolbar_claro"
                 android:layout_marginBottom="10dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistorialCitas"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/toolbar_claro"
+                tools:listitem="@layout/item_historial_simple" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/toolbar_claro"
-                android:padding="15dp"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="02/11/2025 - CORTE DE PELO - 20 EUROS"
-                    android:textStyle="bold"
-                    android:textColor="@color/toolbar_oscuro"
-                    android:textSize="12sp"/>
+                android:orientation="horizontal">
             </LinearLayout>
 
             <LinearLayout
