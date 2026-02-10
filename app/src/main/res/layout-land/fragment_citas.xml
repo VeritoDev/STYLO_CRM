@@ -39,6 +39,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@android:layout/simple_list_item_1" />
 
+    <TextView
+        android:id="@+id/tvSinCitas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:gravity="center"
+        android:text="@string/noCitas"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:textColor="?attr/colorOnSurface"
+        android:alpha="0.6"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cardSearchCita"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddCita"
         android:layout_width="wrap_content"

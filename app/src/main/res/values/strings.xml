@@ -36,8 +36,12 @@
     <string name="nombre_cliente">CLIENT NAME</string>
     <string name="servicio">SERVICE</string>
     <string name="fecha">SELECT DATE</string>
+    <string name="fechaDef">DATE</string>
+    <string name="horaDef">TIME</string>
     <string name="hora">SELECT TIME</string>
     <string name="ultimoDia">LAST APPOINTMENT</string>
     <string name="estado">STATUS</string>
+    <string name="noCitas">There is no scheduled appointments</string>
+    <string name="noClientes">There is no saved clients</string>
 
 </resources>

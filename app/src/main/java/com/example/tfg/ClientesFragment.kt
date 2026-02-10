@@ -51,7 +51,14 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
 
     private fun cargarDatosDeFirebase() {
         mainRepository.getClientes { listaClientes ->
-            adapter.actualizarLista(listaClientes)
+            if (listaClientes.isEmpty()) {
+                binding.tvSinClientes.visibility = View.VISIBLE
+                binding.rvClientes.visibility = View.GONE
+            } else {
+                binding.tvSinClientes.visibility = View.GONE
+                binding.rvClientes.visibility = View.VISIBLE
+                adapter.actualizarLista(listaClientes)
+            }
         }
     }
 }

@@ -87,10 +87,10 @@ class CrearCitasFragment : Fragment() {
         mainRepository.verificarClienteExiste(nombreCliente) { existe ->
             if (existe) {
                 val nuevaCita = Cita(
-                    nombreCliente,
-                    servicio,
-                    fecha,
-                    hora
+                    nombre = nombreCliente,
+                    servicio = servicio,
+                    fecha = fecha,
+                    hora = hora
                 )
 
                 // Paso 3: Guardar la cita
@@ -98,13 +98,12 @@ class CrearCitasFragment : Fragment() {
                     if (exitoso) {
                         // ESTO ES LO QUE HACE QUE LA PANTALLA REACCIONE
                         Toast.makeText(requireContext(), "Cita guardada con éxito", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack() // Vuelve atrás automáticamente
+                        findNavController().popBackStack()
                     } else {
                         Toast.makeText(requireContext(), "Error al guardar en la base de datos", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
-                // Si no hace nada y no sale este mensaje, es que el nombre no coincide exactamente
                 Toast.makeText(requireContext(), "Error: El cliente '$nombreCliente' no existe", Toast.LENGTH_LONG).show()
             }
         }

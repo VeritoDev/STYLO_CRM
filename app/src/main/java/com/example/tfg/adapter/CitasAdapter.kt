@@ -3,6 +3,7 @@ package com.example.tfg.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.tfg.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.databinding.ItemCitasBinding
 import com.example.tfg.model.Cita
@@ -22,14 +23,20 @@ class CitasAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = listaCitas[position]
-        holder.binding.apply {
-            tvNombreItem.text = cita.nombre
-            tvServicioItem.text = cita.servicio
-            tvEstadoItem.text = cita.hora
-            tvFechaItem.text = cita.fecha
 
+        //VARIABLES DE FIREBASE
+        holder.binding.apply {
+            val contexto = root.context
+
+            tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombre}"
+            tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"
+            tvFechaItem.text = "${contexto.getString(R.string.fechaDef)}: ${cita.fecha}"
+            tvEstadoItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
             root.setOnClickListener { onCitaClick(cita) }
         }
+
+
+
     }
 
     override fun getItemCount(): Int = listaCitas.size

@@ -36,9 +36,13 @@
     <string name="nombre_cliente">NOMBRE DEL CLIENTE</string>
     <string name="servicio">SERVICIO</string>
     <string name="fecha">SELECCIONE DÍA</string>
+    <string name="fechaDef">DÍA</string>
+    <string name="horaDef">HORA</string>
     <string name="hora">SELECCIONE HORA</string>
     <string name="ultimoDia">ÚLTIMA CITA</string>
     <string name="estado">ESTADO</string>
+    <string name="noCitas">No hay citas programadas</string>
+    <string name="noClientes">No hay clientes guardados</string>
 
 
 

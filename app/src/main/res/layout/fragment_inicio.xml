@@ -158,8 +158,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDashboard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:minHeight="150dp"

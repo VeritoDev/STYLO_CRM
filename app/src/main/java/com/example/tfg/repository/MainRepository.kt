@@ -63,6 +63,17 @@ class MainRepository {
     }
 
     // --- LÓGICA DE CITAS ---
+    //LÓGICA PARA QUE SE VEA EN LA PANTALLA DE CITAS
+    fun getTodasLasCitas(onResult: (List<Cita>) -> Unit) {
+        getRefCitas().addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
+                onResult(lista)
+            }
+            override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
+        })
+    }
+    //LÓGICA PARA QUE SE VEA EN LA PANTALLA PRINCIPAL
     fun getCitasHoy(onResult: (List<Cita>) -> Unit) {
         getRefCitas().addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -76,11 +87,11 @@ class MainRepository {
     }
     fun crearCita(cita: Cita, callback: (Boolean) -> Unit) {
         val dbRef = getRefCitas()
-        val idCita = dbRef.push().key
+        val id = dbRef.push().key
 
-        if (idCita != null) {
-            val citaConId = cita.copy(id = idCita)
-            dbRef.child(idCita).setValue(citaConId)
+        if (id != null) {
+            val citaConId = cita.copy(id)
+            dbRef.child(id).setValue(citaConId)
                 .addOnSuccessListener { callback(true) }
                 .addOnFailureListener { callback(false) }
         } else {

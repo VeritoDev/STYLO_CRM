@@ -20,6 +20,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         binding = FragmentCitasBinding.bind(view)
 
         setupRecyclerView()
+        cargarCitas()
 
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
@@ -32,6 +33,19 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         binding.rvCitas.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = citasAdapter
+        }
+    }
+
+    private fun cargarCitas(){
+        mainRepository.getTodasLasCitas { listaCitas ->
+            if(listaCitas.isEmpty()) {
+                binding.tvSinCitas?.visibility = View.VISIBLE
+                binding.rvCitas.visibility = View.GONE
+            } else {
+                binding.tvSinCitas?.visibility = View.GONE
+                binding.rvCitas.visibility = View.VISIBLE
+                citasAdapter.actualizarLista(listaCitas)
+            }
         }
     }
 }
