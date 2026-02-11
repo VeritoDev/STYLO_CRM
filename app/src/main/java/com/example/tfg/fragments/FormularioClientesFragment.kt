@@ -62,6 +62,8 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             binding.etNuevoNombre.error = "El nombre es obligatorio"
             return
         }
+        //SE PONE SI O SI LA PRIMERA LETRA DEL NOMBRE EN MAYUSCULA
+        val nombreMayuscula = nombre.lowercase().replaceFirstChar { it.uppercase() }
         if (telefono.length != 9) {
             binding.etNuevoTelefono.error = "El teléfono tiene que tener 9 dígitos"
             return
@@ -74,7 +76,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         //SI EXISTE ESE CLIENTE CON ESE ID, SE MODIFICA
         if (clienteID != null) {
             val datosActualizados = mapOf(
-                "nombre" to nombre,
+                "nombre" to nombreMayuscula,
                 "telefono" to telefono,
                 "email" to email,
                 "notas" to notas
@@ -93,7 +95,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             //SI NO EXISTIA ESE CLIENTE, SE CREA
         } else {
             val nuevoCliente = Cliente(
-                nombre = nombre,
+                nombre = nombreMayuscula,
                 telefono = telefono,
                 email = email,
                 notas = notas

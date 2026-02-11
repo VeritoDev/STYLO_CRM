@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val inicio = textCompleto.indexOf("Regístrate")
         val fin = inicio + "Regístrate".length
 
-        val colorResaltado = ContextCompat.getColor(this, R.color.morado_oscuro_fondo)
+        val colorResaltado = ContextCompat.getColor(this, R.color.marron_oscuro_fondo)
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
                 ds.isUnderlineText = true
-                ds.color = ContextCompat.getColor(this@LoginActivity, R.color.morado_oscuro_fondo)
+                ds.color = ContextCompat.getColor(this@LoginActivity, R.color.marron_oscuro_fondo)
                 ds.isFakeBoldText = true
             }
         }

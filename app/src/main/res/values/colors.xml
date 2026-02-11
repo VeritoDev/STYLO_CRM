@@ -2,18 +2,18 @@
 <resources>
     <color name="white">#FFFFFF</color>
 
-    <color name="morado_claro_fondo">#916B5E</color>
-    <color name="blanco_card">#BE8C6B</color>
-    <color name="morado_boton">#604A33</color>
-    <color name="gris_input">#A4927A</color>
-    <color name="gris_fondo">#8E6C49</color>
+    <color name="marron_claro_fondo">#916B5E</color>
+    <color name="marron_card">#BE8C6B</color>
+    <color name="marron_boton">#604A33</color>
+    <color name="marron_input">#A4927A</color>
+    <color name="marron_fondo">#8E6C49</color>
     <color name="toolbar_claro">#ECDFCD</color>
 
 
-    <color name="morado_oscuro_fondo">#1A1614</color>
+    <color name="marron_oscuro_fondo">#1A1614</color>
     <color name="toolbar_oscuro">#2A2420</color>
-    <color name="gris_oscuro_card">#8E6C49</color>
-    <color name="gris_oscuro_input">#3D352F</color>
+    <color name="marron_oscuro_card">#8E6C49</color>
+    <color name="marron_oscuro_input">#3D352F</color>
     <color name="gris_oscuro_fondo">#120F0D</color>
     <color name="blanco_puro">#ECDFCD</color>
 </resources>

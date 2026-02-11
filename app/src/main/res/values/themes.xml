@@ -3,9 +3,9 @@
     <style name="Theme.TFG" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_gradient_light</item>
         <item name="colorSurface">@color/blanco_puro</item>
-        <item name="colorSurfaceVariant">@color/gris_input</item>
-        <item name="colorSurfaceContainer">@color/gris_fondo</item>
-        <item name="colorPrimary">@color/morado_boton</item>
+        <item name="colorSurfaceVariant">@color/marron_input</item>
+        <item name="colorSurfaceContainer">@color/marron_fondo</item>
+        <item name="colorPrimary">@color/marron_boton</item>
         <item name="colorOnPrimary">@color/toolbar_claro</item>
         <item name="colorOnSurface">#000000</item>
     </style>

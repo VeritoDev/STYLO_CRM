@@ -50,7 +50,9 @@ class MainRepository {
         }
     }
     fun verificarClienteExiste(nombre: String, callback: (String?) -> Unit) {
-        getRefClientes().orderByChild("nombre").equalTo(nombre)
+        //PONERMOS EL NOMBRE EN MINUSCULAS
+        val nombreEnMinusculas = nombre.lowercase().trim()
+        getRefClientes().orderByChild("nombre").equalTo(nombreEnMinusculas)
             .get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists() && snapshot.childrenCount > 0) {
                     //SI EL IS ES LA KEY DEL NODO (ej: -Ol5dbV9...)
@@ -67,20 +69,29 @@ class MainRepository {
     fun insertarCliente(cliente: Cliente) {
         val key = getRefClientes().push().key
         key?.let { id ->
-            getRefClientes().child(id).setValue(cliente.copy(id = id))
+            //CONVERTIMOS EL NOMBRE EN MINÚSUCULAS ANTES DE GUARDAR
+            val clienteNormalizado = cliente.copy(
+                id = id,
+                nombre = cliente.nombre.lowercase().trim()
+            )
+            getRefClientes().child(id).setValue(clienteNormalizado)
         }
     }
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()
     }
     fun actualizarCliente(id: String, datos: Map<String, Any>, callback: (Boolean) -> Unit) {
-        getRefClientes().child(id).updateChildren(datos)
-            .addOnSuccessListener {
-                callback(true)
-            }
-            .addOnFailureListener {
-                callback(false)
-            }
+        //CREAMOS UNA COPIA MUTABLE DE LOS DATOS PARA MODIFICAR EL NOMBRE SI EXISTE
+        val datosNormalizados = datos.toMutableMap()
+
+        if (datosNormalizados.containsKey("nombre")) {
+            val nombre = datosNormalizados["nombre"].toString()
+            datosNormalizados["nombre"] = nombre.lowercase().trim()
+        }
+
+        getRefClientes().child(id).updateChildren(datosNormalizados)
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
     }
 
     // --- LÓGICA DE CITAS ---

@@ -16,7 +16,7 @@
     <string name="errorLoginCamposVacios">Por favor, rellena todos los campos</string>
     <string name="errorLogin">Error Desconocido</string>
     <string name="cliente">BUSCAR CLIENTES</string>
-    <string name="label_nombre">NOMBRE CLIENTE: %1$s</string>
+    <string name="label_nombre">NOMBRE: %1$s</string>
     <string name="label_telefono">TELÉFONO: %1$s</string>
     <string name="cliente_nuevo">NUEVO CLIENTE</string>
     <string name="telefono">TELÉFONO</string>

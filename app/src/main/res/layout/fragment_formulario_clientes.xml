@@ -20,7 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gris_oscuro_card"
+                android:background="@color/marron_oscuro_card"
                 android:orientation="vertical"
                 android:padding="24dp">
 
