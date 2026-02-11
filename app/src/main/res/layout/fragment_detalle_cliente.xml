@@ -157,6 +157,18 @@
                 android:background="@color/toolbar_claro"
                 tools:listitem="@layout/item_historial_simple" />
 
+            <TextView
+                android:id="@+id/tvSinCitas"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/toolbar_claro"
+                android:gravity="center"
+                android:text="@string/noCitas"
+                android:textColor="@color/toolbar_oscuro"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -166,29 +178,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btnEditar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/editar"
-                    android:backgroundTint="@color/toolbar_claro"
-                    android:textColor="@color/toolbar_oscuro"
-                    app:icon="@drawable/ic_edit"
-                    app:iconTint="@color/toolbar_oscuro"/>
-                <Button
-                    android:id="@+id/btnAñadirCita"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/añadirCita"
-                    android:backgroundTint="@color/toolbar_claro"
-                    android:textColor="@color/toolbar_oscuro"
-                    app:icon="@drawable/ic_calendar"
-                    app:iconTint="@color/toolbar_oscuro"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:weightSum="2">
+                <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:text="@string/editar"
+                android:backgroundTint="@color/toolbar_claro"
+                android:textColor="@color/toolbar_oscuro"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_edit"
+                app:iconTint="@color/toolbar_oscuro"
+                app:iconGravity="textStart" />
+                <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAñadirCita"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:text="@string/añadirCita"
+                android:backgroundTint="@color/toolbar_claro"
+                android:textColor="@color/toolbar_oscuro"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_calendar"
+                app:iconTint="@color/toolbar_oscuro"
+                app:iconGravity="textStart" />
+
             </LinearLayout>
 
         </LinearLayout>

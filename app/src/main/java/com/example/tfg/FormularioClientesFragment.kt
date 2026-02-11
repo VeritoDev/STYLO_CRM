@@ -22,30 +22,32 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             findNavController().navigateUp()
         }
         binding.btnGuardarCliente.setOnClickListener {
-            guardarNuevoCliente()
-        }
-    }
+            val nombre = binding.etNuevoNombre.text.toString()
+            val telefono = binding.etNuevoTelefono.text.toString()
+            val email = binding.etNuevoEmail.text.toString()
+            val notas = binding.etNuevoNotas.text.toString()
 
-    private fun guardarNuevoCliente() {
-        val nombre = binding.etNuevoNombre.text.toString()
-        val telefono = binding.etNuevoTelefono.text.toString()
-        val email = binding.etNuevoEmail?.text.toString()
-        val notas = binding.etNuevoNotas.text.toString()
-
-        if (nombre.isNotEmpty()) {
-            val nuevoCliente = Cliente(nombre = nombre, telefono = telefono, email = email, notas = notas)
-
-            android.util.Log.d("FIREBASE_TEST", "Intentando guardar cliente...")
+            if (nombre.isEmpty()) {
+                binding.etNuevoNombre.error = "El nombre es obligatorio"
+                return@setOnClickListener
+            }
+            if (telefono.length != 9){
+                binding.etNuevoTelefono.error = "El teléfono tiene que tener 9 dígitos"
+                return@setOnClickListener
+            }
+            if (!email.contains("@") || !email.contains(".")){
+                binding.etNuevoEmail.error = "El email tiene que ser válido"
+                return@setOnClickListener
+            }
+             val nuevoCliente = Cliente (
+                 nombre = nombre,
+                 telefono = telefono,
+                 email = email,
+                 notas = notas
+             )
             mainRepository.insertarCliente(nuevoCliente)
-            android.util.Log.d("FIREBASE_TEST", "Función ejecutada")
-
+            Toast.makeText(requireContext(), "Cliente guardado correctamente", Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "@string/toast_campos_vacios",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 }

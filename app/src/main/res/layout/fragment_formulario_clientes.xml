@@ -75,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/telefono"
                         android:inputType="phone"
+                        android:maxLength="9"
                         android:textColor="@color/toolbar_claro" />
                 </com.google.android.material.textfield.TextInputLayout>
 

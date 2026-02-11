@@ -22,13 +22,19 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         val clienteId = arguments?.getString("clienteId") ?: ""
 
-        if(clienteId.isNotEmpty()){
-            repository.obtenerDetalleCliente(clienteId){ cliente ->
-                if (cliente != null){
+        if (clienteId.isNotEmpty()) {
+            repository.obtenerDetalleCliente(clienteId) { cliente ->
+                if (cliente != null) {
                     rellenarInterfaz(cliente)
                 }
                 repository.getHistorialCitasCliente(clienteId) { lista ->
-                    if (lista.isNotEmpty()) {
+                    if (lista.isEmpty()) {
+                        binding.rvHistorialCitas?.visibility = View.GONE
+                        binding.tvSinCitas?.visibility = View.VISIBLE
+                    } else {
+                        binding.rvHistorialCitas?.visibility = View.VISIBLE
+                        binding.tvSinCitas?.visibility = View.GONE
+
                         val adapter = HistorialAdapter(lista)
                         binding.rvHistorialCitas?.layoutManager =
                             LinearLayoutManager(requireContext())
@@ -48,8 +54,23 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         binding.btnEliminar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
-                repository.eliminarCliente(clienteId)
-                findNavController().navigateUp()
+                val builder = android.app.AlertDialog.Builder(requireContext())
+                builder.setTitle("¿Eliminar cliente?")
+                builder.setMessage("Esta acción no se puede deshacer. ¿Estás seguro de que quieres borrar a este cliente?")
+
+                builder.setPositiveButton("Eliminar") { _, _ ->
+                    repository.eliminarCliente(clienteId)
+                    android.widget.Toast.makeText(requireContext(), "Cliente eliminado", android.widget.Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                }
+
+                builder.setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(android.graphics.Color.RED)
             }
         }
     }
