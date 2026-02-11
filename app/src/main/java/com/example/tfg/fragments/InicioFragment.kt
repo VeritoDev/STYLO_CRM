@@ -41,6 +41,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         }
     }
 
+    //LÓGICA PARA QUE SALGAN TODAS LAS CITAS QUE TIENE EL USUARIO EN EL RV DEL INICIO
     private fun setupRecyclerView() {
         citasAdapter = CitasAdapter(
             listaCitas = emptyList(),
@@ -59,6 +60,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         }
     }
 
+    //SI HAY DATOS LOS ENSEÑA, SI NO MUESTRA UN MENSAJE
     private fun cargarDatos() {
         mainRepository.getCitasHoy { listaCitas ->
             if (listaCitas.isEmpty()) {

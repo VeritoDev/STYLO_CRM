@@ -27,32 +27,34 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         setupRecyclerView()
         cargarCitas()
 
+        //BOTÓN DE AÑADIR CITAS
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
 
+        //SEARCHVIEW DE CITAS
         binding.etBuscarCita.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
-                if (::citasAdapter.isInitialized) {
                     val resultados = citasAdapter.filtrar(query)
 
+                    //SI NO HAY RESULTADOS Y EL QUERY NO ESTÁ VACÍO
                     if (resultados == 0 && query.isNotEmpty()) {
                         binding.tvSinCitas.text = getString(R.string.sin_resultados_busqueda_citas, query)
                         binding.tvSinCitas.visibility = View.VISIBLE
                         binding.rvCitas.visibility = View.GONE
+                    //SI NO HAY RESULTADOS Y EL QUERY ESTÁ VACÍO
                     } else if (resultados == 0 && query.isEmpty()) {
                         binding.tvSinCitas.text = getString(R.string.noClientes)
                         binding.tvSinCitas.visibility = View.VISIBLE
                         binding.rvCitas.visibility = View.GONE
                     } else {
-                        // Hay resultados, ocultamos el aviso
+                        //SI HAY RESULTADOS, OCULTAMOS EL AVISO
                         binding.tvSinCitas.visibility = View.GONE
                         binding.rvCitas.visibility = View.VISIBLE
                     }
-                }
             }
         })
     }
@@ -82,10 +84,10 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
     private fun cargarCitas(){
         mainRepository.getTodasLasCitas { listaCitas ->
             if(listaCitas.isEmpty()) {
-                binding.tvSinCitas?.visibility = View.VISIBLE
+                binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvCitas.visibility = View.GONE
             } else {
-                binding.tvSinCitas?.visibility = View.GONE
+                binding.tvSinCitas.visibility = View.GONE
                 binding.rvCitas.visibility = View.VISIBLE
                 citasAdapter.actualizarLista(listaCitas)
             }

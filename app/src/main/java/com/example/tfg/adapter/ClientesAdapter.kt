@@ -37,7 +37,7 @@ class ClientesAdapter(
 
     override fun getItemCount(): Int = listaFiltrada.size
 
-
+    //MÉTODO IGUAL QUE EL DE CITAS
     @SuppressLint("NotifyDataSetChanged")
     fun filtrar(texto: String): Int{
         val bus = texto.lowercase().trim()

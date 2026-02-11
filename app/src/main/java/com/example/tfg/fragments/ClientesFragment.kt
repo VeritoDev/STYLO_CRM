@@ -27,9 +27,12 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
         setupRecyclerView()
         cargarDatosDeFirebase()
 
+        //BOTÓN AÑADIR CLIENTE
         binding.fabAddCliente.setOnClickListener {
             findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment)
         }
+
+        //SEARCHBAR DE BUSQUEDA DE USUARIOS
         binding.etBuscarCliente.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
@@ -38,16 +41,18 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
                 if (::adapter.isInitialized) {
                     val resultados = adapter.filtrar(query)
 
+                    //SI NO EXISTE ESE USUARIO Y EL QUERY TIENE DATOS
                     if (resultados == 0 && query.isNotEmpty()) {
                         binding.tvSinClientes.text = getString(R.string.sin_resultados_busqueda, query)
                         binding.tvSinClientes.visibility = View.VISIBLE
                         binding.rvClientes.visibility = View.GONE
+                    //SI NO EXISTE ESE USUARIO Y EL QUERY NO TIENE DATOS
                     } else if (resultados == 0 && query.isEmpty()) {
                         binding.tvSinClientes.text = getString(R.string.noClientes)
                         binding.tvSinClientes.visibility = View.VISIBLE
                         binding.rvClientes.visibility = View.GONE
                     } else {
-                        // Hay resultados, ocultamos el aviso
+                        //SI HAY RESULTADOS, OCULTAMOS EL AVISO
                         binding.tvSinClientes.visibility = View.GONE
                         binding.rvClientes.visibility = View.VISIBLE
                     }

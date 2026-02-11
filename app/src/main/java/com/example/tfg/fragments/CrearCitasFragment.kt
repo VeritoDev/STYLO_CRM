@@ -50,14 +50,17 @@ class CrearCitasFragment : Fragment() {
     @SuppressLint("DefaultLocale")
     private fun setupListeners(){
 
+        //BOTÓN VOLVER HACIA ATRÁS
         binding.btnBackCita.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        //BOTÓN GUARDAR CITA
         binding.btnGuardarCita.setOnClickListener {
             validarYGuardarCita()
         }
 
+        //BOTÓN CON CALENDARIO PARA ELEGIR EL DÍA
         binding.etCitaFecha.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -75,15 +78,31 @@ class CrearCitasFragment : Fragment() {
             picker.show()
         }
 
+        //BOTÓN CON RELOJ PARA ELEGIR LA HORA
         binding.etCitaHora.setOnClickListener {
             val calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = calendar.get(Calendar.MINUTE)
 
-            TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
-                val time = String.format("%02d:%02d", selectedHour, selectedMinute)
-                binding.etCitaHora.setText(time)
-            }, hour, minute, true).show()
+            val timePicker = TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
+
+                //COMPROBAMOS SI LA HORA ESTÁ ENTRE LAS 9 Y LAS 20 (SE PUEDE MODIFICAR A LA HORA DE APERTURA Y CIERRE DEL ESTABLECIMIENTO)
+                if (selectedHour in 9..20) {
+                    //SI ES LA HORA 20, NOS ASEGURAMOS DE QUE SEAN EXACTAMENTE LAS 20:00
+                    if (selectedHour == 20 && selectedMinute > 0) {
+                        Toast.makeText(requireContext(), "El horario es hasta las 20:00", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val time = String.format("%02d:%02d", selectedHour, selectedMinute)
+                        binding.etCitaHora.setText(time)
+                    }
+                } else {
+                    //SI ESTÁ FUERA DE RANGO, AVISAMOS AL USUARIO
+                    Toast.makeText(requireContext(), "Por favor, elige una hora entre las 09:00 y las 20:00", Toast.LENGTH_LONG).show()
+                }
+
+            }, currentHour, currentMinute, true)
+
+            timePicker.show()
         }
     }
 
@@ -92,6 +111,9 @@ class CrearCitasFragment : Fragment() {
         val servicio = binding.spinnerServicios?.selectedItem.toString().trim()
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
+
+        //VALIDACIÓN DE DATOS
+
         if (binding.spinnerServicios?.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "Por favor, selecciona un servicio", Toast.LENGTH_SHORT).show()
             return
@@ -109,10 +131,13 @@ class CrearCitasFragment : Fragment() {
                 return@verificarClienteExiste
             }
 
+            //VALIDACIÓN DE TIEMPO
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
                 if (choque) {
+                    //SI EL PELUQUERO ESTÁ OCUPADO ENTRE LA FRANJA PROPUESTA, SE NOTIFICA AL USUARIO
                     Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG).show()
                 } else {
+                    //SI NO, SE CREA UNA NUEVA CITA
                     val nuevaCita = Cita(
                         id = "",
                         idCliente = idRecuperado,

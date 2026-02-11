@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener
 
 class MainRepository {
 
+    // -- REFERENCIAS A LA BASE DE DATOS --
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().reference
 
@@ -26,8 +27,10 @@ class MainRepository {
     // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
+            //DATASNAPSHOT ES UNA "FOTO" DE COMO ESTÁ LA BASE DE DATOS EN ESE MOMENTO
             override fun onDataChange(snapshot: DataSnapshot) {
                 val listaClientes = snapshot.children.mapNotNull { datos ->
+                    //CONVERTIMOS LA FOTO EN UN OBJETO CLIENTE
                     val cliente = datos.getValue(Cliente::class.java)
                     cliente?.copy(id = datos.key ?: "")
                 }
@@ -50,7 +53,7 @@ class MainRepository {
         getRefClientes().orderByChild("nombre").equalTo(nombre)
             .get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists() && snapshot.childrenCount > 0) {
-                    // El ID es la key del nodo (ej: -Ol5dbV9...)
+                    //SI EL IS ES LA KEY DEL NODO (ej: -Ol5dbV9...)
                     val id = snapshot.children.first().key
                     callback(id)
                 } else {
@@ -150,8 +153,8 @@ class MainRepository {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val historial = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
-                    // Ordenamos por fecha (opcional)
-                    onResult(historial.sortedByDescending { it.fecha })
+                    //ORDENAMOS POR HORA
+                    onResult(historial.sortedByDescending { it.hora })
                 }
                 override fun onCancelled(error: DatabaseError) {
                     onResult(emptyList())

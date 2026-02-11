@@ -14,21 +14,18 @@ class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
             binding = ActivityRegistroBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
+            //BOTÓN IR HACIA ARTÁS
             binding.btnBack.setOnClickListener {
                 finish()
             }
 
+            //BOTÓN PARA GUARDAR EL USUARIO
             binding.btnGuardarUsuario.setOnClickListener {
                 registrarUsuario()
             }
-
-        } catch (e: Exception) {
-            android.util.Log.e("REGISTRO_ERROR", "Error al inflar la vista: ${e.message}")
-        }
     }
 
     private fun registrarUsuario() {
@@ -46,8 +43,10 @@ class RegistroActivity : AppCompatActivity() {
             return
         }
 
+        //CREAMOS EL USUARIO EN FIREBASE
         auth.createUserWithEmailAndPassword(correo, pass)
             .addOnCompleteListener { task ->
+                //SI SE HA COMPLETADO BIEN LOS CAMPOS, SE GUARDA EN LA BASE DE DATOS
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Bienvenido/a $nombre", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
@@ -55,6 +54,7 @@ class RegistroActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
+                    //SI NO, SALE UN TOAST CON QUE ERROR HA OCURRIDO
                     Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }

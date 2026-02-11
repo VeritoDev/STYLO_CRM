@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
         textView.text = spannable
         textView.movementMethod = LinkMovementMethod.getInstance()
 
-
+        //LÓGICA DE LOGIN
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val pass = binding.etPassword.text.toString().trim()

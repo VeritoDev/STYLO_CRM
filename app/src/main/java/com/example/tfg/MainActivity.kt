@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //CREAMOS PREFERENCIAS PARA QUE CUANDO SE VUELVA A INFLAR LA APP, SE GUARDE DICHA INFORMACIÓN
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
         val lang = prefs.getString("idioma_key", "es") ?: "es"
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
 
+        //INFLAMOS LA VISTA
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,11 +40,14 @@ class MainActivity : AppCompatActivity() {
 
         actualizarIconoTema()
 
+        //BOTÓN PARA CAMBIAR EL TEMA (DARK MODE - LIGHT MODE)
         binding.btnThemeToolbar.setOnClickListener {
+            //ANIMACIÓN DEL ICONO AL PULSARLO
             binding.btnThemeToolbar.animate()
                 .rotationBy(360f)
                 .setDuration(400)
                 .withEndAction {
+                    //LÓGICA DE CAMBIAR A MODO CLARO O MODO OSCURO
                     val modoActual = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
 
                     if (modoActual == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
@@ -56,20 +61,24 @@ class MainActivity : AppCompatActivity() {
         //CONECTAMOS EL BOTTOMNAVIGATION CON EL NAVCONTROLLER
         binding.bottomNavigation.setupWithNavController(navController)
 
+        //BOTÓN DE PERFIL CON UN MENÚ
         binding.btnLoginToolbar.setOnClickListener { view ->
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_usuario, popup.menu)
 
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
+                    //CAMBIAR CONTRASEÑA DEL USUARIO (ENVÍA UN CORREO AL USUARIO, YA QUE FIREBASE NO SE PUEDE CAMBIAR LA CONTRASEÑA)
                     R.id.menu_cambiar_pass -> {
                         abrirDialogoRecuperar()
                         true
                     }
+                    //SALIR DE LA SESIÓN INICIADA
                     R.id.menu_logout -> {
                         cerrarSesion()
                         true
                     }
+                    //POPUP DE CAMBIAR EL IDIOMA DE LA APLICACIÓN
                     R.id.menu_cambiar_idioma -> {
                         mostrarDialogoIdiomas()
                         true

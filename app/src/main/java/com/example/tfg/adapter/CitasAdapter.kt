@@ -42,9 +42,11 @@ class CitasAdapter(
     fun filtrar(texto: String): Int {
         val bus = texto.lowercase().trim()
 
+        //SI EL BUSCADOR ESTÁ VACÍO, ENSEÑA TODA LA LISTA
         listaFiltrada = if (bus.isEmpty()) {
             listaCitas.toMutableList()
         } else {
+        //SI NO, FILTRA LA LISTA CON LO QUE SE HA ESCRITO EN EL BUSCADOR
             listaCitas.filter {
                 it.nombre.lowercase().contains(bus) || it.servicio.lowercase().contains(bus)
             }.toMutableList()
@@ -53,11 +55,10 @@ class CitasAdapter(
         return listaFiltrada.size
     }
 
-    // Función para recibir datos de Firebase
+    //FUNCIÓN PARA RECIBIR LOS DATOS DE FIREBASE
     @SuppressLint("NotifyDataSetChanged")
     fun actualizarLista(nuevaLista: List<Cita>) {
         listaCitas = nuevaLista
-        // ¡ESTO ES LO QUE FALTABA!: Si no actualizas la filtrada, no se ve nada al inicio
         listaFiltrada = nuevaLista.toMutableList()
         notifyDataSetChanged()
     }
