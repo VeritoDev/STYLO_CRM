@@ -70,6 +70,15 @@ class MainRepository {
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()
     }
+    fun actualizarCliente(id: String, datos: Map<String, Any>, callback: (Boolean) -> Unit) {
+        getRefClientes().child(id).updateChildren(datos)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
 
     // --- LÓGICA DE CITAS ---
     //LÓGICA PARA QUE SE VEA EN LA PANTALLA DE CITAS

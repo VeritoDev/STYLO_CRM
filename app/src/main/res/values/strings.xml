@@ -42,5 +42,8 @@
     <string name="estado">STATUS</string>
     <string name="noCitas">There is no scheduled appointments</string>
     <string name="noClientes">There is no saved clients</string>
+    <string name="editarCliente">EDIT CLIENT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

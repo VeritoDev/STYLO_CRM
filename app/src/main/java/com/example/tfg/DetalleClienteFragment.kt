@@ -49,7 +49,16 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
         }
 
         binding.btnEditar.setOnClickListener {
-            //LÓGICA PARA EDITAR EL CLIENTE
+            if (clienteId.isNotEmpty()) {
+                val bundle = Bundle().apply {
+                    putString("clienteId", clienteId)
+                    putString("nombre", binding.tvNombreDetalle.text.toString().replace("NOMBRE CLIENTE: ", ""))
+                    putString("telefono", binding.tvTelefonoDetalle.text.toString().replace("TELÉFONO: ", ""))
+                    putString("email", binding.tvEmailDetalle.text.toString().replace("EMAIL: ", ""))
+                    putString("notas", binding.tvNotasDetalle.text.toString().replace("NOTAS: ", ""))
+                }
+                findNavController().navigate(R.id.action_detalleClienteFragment_to_formularioClientesFragment2, bundle)
+            }
         }
 
         binding.btnEliminar.setOnClickListener {
@@ -72,6 +81,9 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
                 dialog.show()
                 dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(android.graphics.Color.RED)
             }
+        }
+        binding.btnAAdirCita.setOnClickListener {
+
         }
     }
 

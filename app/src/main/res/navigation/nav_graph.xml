@@ -54,7 +54,14 @@
         android:id="@+id/detalleClienteFragment"
         android:name="com.example.tfg.DetalleClienteFragment"
         android:label="fragment_detalle_cliente"
-        tools:layout="@layout/fragment_detalle_cliente" />
+        tools:layout="@layout/fragment_detalle_cliente" >
+        <action
+            android:id="@+id/action_detalleClienteFragment_to_crearCitasFragment"
+            app:destination="@id/crearCitasFragment" />
+        <action
+            android:id="@+id/action_detalleClienteFragment_to_formularioClientesFragment2"
+            app:destination="@id/formularioClientesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/crearCitasFragment"
         android:name="com.example.tfg.CrearCitasFragment"

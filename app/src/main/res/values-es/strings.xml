@@ -42,6 +42,7 @@
     <string name="estado">ESTADO</string>
     <string name="noCitas">No hay citas programadas</string>
     <string name="noClientes">No hay clientes guardados</string>
+    <string name="editarCliente">EDITAR CLIENTE</string>
 
 
 

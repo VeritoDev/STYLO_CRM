@@ -36,6 +36,7 @@
                         android:src="@drawable/ic_back"
                         app:tint="@color/toolbar_claro" />
                     <TextView
+                        android:id="@+id/tvTituloFormulario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
