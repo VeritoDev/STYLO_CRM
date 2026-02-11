@@ -67,4 +67,9 @@
         android:name="com.example.tfg.CrearCitasFragment"
         android:label="fragment_crear_citas"
         tools:layout="@layout/fragment_crear_citas" />
+    <fragment
+        android:id="@+id/recuperarPassFragment"
+        android:name="com.example.tfg.RecuperarPassFragment"
+        android:label="fragment_recuperar_pass"
+        tools:layout="@layout/fragment_recuperar_pass" />
 </navigation>

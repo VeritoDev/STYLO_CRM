@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         val inicio = textCompleto.indexOf("Regístrate")
         val fin = inicio + "Regístrate".length
 
-        val colorResaltado = ContextCompat.getColor(this, R.color.blanco_puro)
+        val colorResaltado = ContextCompat.getColor(this, R.color.morado_oscuro_fondo)
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -52,8 +52,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         spannable.setSpan(clickableSpan, inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        textView?.text = spannable
-        textView?.movementMethod = LinkMovementMethod.getInstance()
+        textView.text = spannable
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
 
         binding.btnLogin.setOnClickListener {
@@ -63,6 +63,28 @@ class LoginActivity : AppCompatActivity() {
             //LLAMAMOS A LA LÓGICA DEL VIEWMODEL
             viewModel.entrar(email, pass)
         }
+
+        // LÓGICA DE RECUPERAR CONTRASEÑA
+        val tvOlvide = binding.tvOlvidePass
+        val textoOlvide = "¿Has olvidado tu contraseña?"
+        val spannableOlvide = SpannableString(textoOlvide)
+
+        val clickableOlvide = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val dialogo = RecuperarPassFragment()
+                dialogo.show(supportFragmentManager, "Recuperar")
+            }
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = true
+                ds.color = ContextCompat.getColor(this@LoginActivity, R.color.morado_oscuro_fondo)
+                ds.isFakeBoldText = true
+            }
+        }
+
+        spannableOlvide.setSpan(clickableOlvide, 0, textoOlvide.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        tvOlvide.text = spannableOlvide
+        tvOlvide.movementMethod = LinkMovementMethod.getInstance()
 
     }
 

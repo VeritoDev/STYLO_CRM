@@ -29,7 +29,7 @@ class CitasAdapter(
 
             tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombre}"
             tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"
-            tvEstadoItem.text = "${contexto.getString(R.string.fechaDef)}: ${cita.fecha}"
+            tvEstadoItem?.text = "${contexto.getString(R.string.fechaDef)}: ${cita.fecha}"
             tvFechaItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
             root.setOnClickListener { onCitaClick(cita) }
         }

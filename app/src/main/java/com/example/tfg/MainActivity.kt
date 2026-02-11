@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_cambiar_pass -> {
-                        abrirDialogoCambiarPassword()
+                        abrirDialogoRecuperar()
                         true
                     }
                     R.id.menu_logout -> {
@@ -74,8 +74,9 @@ class MainActivity : AppCompatActivity() {
             popup.show()
         }
     }
-    private fun abrirDialogoCambiarPassword() {
-        Toast.makeText(this, "Función para cambiar contraseña", Toast.LENGTH_SHORT).show()
+    private fun abrirDialogoRecuperar() {
+        val dialogo = RecuperarPassFragment()
+        dialogo.show(supportFragmentManager, "Recuperar")
     }
 
     private fun cerrarSesion() {
