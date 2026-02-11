@@ -83,7 +83,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             }
         }
         binding.btnAAdirCita.setOnClickListener {
-
+            findNavController().navigate(R.id.action_detalleClienteFragment_to_crearCitasFragment)
         }
     }
 

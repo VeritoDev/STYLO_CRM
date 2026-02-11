@@ -43,6 +43,8 @@
     <string name="noCitas">No hay citas programadas</string>
     <string name="noClientes">No hay clientes guardados</string>
     <string name="editarCliente">EDITAR CLIENTE</string>
+    <string name="cambiar_password">Cambiar Contraseña</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
 
 
 
