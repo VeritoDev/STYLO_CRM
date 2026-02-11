@@ -24,10 +24,35 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
         setupRecyclerView()
         cargarDatosDeFirebase()
 
-        binding.fabAddCliente?.setOnClickListener {
+        binding.fabAddCliente.setOnClickListener {
             findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment)
         }
+        binding.etBuscarCliente.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                if (::adapter.isInitialized) {
+                    val resultados = adapter.filtrar(query)
+
+                    if (resultados == 0 && query.isNotEmpty()) {
+                        binding.tvSinClientes.text = getString(R.string.sin_resultados_busqueda, query)
+                        binding.tvSinClientes.visibility = View.VISIBLE
+                        binding.rvClientes.visibility = View.GONE
+                    } else if (resultados == 0 && query.isEmpty()) {
+                        binding.tvSinClientes.text = getString(R.string.noClientes)
+                        binding.tvSinClientes.visibility = View.VISIBLE
+                        binding.rvClientes.visibility = View.GONE
+                    } else {
+                        // Hay resultados, ocultamos el aviso
+                        binding.tvSinClientes.visibility = View.GONE
+                        binding.rvClientes.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
     }
+
 
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation

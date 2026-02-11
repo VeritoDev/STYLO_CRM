@@ -41,10 +41,17 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     }
 
     private fun setupRecyclerView() {
-        citasAdapter = CitasAdapter(emptyList()) { cita ->
+        citasAdapter = CitasAdapter(
+            listaCitas = emptyList(),
+            onCitaClick = { cita ->
+                val bundle = Bundle().apply {
+                    putString("clienteId", cita.idCliente)
+                }
+                findNavController().navigate(R.id.action_inicioFragment_to_formularioClientesFragment, bundle)
+            }
+        )
 
-        }
-        binding.rvDashboard.apply{
+        binding.rvDashboard.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = citasAdapter
             setHasFixedSize(true)

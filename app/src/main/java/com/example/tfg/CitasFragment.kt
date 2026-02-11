@@ -2,6 +2,7 @@ package com.example.tfg
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,31 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
+
+        binding.etBuscarCita.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                if (::citasAdapter.isInitialized) {
+                    val resultados = citasAdapter.filtrar(query)
+
+                    if (resultados == 0 && query.isNotEmpty()) {
+                        binding.tvSinCitas.text = getString(R.string.sin_resultados_busqueda_citas, query)
+                        binding.tvSinCitas.visibility = View.VISIBLE
+                        binding.rvCitas.visibility = View.GONE
+                    } else if (resultados == 0 && query.isEmpty()) {
+                        binding.tvSinCitas.text = getString(R.string.noClientes)
+                        binding.tvSinCitas.visibility = View.VISIBLE
+                        binding.rvCitas.visibility = View.GONE
+                    } else {
+                        // Hay resultados, ocultamos el aviso
+                        binding.tvSinCitas.visibility = View.GONE
+                        binding.rvCitas.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -40,12 +66,15 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             binding.rvCitas.layoutManager = LinearLayoutManager(requireContext())
         }
 
-        citasAdapter = CitasAdapter(emptyList()) { cita ->
-            val bundle = Bundle().apply {
-                putString("clienteId", cita.idCliente)
+        citasAdapter = CitasAdapter(
+            listaCitas = emptyList(),
+            onCitaClick = { cita ->
+                val bundle = Bundle().apply {
+                    putString("clienteId", cita.idCliente)
+                }
+                findNavController().navigate(R.id.action_citasFragment_to_detalleClienteFragment, bundle)
             }
-            findNavController().navigate((R.id.action_citasFragment_to_detalleClienteFragment), bundle)
-        }
+        )
         binding.rvCitas.adapter = citasAdapter
     }
 

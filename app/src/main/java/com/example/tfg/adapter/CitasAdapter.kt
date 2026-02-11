@@ -13,6 +13,8 @@ class CitasAdapter(
     private val onCitaClick: (Cita) -> Unit
 ) : RecyclerView.Adapter<CitasAdapter.CitaViewHolder>() {
 
+    private var listaFiltrada: MutableList<Cita> = listaCitas.toMutableList()
+
     class CitaViewHolder(val binding: ItemCitasBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitaViewHolder {
@@ -22,24 +24,41 @@ class CitasAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
-        val cita = listaCitas[position]
-        //VARIABLES DE FIREBASE
+        val cita = listaFiltrada[position]
+
         holder.binding.apply {
             val contexto = root.context
-
             tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombre}"
             tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"
             tvFechaItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
+
             root.setOnClickListener { onCitaClick(cita) }
         }
-
     }
 
-    override fun getItemCount(): Int = listaCitas.size
+    override fun getItemCount(): Int = listaFiltrada.size
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun filtrar(texto: String): Int {
+        val bus = texto.lowercase().trim()
+
+        listaFiltrada = if (bus.isEmpty()) {
+            listaCitas.toMutableList()
+        } else {
+            listaCitas.filter {
+                it.nombre.lowercase().contains(bus) || it.servicio.lowercase().contains(bus)
+            }.toMutableList()
+        }
+        notifyDataSetChanged()
+        return listaFiltrada.size
+    }
+
+    // Función para recibir datos de Firebase
     @SuppressLint("NotifyDataSetChanged")
     fun actualizarLista(nuevaLista: List<Cita>) {
         listaCitas = nuevaLista
+        // ¡ESTO ES LO QUE FALTABA!: Si no actualizas la filtrada, no se ve nada al inicio
+        listaFiltrada = nuevaLista.toMutableList()
         notifyDataSetChanged()
     }
 }
