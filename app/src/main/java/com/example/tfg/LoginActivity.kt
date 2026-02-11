@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.tfg.fragments.RecuperarPassFragment
 import com.example.tfg.databinding.LoginBinding
 import com.example.tfg.viewModel.LoginViewModel
 

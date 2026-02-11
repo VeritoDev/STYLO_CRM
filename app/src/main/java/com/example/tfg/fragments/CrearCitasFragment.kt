@@ -1,15 +1,19 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.tfg.R
 import com.example.tfg.databinding.FragmentCrearCitasBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.MainRepository
@@ -134,7 +138,7 @@ class CrearCitasFragment : Fragment() {
         val serviciosConHint = mutableListOf<String>(placeholder)
         serviciosConHint.addAll(duracionServicios.keys)
 
-        val adapter = object : android.widget.ArrayAdapter<String>(
+        val adapter = object : ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,
             serviciosConHint
@@ -143,10 +147,10 @@ class CrearCitasFragment : Fragment() {
 
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getDropDownView(position, convertView, parent)
-                val tv = view as android.widget.TextView
+                val tv = view as TextView
 
                 if (position == 0) {
-                    tv.setTextColor(android.graphics.Color.GRAY)
+                    tv.setTextColor(Color.GRAY)
                 }
                 return view
             }

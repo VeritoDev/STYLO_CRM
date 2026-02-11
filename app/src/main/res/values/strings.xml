@@ -48,7 +48,8 @@
     <string name="saludar">HELLO!</string>
     <string name="sin_resultados_busqueda">No customers matching were found with \"%s\"</string>
     <string name="sin_resultados_busqueda_citas">No appointments matching were found with \"%s\"</string>
-
+    <string name="cambiar_idioma">Change Language</string>
+    <string name="selecciona_idioma">Select your language</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

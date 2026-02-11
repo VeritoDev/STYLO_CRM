@@ -48,6 +48,8 @@
     <string name="saludar">¡HOLA!</string>
     <string name="sin_resultados_busqueda">No se han encontrado clientes que coincidan con \"%s\"</string>
     <string name="sin_resultados_busqueda_citas">No se han encontrado citas que coincidan con \"%s\"</string>
+    <string name="cambiar_idioma">Cambiar Idioma</string>
+    <string name="selecciona_idioma">Selecciona tu idioma</string>
 
 
 

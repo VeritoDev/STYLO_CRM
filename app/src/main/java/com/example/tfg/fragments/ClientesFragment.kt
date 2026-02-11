@@ -1,12 +1,15 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.R
 import com.example.tfg.databinding.FragmentClientesBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.ClientesAdapter
@@ -27,9 +30,9 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
         binding.fabAddCliente.setOnClickListener {
             findNavController().navigate(R.id.action_clientesFragment_to_formularioClientesFragment)
         }
-        binding.etBuscarCliente.addTextChangedListener(object : android.text.TextWatcher {
+        binding.etBuscarCliente.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
                 if (::adapter.isInitialized) {

@@ -1,10 +1,11 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.R
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.FragmentInicioBinding
 import com.example.tfg.repository.MainRepository

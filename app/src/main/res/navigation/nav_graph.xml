@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/inicioFragment"
-        android:name="com.example.tfg.InicioFragment"
+        android:name="com.example.tfg.fragments.InicioFragment"
         android:label="fragment_inicio"
         tools:layout="@layout/fragment_inicio" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/clientesFragment"
-        android:name="com.example.tfg.ClientesFragment"
+        android:name="com.example.tfg.fragments.ClientesFragment"
         android:label="fragment_clientes"
         tools:layout="@layout/fragment_clientes">
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/citasFragment"
-        android:name="com.example.tfg.CitasFragment"
+        android:name="com.example.tfg.fragments.CitasFragment"
         android:label="fragment_citas"
         tools:layout="@layout/fragment_citas" >
         <action
@@ -47,12 +47,12 @@
     </fragment>
     <fragment
         android:id="@+id/formularioClientesFragment"
-        android:name="com.example.tfg.FormularioClientesFragment"
+        android:name="com.example.tfg.fragments.FormularioClientesFragment"
         android:label="fragment_formulario_clientes"
         tools:layout="@layout/fragment_formulario_clientes" />
     <fragment
         android:id="@+id/detalleClienteFragment"
-        android:name="com.example.tfg.DetalleClienteFragment"
+        android:name="com.example.tfg.fragments.DetalleClienteFragment"
         android:label="fragment_detalle_cliente"
         tools:layout="@layout/fragment_detalle_cliente" >
         <action
@@ -64,12 +64,12 @@
     </fragment>
     <fragment
         android:id="@+id/crearCitasFragment"
-        android:name="com.example.tfg.CrearCitasFragment"
+        android:name="com.example.tfg.fragments.CrearCitasFragment"
         android:label="fragment_crear_citas"
         tools:layout="@layout/fragment_crear_citas" />
     <fragment
         android:id="@+id/recuperarPassFragment"
-        android:name="com.example.tfg.RecuperarPassFragment"
+        android:name="com.example.tfg.fragments.RecuperarPassFragment"
         android:label="fragment_recuperar_pass"
         tools:layout="@layout/fragment_recuperar_pass" />
 </navigation>

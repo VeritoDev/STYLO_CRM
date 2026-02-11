@@ -1,4 +1,4 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.tfg.R
 import com.example.tfg.databinding.FragmentFormularioClientesBinding
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository

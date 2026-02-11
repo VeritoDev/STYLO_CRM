@@ -1,34 +1,36 @@
 package com.example.tfg
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.util.TypedValue
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import com.example.tfg.databinding.ActivityMainBinding
 import androidx.navigation.ui.setupWithNavController
+import com.example.tfg.fragments.RecuperarPassFragment
 import com.google.firebase.auth.FirebaseAuth
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        val lang = prefs.getString("idioma_key", "es") ?: "es"
+
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //CONFIGURAMOS EL NAVCONTROLLER
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -68,6 +70,10 @@ class MainActivity : AppCompatActivity() {
                         cerrarSesion()
                         true
                     }
+                    R.id.menu_cambiar_idioma -> {
+                        mostrarDialogoIdiomas()
+                        true
+                    }
                     else -> false
                 }
             }
@@ -95,6 +101,37 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.btnThemeToolbar.setImageResource(R.drawable.icon_dark_mode)
         }
+    }
+
+    private fun mostrarDialogoIdiomas(){
+        val idiomas = arrayOf("Español", "English")
+        val codigos = arrayOf("es", "en")
+
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.selecciona_idioma))
+        builder.setItems(idiomas) { _, which ->
+            val selectedLang = codigos[which]
+
+            val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+            prefs.edit { putString("idioma_key", selectedLang) }
+
+            aplicarIdioma(selectedLang)
+        }
+        builder.show()
+    }
+
+    private fun aplicarIdioma(codigo: String){
+        val locale = java.util.Locale(codigo)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+
+        resources.updateConfiguration(config, resources.displayMetrics)
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 }
 

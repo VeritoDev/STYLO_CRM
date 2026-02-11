@@ -1,17 +1,18 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.R
 import com.example.tfg.databinding.FragmentCitasBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.CitasAdapter
-import com.google.firebase.firestore.core.ComponentProvider
 
 class CitasFragment : Fragment(R.layout.fragment_citas) {
 
@@ -30,9 +31,9 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
 
-        binding.etBuscarCita.addTextChangedListener(object : android.text.TextWatcher {
+        binding.etBuscarCita.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
                 if (::citasAdapter.isInitialized) {

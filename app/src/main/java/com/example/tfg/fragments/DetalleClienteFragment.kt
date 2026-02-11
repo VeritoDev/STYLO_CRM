@@ -1,11 +1,15 @@
-package com.example.tfg
+package com.example.tfg.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.R
 import com.example.tfg.adapter.HistorialAdapter
 import com.example.tfg.databinding.FragmentDetalleClienteBinding
 import com.example.tfg.model.Cliente
@@ -63,13 +67,13 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         binding.btnEliminar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
-                val builder = android.app.AlertDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("¿Eliminar cliente?")
                 builder.setMessage("Esta acción no se puede deshacer. ¿Estás seguro de que quieres borrar a este cliente?")
 
                 builder.setPositiveButton("Eliminar") { _, _ ->
                     repository.eliminarCliente(clienteId)
-                    android.widget.Toast.makeText(requireContext(), "Cliente eliminado", android.widget.Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Cliente eliminado", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
 
@@ -79,7 +83,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
                 val dialog = builder.create()
                 dialog.show()
-                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(android.graphics.Color.RED)
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
             }
         }
         binding.btnAAdirCita.setOnClickListener {
