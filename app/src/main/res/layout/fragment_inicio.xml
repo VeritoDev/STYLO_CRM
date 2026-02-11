@@ -67,6 +67,7 @@
         android:id="@+id/tvAccionesRapidas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="5dp"
         android:text="@string/accionRapido"
         android:textSize="18sp"
         android:textStyle="bold"
