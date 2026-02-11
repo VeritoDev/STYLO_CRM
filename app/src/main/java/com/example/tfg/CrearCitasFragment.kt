@@ -139,23 +139,21 @@ class CrearCitasFragment : Fragment() {
             android.R.layout.simple_spinner_item,
             serviciosConHint
         ) {
-            override fun isEnabled(position: Int): Boolean {
-                return position != 0
-            }
+            override fun isEnabled(position: Int): Boolean = position != 0
+
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getDropDownView(position, convertView, parent)
                 val tv = view as android.widget.TextView
 
                 if (position == 0) {
                     tv.setTextColor(android.graphics.Color.GRAY)
-                } else {
-                    tv.setTextColor(android.graphics.Color.BLACK)
                 }
                 return view
             }
         }
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.item_spinner_desplegable)
+
         binding.spinnerServicios?.adapter = adapter
     }
 

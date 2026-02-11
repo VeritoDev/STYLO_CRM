@@ -67,13 +67,10 @@
                     android:layout_height="55dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/spinner_personalizado">
-
                     <Spinner
                         android:id="@+id/spinnerServicios"
                         android:layout_width="match_parent"
-                        android:text="@string/servicio"
                         android:layout_height="match_parent"
-                        android:backgroundTint="@color/toolbar_claro"
                         android:spinnerMode="dropdown" />
                 </FrameLayout>
 

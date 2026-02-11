@@ -1,5 +1,6 @@
 package com.example.tfg
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,7 +14,6 @@ import com.example.tfg.repository.MainRepository
 class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     private lateinit var binding: FragmentDetalleClienteBinding
-    private val mainRepository = MainRepository()
     private val repository = MainRepository()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
         val clienteId = arguments?.getString("clienteId") ?: ""
 
         if(clienteId.isNotEmpty()){
-            mainRepository.obtenerDetalleCliente(clienteId){ cliente ->
+            repository.obtenerDetalleCliente(clienteId){ cliente ->
                 if (cliente != null){
                     rellenarInterfaz(cliente)
                 }
@@ -54,10 +54,15 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
         binding.tvNombreDetalle.text = "NOMBRE CLIENTE: ${cliente.nombre.uppercase()}"
         binding.tvTelefonoDetalle.text = "TELÉFONO: ${cliente.telefono}"
         binding.tvEmailDetalle?.text = "EMAIL: ${cliente.email.uppercase()}"
         binding.tvNotasDetalle.text = "NOTAS: ${cliente.notas}"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

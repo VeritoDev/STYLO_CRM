@@ -46,34 +46,14 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_scissors"
+                android:src="@drawable/ic_phone"
                 app:tint="?attr/colorOnSurface"/>
             <TextView
-                android:id="@+id/tvServicioItem"
+                android:id="@+id/tvTelefonoDetalle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="ÚLTIMO SERVICIO: CORTE DE PELO"
-                android:textColor="?attr/colorOnSurface"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_calendar"
-                app:tint="?attr/colorOnSurface"/>
-            <TextView
-                android:id="@+id/tvFechaItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="ÚLTIMA CITA: 02/11/2025"
+                android:text="@string/label_telefono"
                 android:textColor="?attr/colorOnSurface"/>
         </LinearLayout>
 
