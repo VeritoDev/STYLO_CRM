@@ -112,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
     private fun dirigirSegunRol(email: String?) {
         mainRepository.buscarClientePorEmail(email) { cliente ->
             if (cliente != null) {
-                val intent = Intent(this, ClienteReservasActivity::class.java)
+                val intent = Intent(this, ClientesMisCitasActivity::class.java)
                 intent.putExtra("CLIENTE_ID", cliente.id)
                 startActivity(intent)
             } else {

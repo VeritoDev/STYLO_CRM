@@ -2,10 +2,7 @@ package com.example.tfg.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import com.example.tfg.R
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.databinding.ItemClientesBinding
 import com.example.tfg.model.Cliente
@@ -37,7 +34,7 @@ class ClientesAdapter(
 
     override fun getItemCount(): Int = listaFiltrada.size
 
-    //MÉTODO IGUAL QUE EL DE CITAS
+    //METODO IGUAL QUE EL DE CITAS
     @SuppressLint("NotifyDataSetChanged")
     fun filtrar(texto: String): Int{
         val bus = texto.lowercase().trim()

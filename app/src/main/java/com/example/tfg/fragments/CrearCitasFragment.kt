@@ -141,7 +141,7 @@ class CrearCitasFragment : Fragment() {
                     val nuevaCita = Cita(
                         id = "",
                         idCliente = idRecuperado,
-                        nombre = nombreCliente,
+                        nombreCliente = nombreCliente,
                         servicio = servicio,
                         fecha = fecha,
                         hora = hora
@@ -157,6 +157,7 @@ class CrearCitasFragment : Fragment() {
             }
         }
     }
+
 
     private fun configurarSpinner() {
         val placeholder = getString(R.string.servicio)

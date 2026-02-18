@@ -28,9 +28,16 @@ class CitasAdapter(
 
         holder.binding.apply {
             val contexto = root.context
-            tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombre}"
+
+            if (cita.estilista.isNotEmpty()) {
+                tvNombreItem.text = "Estilista: ${cita.estilista}"
+            } else {
+                tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombreCliente}"
+            }
+
             tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"
-            tvFechaItem.text = "${contexto.getString(R.string.horaDef)}: ${cita.hora}"
+
+            tvFechaItem.text = "${cita.fecha} - ${cita.hora}"
 
             root.setOnClickListener { onCitaClick(cita) }
         }
@@ -48,7 +55,7 @@ class CitasAdapter(
         } else {
         //SI NO, FILTRA LA LISTA CON LO QUE SE HA ESCRITO EN EL BUSCADOR
             listaCitas.filter {
-                it.nombre.lowercase().contains(bus) || it.servicio.lowercase().contains(bus)
+                it.nombreCliente.lowercase().contains(bus) || it.servicio.lowercase().contains(bus)
             }.toMutableList()
         }
         notifyDataSetChanged()

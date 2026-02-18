@@ -32,7 +32,7 @@
             android:label="Crear Cuenta"/>
 
         <activity
-            android:name=".ClienteReservasActivity"
+            android:name=".ClientesMisCitasActivity"
             android:exported="false"
             android:label="Mis Reservas"/>
 

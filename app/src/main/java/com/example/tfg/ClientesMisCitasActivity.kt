@@ -1,0 +1,101 @@
+package com.example.tfg
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg.adapter.CitasAdapter
+import com.example.tfg.databinding.ActivityClienteMisCitasBinding
+import com.example.tfg.fragments.ClienteReservasFragment
+import com.example.tfg.model.Cita
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
+class ClientesMisCitasActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityClienteMisCitasBinding
+    private val db = FirebaseDatabase.getInstance().reference
+    private lateinit var adapter: CitasAdapter
+    private val listaCitas = mutableListOf<Cita>()
+
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+        binding = ActivityClienteMisCitasBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupRecyclerView()
+        setupListeners()
+        cargarCitasDelCliente()
+    }
+
+    private fun setupRecyclerView(){
+        binding.rvMisCitas.layoutManager = LinearLayoutManager(this)
+        adapter = CitasAdapter(listaCitas) { cita ->
+            Toast.makeText(this, "Cita seleccionada: ${cita.servicio}", Toast.LENGTH_SHORT).show()
+        }
+        binding.rvMisCitas.adapter = adapter
+    }
+
+    private fun setupListeners(){
+        binding.btnVolverReservar.setOnClickListener {
+            val fragment = ClienteReservasFragment()
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.btnCerrarSesion.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun cargarCitasDelCliente() {
+        val emailActual = FirebaseAuth.getInstance().currentUser?.email
+
+        if (emailActual == null) {
+            Toast.makeText(this, "Sesión no válida", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        db.child("citas")
+            .orderByChild("emailCliente")
+            .equalTo(emailActual)
+            .addValueEventListener(object : ValueEventListener {
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val nuevasCitas = mutableListOf<Cita>()
+
+                    if (snapshot.exists() && snapshot.childrenCount > 0) {
+                        binding.tvSinCitas.visibility = android.view.View.GONE
+                        for (data in snapshot.children) {
+                            val cita = data.getValue(Cita::class.java)
+                            cita?.let { nuevasCitas.add(it) }
+                        }
+                        nuevasCitas.sortByDescending { it.fecha }
+                    } else {
+                        binding.tvSinCitas.visibility = android.view.View.VISIBLE
+                    }
+
+                    // USAMOS LA FUNCIÓN DE ACTUALIZACIÓN DEL ADAPTADOR
+                    adapter.actualizarLista(nuevasCitas)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@ClientesMisCitasActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+}
