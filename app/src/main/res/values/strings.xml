@@ -19,9 +19,9 @@
     <string name="label_nombre">CLIENT: %1$s</string>
     <string name="label_telefono">TELEPHONE: %1$s</string>
     <string name="cliente_nuevo">NEW CLIENT</string>
-    <string name="telefono">TELEPHONE</string>
-    <string name="email">EMAIL</string>
-    <string name="notas">NOTES</string>
+    <string name="telefono">TELEPHONE: %1$s</string>
+    <string name="email">EMAIL: %1$s</string>
+    <string name="notas">NOTES: %1$s</string>
     <string name="guardar">SAVE CLIENT</string>
     <string name="detalle_cliente">DETAIL CLIENT</string>
     <string name="historial">HISTORY</string>

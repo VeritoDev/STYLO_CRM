@@ -14,12 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.tfg.fragments.RecuperarPassFragment
 import com.example.tfg.databinding.LoginBinding
+import com.example.tfg.repository.MainRepository
 import com.example.tfg.viewModel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginBinding
     private val viewModel: LoginViewModel by viewModels()
+    private val mainRepository = MainRepository()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,17 +94,24 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupObservers(){
         //OBSERVAMOS SI EL LOGIN ES CORRECTO
-        viewModel.loginResult.observe(this){ success ->
-            if(success){
-                //SI ES CORRECTO NOS LLEVARÁ AL HOME
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()    //CERRAMOS LA ACTIVITY PARA QUE NO VUELVA ATRÁS
+        viewModel.loginResult.observe(this) { success ->
+            if (success) {
+                val emailLogueado = binding.etEmail.text.toString().trim()
+
+                mainRepository.buscarClientePorEmail(emailLogueado) { cliente ->
+                    if (cliente != null) {
+                        val intent = Intent(this, ClienteReservasActivity::class.java)
+                        intent.putExtra("CLIENTE_ID", cliente.id)
+                        startActivity(intent)
+                    } else {
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }
+                    finish()
+                }
             }
         }
-        //OBSERVAMOS SI HAY ERRORES
-        viewModel.errorMessage.observe(this) { error ->
-            if (error != null){
+        viewModel.errorMessage.observe(this){ error ->
+            if(error!= null){
                 Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
             }
         }
@@ -111,17 +121,27 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.sesionActiva.observe(this){ estaLogueado ->
             if(estaLogueado){
-                irAMainActivity()
+                val emailActual = viewModel.obtenerEmailUsuarioActual()
+                dirigirSegunRol(emailActual)
             }
         }
-
         viewModel.comprobarSesion()
     }
 
-    private fun irAMainActivity(){
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()    //CERRAMOS EL LOGIN PARA QUE NO SE PUEDA VOLVER ATRÁS
+    private fun dirigirSegunRol(email: String?){
+        if (email == null) return
+
+        mainRepository.buscarClientePorEmail(email) { cliente ->
+            if(cliente != null){
+                val intent = Intent(this, ClienteReservasActivity::class.java)
+                intent.putExtra("CLIENTE_ID", cliente.id)
+                startActivity(intent)
+            } else {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            finish()
+        }
+
     }
 
 }

@@ -77,6 +77,25 @@ class MainRepository {
             getRefClientes().child(id).setValue(clienteNormalizado)
         }
     }
+
+    fun buscarClientePorEmail(email: String, callback: (Cliente?) -> Unit){
+        database.child("clientes").orderByChild("email").equalTo(email.trim()).get().addOnSuccessListener { snapshot ->
+            if(snapshot.exists()) {
+                val data = snapshot.children.firstOrNull()
+                val cliente = data?.getValue(Cliente::class.java)
+
+                if (cliente != null){
+                    cliente.id = data.key ?: ""
+                }
+                callback(cliente)
+            } else {
+                callback(null)
+            }
+        }
+            .addOnFailureListener {
+                callback(null)
+            }
+    }
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()
     }

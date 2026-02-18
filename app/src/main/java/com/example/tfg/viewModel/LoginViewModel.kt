@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tfg.repository.MainRepository
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginViewModel: ViewModel() {
     private val mainRepository = MainRepository()
@@ -33,5 +34,9 @@ class LoginViewModel: ViewModel() {
         if(mainRepository.isUsuarioLogueado()){
             _sesionActiva.value = true
         }
+    }
+
+    fun obtenerEmailUsuarioActual(): String?{
+        return FirebaseAuth.getInstance().currentUser?.email?.trim()
     }
 }

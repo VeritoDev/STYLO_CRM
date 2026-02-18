@@ -1,7 +1,7 @@
 package com.example.tfg.model
 
 data class Cliente(
-    val id: String = "",
+    var id: String = "",
     val nombre: String = "",
     val telefono: String = "",
     val email: String = "",
