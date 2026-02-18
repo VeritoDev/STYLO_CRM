@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // --- 1. GESTIÓN DE IDIOMA (ANTES DE SUPER.ONCREATE) ---
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
         val lang = prefs.getString("idioma_key", "es") ?: "es"
 
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         val nombreUsuario = prefsApp.getString("user_name_key", "Usuario")
 
-        // Mensaje de bienvenida con el nombre real
         Toast.makeText(this, "Bienvenido/a, $nombreUsuario", Toast.LENGTH_SHORT).show()
 
         val navHostFragment = supportFragmentManager
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity() {
 
         actualizarIconoTema()
 
-        // Cambiar Tema
         binding.btnThemeToolbar.setOnClickListener {
             binding.btnThemeToolbar.animate()
                 .rotationBy(360f)
@@ -69,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 .start()
         }
 
-        // Menú de Perfil
         binding.btnLoginToolbar.setOnClickListener { view ->
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_usuario, popup.menu)
@@ -101,7 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cerrarSesion() {
-        // Al cerrar sesión, limpiamos el nombre guardado para que no salga el del usuario anterior
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
         prefs.edit { remove("user_name_key") }
 
