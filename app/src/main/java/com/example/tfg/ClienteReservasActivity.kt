@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import com.example.tfg.databinding.ActivityClienteReservasBinding
 import com.google.firebase.database.FirebaseDatabase
 import androidx.core.net.toUri
+import com.example.tfg.repository.MainRepository
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 import javax.security.auth.callback.Callback
@@ -26,6 +28,7 @@ class ClienteReservasActivity: AppCompatActivity() {
     private var fechaSeleccionada = ""
     private var horaSeleccionada = ""
     private var clienteId = ""
+    private var mainRepository = MainRepository()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -140,20 +143,31 @@ class ClienteReservasActivity: AppCompatActivity() {
     }
 
     private fun cargarEstilistas() {
-        db.child("usuario").get().addOnSuccessListener { snapshot ->
-            val nombres = mutableListOf<String>()
-            if(snapshot.exists()){
-                for(data in snapshot.children){
-                    val nombre = data.child("nombre").value.toString()
-                    nombres.add(nombre)
+            val placeholder = "Selecciona un estilista"
+
+            mainRepository.obtenerNombresEstilistas { listaEstilistas ->
+                val estilistasConHint = mutableListOf<String>(placeholder)
+                estilistasConHint.addAll(listaEstilistas)
+
+                val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estilistasConHint) {
+                    override fun isEnabled(position: Int): Boolean = position != 0
+
+                    override fun getDropDownView(position: Int, convertView: View?, parent: android.view.ViewGroup): View {
+                        val view = super.getDropDownView(position, convertView, parent)
+                        val tv = view as android.widget.TextView
+
+                        if (position == 0) {
+                            tv.setTextColor(android.graphics.Color.GRAY)
+                        } else {
+                            tv.setTextColor(android.graphics.Color.BLACK)
+                        }
+                        return view
+                    }
                 }
 
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nombres)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                adapter.setDropDownViewResource(R.layout.item_spinner_desplegable)
+
                 binding.spinnerEstilistas.adapter = adapter
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "@string/errorEstilistas", Toast.LENGTH_SHORT).show()
         }
-    }
 }
