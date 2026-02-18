@@ -34,6 +34,23 @@ class MainRepository {
             callback(emptyList())
         }
     }
+    fun getCitasPorEstilista(nombreEstilista: String, onResult: (List<Cita>) -> Unit) {
+        val nombreLimpio = nombreEstilista.trim()
+
+        getRefCitas()
+            .orderByChild("estilista")
+            .equalTo(nombreLimpio)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
+                    onResult(lista.sortedWith(compareBy({ it.fecha }, { it.hora })))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onResult(emptyList())
+                }
+            })
+    }
     // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
@@ -108,6 +125,27 @@ class MainRepository {
             .addOnFailureListener {
                 callback(null)
             }
+    }
+
+    fun buscarClientePorNombreCompleto(nombre: String, callback: (Cliente?) -> Unit) {
+        database.child("clientes")
+            .orderByChild("nombre")
+            .equalTo(nombre)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val data = snapshot.children.first()
+                        val cliente = data.getValue(Cliente::class.java)
+                        callback(cliente)
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(null)
+                }
+            })
     }
     fun eliminarCliente(clienteId: String) {
         getRefClientes().child(clienteId).removeValue()

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //CREAMOS PREFERENCIAS PARA QUE CUANDO SE VUELVA A INFLAR LA APP, SE GUARDE DICHA INFORMACIÓN
+        // --- 1. GESTIÓN DE IDIOMA (ANTES DE SUPER.ONCREATE) ---
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
         val lang = prefs.getString("idioma_key", "es") ?: "es"
 
@@ -28,28 +28,38 @@ class MainActivity : AppCompatActivity() {
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
 
-        //INFLAMOS LA VISTA
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //CONFIGURAMOS EL NAVCONTROLLER
+        val nombreDesdeRegistro = intent.getStringExtra("NOMBRE_USUARIO")
+        val prefsApp = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+
+        if (!nombreDesdeRegistro.isNullOrEmpty()) {
+            prefsApp.edit(commit = true) {
+                putString("user_name_key", nombreDesdeRegistro)
+            }
+        }
+
+        val nombreUsuario = prefsApp.getString("user_name_key", "Usuario")
+
+        // Mensaje de bienvenida con el nombre real
+        Toast.makeText(this, "Bienvenido/a, $nombreUsuario", Toast.LENGTH_SHORT).show()
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
 
         actualizarIconoTema()
 
-        //BOTÓN PARA CAMBIAR EL TEMA (DARK MODE - LIGHT MODE)
+        // Cambiar Tema
         binding.btnThemeToolbar.setOnClickListener {
-            //ANIMACIÓN DEL ICONO AL PULSARLO
             binding.btnThemeToolbar.animate()
                 .rotationBy(360f)
                 .setDuration(400)
                 .withEndAction {
-                    //LÓGICA DE CAMBIAR A MODO CLARO O MODO OSCURO
                     val modoActual = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
-
                     if (modoActual == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     } else {
@@ -58,27 +68,22 @@ class MainActivity : AppCompatActivity() {
                 }
                 .start()
         }
-        //CONECTAMOS EL BOTTOMNAVIGATION CON EL NAVCONTROLLER
-        binding.bottomNavigation.setupWithNavController(navController)
 
-        //BOTÓN DE PERFIL CON UN MENÚ
+        // Menú de Perfil
         binding.btnLoginToolbar.setOnClickListener { view ->
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_usuario, popup.menu)
 
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    //CAMBIAR CONTRASEÑA DEL USUARIO (ENVÍA UN CORREO AL USUARIO, YA QUE FIREBASE NO SE PUEDE CAMBIAR LA CONTRASEÑA)
                     R.id.menu_cambiar_pass -> {
                         abrirDialogoRecuperar()
                         true
                     }
-                    //SALIR DE LA SESIÓN INICIADA
                     R.id.menu_logout -> {
                         cerrarSesion()
                         true
                     }
-                    //POPUP DE CAMBIAR EL IDIOMA DE LA APLICACIÓN
                     R.id.menu_cambiar_idioma -> {
                         mostrarDialogoIdiomas()
                         true
@@ -89,16 +94,22 @@ class MainActivity : AppCompatActivity() {
             popup.show()
         }
     }
+
     private fun abrirDialogoRecuperar() {
         val dialogo = RecuperarPassFragment()
         dialogo.show(supportFragmentManager, "Recuperar")
     }
 
     private fun cerrarSesion() {
+        // Al cerrar sesión, limpiamos el nombre guardado para que no salga el del usuario anterior
+        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        prefs.edit { remove("user_name_key") }
+
         FirebaseAuth.getInstance().signOut()
         Toast.makeText(this, getString(R.string.cerrar_sesion), Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
@@ -120,10 +131,8 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(getString(R.string.selecciona_idioma))
         builder.setItems(idiomas) { _, which ->
             val selectedLang = codigos[which]
-
             val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
             prefs.edit { putString("idioma_key", selectedLang) }
-
             aplicarIdioma(selectedLang)
         }
         builder.show()
@@ -134,7 +143,6 @@ class MainActivity : AppCompatActivity() {
         java.util.Locale.setDefault(locale)
         val config = resources.configuration
         config.setLocale(locale)
-
         resources.updateConfiguration(config, resources.displayMetrics)
 
         val intent = Intent(this, MainActivity::class.java)
@@ -143,4 +151,3 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 }
-

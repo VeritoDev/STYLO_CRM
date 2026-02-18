@@ -48,7 +48,7 @@ class CrearCitasFragment : Fragment() {
     }
 
     @SuppressLint("DefaultLocale")
-    private fun setupListeners(){
+    private fun setupListeners() {
 
         //BOTÓN VOLVER HACIA ATRÁS
         binding.btnBackCita.setOnClickListener {
@@ -67,10 +67,12 @@ class CrearCitasFragment : Fragment() {
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            val picker = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
-                val date = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
-                binding.etCitaFecha.setText(date)
-            }, year, month, day)
+            val picker =
+                DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                    val date =
+                        String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
+                    binding.etCitaFecha.setText(date)
+                }, year, month, day)
 
             //LÓGICA PARA QUE NO TE DEJE ELEGIR LOS DÍAS ANTERIORES
             picker.datePicker.minDate = System.currentTimeMillis()
@@ -90,14 +92,22 @@ class CrearCitasFragment : Fragment() {
                 if (selectedHour in 9..20) {
                     //SI ES LA HORA 20, NOS ASEGURAMOS DE QUE SEAN EXACTAMENTE LAS 20:00
                     if (selectedHour == 20 && selectedMinute > 0) {
-                        Toast.makeText(requireContext(), "El horario es hasta las 20:00", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "El horario es hasta las 20:00",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         val time = String.format("%02d:%02d", selectedHour, selectedMinute)
                         binding.etCitaHora.setText(time)
                     }
                 } else {
                     //SI ESTÁ FUERA DE RANGO, AVISAMOS AL USUARIO
-                    Toast.makeText(requireContext(), "Por favor, elige una hora entre las 09:00 y las 20:00", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Por favor, elige una hora entre las 09:00 y las 20:00",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             }, currentHour, currentMinute, true)
@@ -109,39 +119,42 @@ class CrearCitasFragment : Fragment() {
     private fun validarYGuardarCita() {
         val nombreCliente = binding.etCitaCliente.text.toString().trim()
         val servicio = binding.spinnerServicios?.selectedItem.toString().trim()
+        val estilista = "Vero"
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
 
-        //VALIDACIÓN DE DATOS
-
         if (binding.spinnerServicios?.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), "Por favor, selecciona un servicio", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Selecciona un servicio", Toast.LENGTH_SHORT).show()
             return
         }
-        val duracion = duracionServicios[servicio] ?: 30
 
         if (nombreCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
             Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
 
-        mainRepository.verificarClienteExiste(nombreCliente) { idRecuperado ->
-            if (idRecuperado == null) {
+        val duracion = duracionServicios[servicio] ?: 30
+
+        // 1. Buscamos al cliente completo para tener su ID y su EMAIL
+        mainRepository.buscarClientePorNombreCompleto(nombreCliente) { cliente ->
+            if (cliente == null) {
                 Toast.makeText(requireContext(), "El cliente no existe", Toast.LENGTH_SHORT).show()
-                return@verificarClienteExiste
+                return@buscarClientePorNombreCompleto
             }
 
-            //VALIDACIÓN DE TIEMPO
+            // 2. Verificamos disponibilidad
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
                 if (choque) {
-                    //SI EL PELUQUERO ESTÁ OCUPADO ENTRE LA FRANJA PROPUESTA, SE NOTIFICA AL USUARIO
-                    Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG)
+                        .show()
                 } else {
-                    //SI NO, SE CREA UNA NUEVA CITA
+                    // 3. Creamos la cita con todos los campos necesarios para que el cliente la vea
                     val nuevaCita = Cita(
                         id = "",
-                        idCliente = idRecuperado,
-                        nombreCliente = nombreCliente,
+                        idCliente = cliente.id,
+                        nombreCliente = cliente.nombre,
+                        emailCliente = cliente.email,
+                        estilista = estilista,
                         servicio = servicio,
                         fecha = fecha,
                         hora = hora
@@ -149,7 +162,8 @@ class CrearCitasFragment : Fragment() {
 
                     mainRepository.crearCita(nuevaCita) { exitoso ->
                         if (exitoso) {
-                            Toast.makeText(requireContext(), "Cita confirmada", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Cita confirmada", Toast.LENGTH_SHORT)
+                                .show()
                             findNavController().popBackStack()
                         }
                     }
@@ -157,11 +171,9 @@ class CrearCitasFragment : Fragment() {
             }
         }
     }
-
-
     private fun configurarSpinner() {
         val placeholder = getString(R.string.servicio)
-        val serviciosConHint = mutableListOf<String>(placeholder)
+        val serviciosConHint = mutableListOf(placeholder)
         serviciosConHint.addAll(duracionServicios.keys)
 
         val adapter = object : ArrayAdapter<String>(
@@ -177,13 +189,14 @@ class CrearCitasFragment : Fragment() {
 
                 if (position == 0) {
                     tv.setTextColor(Color.GRAY)
+                } else {
+                    tv.setTextColor(Color.BLACK)
                 }
                 return view
             }
         }
 
         adapter.setDropDownViewResource(R.layout.item_spinner_desplegable)
-
         binding.spinnerServicios?.adapter = adapter
     }
 

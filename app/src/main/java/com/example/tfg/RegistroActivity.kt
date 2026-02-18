@@ -64,6 +64,7 @@ class RegistroActivity : AppCompatActivity() {
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Bienvenido/a $nombre", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("NOMBRE_USUARIO", nombre)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
                                 finish()

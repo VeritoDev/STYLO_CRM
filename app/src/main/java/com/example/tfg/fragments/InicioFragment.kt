@@ -1,5 +1,6 @@
 package com.example.tfg.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -26,16 +27,23 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     }
 
     private fun setupUI() {
-        val usuario = mainRepository.getUsuarioActual()
-        //MOSTRAMOS EL NOMBRE ANTES DEL @ SI EL EMAIL ES NULO
-        binding.tvNombreUsuario.text = usuario?.email?.uppercase()?.substringBefore("@") ?: "Profesional"
+        val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
 
-        //NAVEGACIÓN PARA NUEVO CLIENTE
+        val nombreReal = prefs.getString("user_name_key", null)
+
+        if (nombreReal != null) {
+            binding.tvNombreUsuario.text = nombreReal.uppercase()
+        } else {
+            val usuario = mainRepository.getUsuarioActual()
+            binding.tvNombreUsuario.text = usuario?.email?.uppercase()?.substringBefore("@") ?: "Profesional"
+        }
+
+        // NAVEGACIÓN PARA NUEVO CLIENTE
         binding.cardAgregarCliente.setOnClickListener {
             findNavController().navigate(R.id.action_inicioFragment_to_formularioClientesFragment)
         }
 
-        //NAVEGACIÓN A NUEVA CITA
+        // NAVEGACIÓN A NUEVA CITA
         binding.cardAgregarCita.setOnClickListener {
             findNavController().navigate(R.id.action_inicioFragment_to_crearCitasFragment)
         }
@@ -62,16 +70,28 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
     //SI HAY DATOS LOS ENSEÑA, SI NO MUESTRA UN MENSAJE
     private fun cargarDatos() {
-        mainRepository.getCitasHoy { listaCitas ->
-            if (listaCitas.isEmpty()) {
-                binding.tvSinCitas.visibility = View.VISIBLE
-                binding.rvDashboard.visibility = View.GONE
-            } else {
-                binding.tvSinCitas.visibility = View.GONE
-                binding.rvDashboard.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaCitas)
-            }
+        val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
+        // Recuperamos el nombre y le quitamos espacios invisibles
+        val nombreEstilista = prefs.getString("user_name_key", "")?.trim() ?: ""
 
+        // ESTE LOG TE DIRÁ EN EL LOGCAT QUÉ ESTÁ BUSCANDO REALMENTE
+        android.util.Log.d("PRUEBA_TFG", "Buscando en Firebase citas donde estilista sea igual a: '$nombreEstilista'")
+
+        if (nombreEstilista.isNotEmpty()) {
+            mainRepository.getCitasPorEstilista(nombreEstilista) { listaCitas ->
+                android.util.Log.d("PRUEBA_TFG", "Citas encontradas: ${listaCitas.size}")
+
+                if (listaCitas.isEmpty()) {
+                    binding.tvSinCitas.visibility = View.VISIBLE
+                    binding.rvDashboard.visibility = View.GONE
+                } else {
+                    binding.tvSinCitas.visibility = View.GONE
+                    binding.rvDashboard.visibility = View.VISIBLE
+                    citasAdapter.actualizarLista(listaCitas)
+                }
+            }
+        } else {
+            binding.tvSinCitas.visibility = View.VISIBLE
         }
     }
 }
