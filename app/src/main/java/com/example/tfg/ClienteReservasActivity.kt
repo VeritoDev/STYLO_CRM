@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import com.example.tfg.databinding.ActivityClienteReservasBinding
 import com.google.firebase.database.FirebaseDatabase
 import androidx.core.net.toUri
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 import javax.security.auth.callback.Callback
 
@@ -67,6 +68,12 @@ class ClienteReservasActivity: AppCompatActivity() {
             if(validarCampos()) {
                 enviarCitaAFirebase()
             }
+        }
+        binding.btnCerrarSesion.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

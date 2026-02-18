@@ -92,56 +92,45 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun setupObservers(){
-        //OBSERVAMOS SI EL LOGIN ES CORRECTO
+    private fun setupObservers() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
-                val emailLogueado = binding.etEmail.text.toString().trim()
+                Toast.makeText(this, "¡Autenticado! Buscando tu perfil...", Toast.LENGTH_SHORT).show()
 
-                mainRepository.buscarClientePorEmail(emailLogueado) { cliente ->
-                    if (cliente != null) {
-                        val intent = Intent(this, ClienteReservasActivity::class.java)
-                        intent.putExtra("CLIENTE_ID", cliente.id)
-                        startActivity(intent)
-                    } else {
-                        startActivity(Intent(this, MainActivity::class.java))
-                    }
-                    finish()
+                val emailLogueado = viewModel.obtenerEmailUsuarioActual()
+
+                if (emailLogueado != null) {
+                    dirigirSegunRol(emailLogueado)
+                } else {
+                    val emailBackup = binding.etEmail.text.toString().trim()
+                    dirigirSegunRol(emailBackup)
                 }
             }
         }
-        viewModel.errorMessage.observe(this){ error ->
-            if(error!= null){
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun dirigirSegunRol(email: String?) {
+        mainRepository.buscarClientePorEmail(email) { cliente ->
+            if (cliente != null) {
+                val intent = Intent(this, ClienteReservasActivity::class.java)
+                intent.putExtra("CLIENTE_ID", cliente.id)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
+            finish()
         }
     }
     override fun onStart(){
         super.onStart()
 
-        viewModel.sesionActiva.observe(this){ estaLogueado ->
-            if(estaLogueado){
-                val emailActual = viewModel.obtenerEmailUsuarioActual()
-                dirigirSegunRol(emailActual)
-            }
-        }
-        viewModel.comprobarSesion()
+//        viewModel.sesionActiva.observe(this){ estaLogueado ->
+//            if(estaLogueado){
+//                val emailActual = viewModel.obtenerEmailUsuarioActual()
+//                dirigirSegunRol(emailActual)
+//            }
+//        }
+//        viewModel.comprobarSesion()
     }
-
-    private fun dirigirSegunRol(email: String?){
-        if (email == null) return
-
-        mainRepository.buscarClientePorEmail(email) { cliente ->
-            if(cliente != null){
-                val intent = Intent(this, ClienteReservasActivity::class.java)
-                intent.putExtra("CLIENTE_ID", cliente.id)
-                startActivity(intent)
-            } else {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-            finish()
-        }
-
-    }
-
 }

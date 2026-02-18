@@ -5,7 +5,6 @@ import com.example.tfg.model.Cliente
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
@@ -16,14 +15,25 @@ class MainRepository {
     private val database = FirebaseDatabase.getInstance().reference
 
     // --- REFERENCIAS DINÁMICAS ---
-    private fun getBaseRef(): DatabaseReference {
-        val uid = auth.currentUser?.uid ?: "anónimo"
-        return database.child("usuario").child(uid)
+    private fun getRefClientes() = database.child("clientes")
+    private fun getRefCitas() = database.child("citas")
+    private fun getRefEstilistas() = database.child("estilistas")
+
+    // --- LÓGICA DE ESTILISTAS ---
+    fun obtenerNombresEstilistas(callback: (List<String>) -> Unit){
+        getRefEstilistas().get().addOnSuccessListener { snapshot  ->
+            val nombres = mutableListOf<String>()
+            if(snapshot.exists()){
+                for(data in snapshot.children){
+                    val nombre = data.child("nombre").value.toString()
+                    if(nombre != "null") nombres.add(nombre)
+                }
+            }
+            callback(nombres)
+        }.addOnFailureListener {
+            callback(emptyList())
+        }
     }
-
-    private fun getRefClientes() = getBaseRef().child("clientes")
-    private fun getRefCitas() = getBaseRef().child("citas")
-
     // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
@@ -67,31 +77,34 @@ class MainRepository {
     }
 
     fun insertarCliente(cliente: Cliente) {
-        val key = getRefClientes().push().key
-        key?.let { id ->
-            //CONVERTIMOS EL NOMBRE EN MINÚSUCULAS ANTES DE GUARDAR
-            val clienteNormalizado = cliente.copy(
-                id = id,
-                nombre = cliente.nombre.lowercase().trim()
-            )
-            getRefClientes().child(id).setValue(clienteNormalizado)
-        }
+        val id = cliente.id
+        val clienteNormalizado = cliente.copy(
+            id = id,
+            nombre = cliente.nombre.lowercase().trim(),
+            email = cliente.email.trim().lowercase()
+        )
+        getRefClientes().child(id).setValue(clienteNormalizado)
+            .addOnSuccessListener {
+            }
     }
 
-    fun buscarClientePorEmail(email: String, callback: (Cliente?) -> Unit){
-        database.child("clientes").orderByChild("email").equalTo(email.trim()).get().addOnSuccessListener { snapshot ->
-            if(snapshot.exists()) {
-                val data = snapshot.children.firstOrNull()
-                val cliente = data?.getValue(Cliente::class.java)
-
-                if (cliente != null){
-                    cliente.id = data.key ?: ""
-                }
-                callback(cliente)
-            } else {
-                callback(null)
-            }
+    fun buscarClientePorEmail(email: String?, callback: (Cliente?) -> Unit) {
+        if (email == null) {
+            callback(null)
+            return
         }
+        val emailLimpio = email.trim().lowercase()
+        getRefClientes().orderByChild("email").equalTo(emailLimpio).get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    val data = snapshot.children.firstOrNull()
+                    val cliente = data?.getValue(Cliente::class.java)
+                    cliente?.id = data.key ?: ""
+                    callback(cliente)
+                } else {
+                    callback(null)
+                }
+            }
             .addOnFailureListener {
                 callback(null)
             }

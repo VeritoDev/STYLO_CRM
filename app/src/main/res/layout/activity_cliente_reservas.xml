@@ -48,7 +48,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/usuario"
+                    android:text="string/usuario"
                     android:textColor="?attr/colorOnSurface"
                     android:layout_marginBottom="8dp"
                     android:textStyle="bold" />
@@ -96,7 +96,7 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/mandarMensaje"
+                    android:text="string/mandarMensaje"
                     app:icon="@drawable/ic_message"
                     android:textColor="?attr/colorPrimary"
                     android:layout_marginBottom="16dp"/>
@@ -110,6 +110,17 @@
                     android:textStyle="bold"
                     android:backgroundTint="?attr/colorPrimary"
                     android:textColor="@color/white"
+                    app:cornerRadius="15dp" />
+
+                <Button
+                    android:id="@+id/btnCerrarSesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/cerrar_sesion"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#B60000"
+                    android:textColor="#FFFFFF"
                     app:cornerRadius="15dp" />
 
             </LinearLayout>
