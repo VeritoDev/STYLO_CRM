@@ -10,7 +10,8 @@ import com.example.tfg.model.Cita
 
 class CitasAdapter(
     private var listaCitas: List<Cita>,
-    private val onCitaClick: (Cita) -> Unit
+    private val onCitaClick: (Cita) -> Unit,
+    private val esEstilista: Boolean
 ) : RecyclerView.Adapter<CitasAdapter.CitaViewHolder>() {
 
     private var listaFiltrada: MutableList<Cita> = listaCitas.toMutableList()
@@ -29,10 +30,10 @@ class CitasAdapter(
         holder.binding.apply {
             val contexto = root.context
 
-            if (cita.estilista.isNotEmpty()) {
-                tvNombreItem.text = "Estilista: ${cita.estilista}"
+            if (esEstilista) {
+                holder.binding.tvNombreItem.text = "CLIENTE: ${cita.nombreCliente.uppercase()}"
             } else {
-                tvNombreItem.text = "${contexto.getString(R.string.nombre_cliente)}: ${cita.nombreCliente}"
+                holder.binding.tvNombreItem.text = "ESTILISTA: ${cita.estilista.uppercase()}"
             }
 
             tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"

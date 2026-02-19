@@ -71,6 +71,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
 
         citasAdapter = CitasAdapter(
             listaCitas = emptyList(),
+            esEstilista = true,
             onCitaClick = { cita ->
                 val bundle = Bundle().apply {
                     putString("clienteId", cita.idCliente)

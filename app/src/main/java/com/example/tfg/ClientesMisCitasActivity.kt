@@ -37,9 +37,11 @@ class ClientesMisCitasActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(){
         binding.rvMisCitas.layoutManager = LinearLayoutManager(this)
-        adapter = CitasAdapter(listaCitas) { cita ->
-            Toast.makeText(this, "Cita seleccionada: ${cita.servicio}", Toast.LENGTH_SHORT).show()
-        }
+
+        adapter = CitasAdapter(listaCitas, esEstilista = false, onCitaClick = { cita ->
+            Toast.makeText(this, "Cita con: ${cita.estilista}", Toast.LENGTH_SHORT).show()
+        })
+
         binding.rvMisCitas.adapter = adapter
     }
 

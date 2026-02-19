@@ -117,7 +117,7 @@ class CrearCitasFragment : Fragment() {
     }
 
     private fun validarYGuardarCita() {
-        val nombreCliente = binding.etCitaCliente.text.toString().trim()
+        val telefonoCliente = binding.etCitaCliente.text.toString().trim()
         val servicio = binding.spinnerServicios?.selectedItem.toString().trim()
         val estilista = "Vero"
         val fecha = binding.etCitaFecha.text.toString().trim()
@@ -128,31 +128,30 @@ class CrearCitasFragment : Fragment() {
             return
         }
 
-        if (nombreCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
+        if (telefonoCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
             Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
 
         val duracion = duracionServicios[servicio] ?: 30
 
-        // 1. Buscamos al cliente completo para tener su ID y su EMAIL
-        mainRepository.buscarClientePorNombreCompleto(nombreCliente) { cliente ->
+        // BUSCAMOS AL CLIENTE POR NÚMERO DE TELÉFONO
+        mainRepository.buscarClientePorNombreCompleto(telefonoCliente) { cliente ->
             if (cliente == null) {
                 Toast.makeText(requireContext(), "El cliente no existe", Toast.LENGTH_SHORT).show()
                 return@buscarClientePorNombreCompleto
             }
 
-            // 2. Verificamos disponibilidad
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
                 if (choque) {
                     Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG)
                         .show()
                 } else {
-                    // 3. Creamos la cita con todos los campos necesarios para que el cliente la vea
                     val nuevaCita = Cita(
                         id = "",
                         idCliente = cliente.id,
                         nombreCliente = cliente.nombre,
+                        telefonoCliente = cliente.telefono,
                         emailCliente = cliente.email,
                         estilista = estilista,
                         servicio = servicio,

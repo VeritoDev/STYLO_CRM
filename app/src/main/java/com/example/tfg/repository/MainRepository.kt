@@ -76,22 +76,6 @@ class MainRepository {
             callback(null)
         }
     }
-    fun verificarClienteExiste(nombre: String, callback: (String?) -> Unit) {
-        //PONERMOS EL NOMBRE EN MINUSCULAS
-        val nombreEnMinusculas = nombre.lowercase().trim()
-        getRefClientes().orderByChild("nombre").equalTo(nombreEnMinusculas)
-            .get().addOnSuccessListener { snapshot ->
-                if (snapshot.exists() && snapshot.childrenCount > 0) {
-                    //SI EL IS ES LA KEY DEL NODO (ej: -Ol5dbV9...)
-                    val id = snapshot.children.first().key
-                    callback(id)
-                } else {
-                    callback(null)
-                }
-            }.addOnFailureListener {
-                callback(null)
-            }
-    }
 
     fun insertarCliente(cliente: Cliente) {
         val id = cliente.id
@@ -129,7 +113,7 @@ class MainRepository {
 
     fun buscarClientePorNombreCompleto(nombre: String, callback: (Cliente?) -> Unit) {
         database.child("clientes")
-            .orderByChild("nombre")
+            .orderByChild("telefono")
             .equalTo(nombre)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

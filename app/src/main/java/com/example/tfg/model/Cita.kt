@@ -4,6 +4,7 @@ data class Cita(
     val id: String = "",
     val idCliente: String = "",
     val nombreCliente: String = "",
+    val telefonoCliente: String = "",
     val emailCliente: String = "",
     val estilista: String = "",
     val servicio: String = "",

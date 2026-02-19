@@ -52,7 +52,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     //LÓGICA PARA QUE SALGAN TODAS LAS CITAS QUE TIENE EL USUARIO EN EL RV DEL INICIO
     private fun setupRecyclerView() {
         citasAdapter = CitasAdapter(
-            listaCitas = emptyList(),
+            listaCitas = emptyList(), esEstilista = true,
             onCitaClick = { cita ->
                 val bundle = Bundle().apply {
                     putString("clienteId", cita.idCliente)
@@ -71,16 +71,10 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     //SI HAY DATOS LOS ENSEÑA, SI NO MUESTRA UN MENSAJE
     private fun cargarDatos() {
         val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
-        // Recuperamos el nombre y le quitamos espacios invisibles
         val nombreEstilista = prefs.getString("user_name_key", "")?.trim() ?: ""
-
-        // ESTE LOG TE DIRÁ EN EL LOGCAT QUÉ ESTÁ BUSCANDO REALMENTE
-        android.util.Log.d("PRUEBA_TFG", "Buscando en Firebase citas donde estilista sea igual a: '$nombreEstilista'")
 
         if (nombreEstilista.isNotEmpty()) {
             mainRepository.getCitasPorEstilista(nombreEstilista) { listaCitas ->
-                android.util.Log.d("PRUEBA_TFG", "Citas encontradas: ${listaCitas.size}")
-
                 if (listaCitas.isEmpty()) {
                     binding.tvSinCitas.visibility = View.VISIBLE
                     binding.rvDashboard.visibility = View.GONE
