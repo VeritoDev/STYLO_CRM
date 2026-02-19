@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TFG</string>
     <string name="language">EN</string>
-    <string name="loginUser">USERNAME</string>
+    <string name="loginUser">EMAIL</string>
+    <string name="registrerUser">NAME</string>
     <string name="loginPassword">PASSWORD</string>
     <string name="enter">ENTER</string>
     <string name="home">Home</string>
@@ -19,9 +20,9 @@
     <string name="label_nombre">CLIENT: %1$s</string>
     <string name="label_telefono">TELEPHONE: %1$s</string>
     <string name="cliente_nuevo">NEW CLIENT</string>
-    <string name="telefono">TELEPHONE: %1$s</string>
-    <string name="email">EMAIL: %1$s</string>
-    <string name="notas">NOTES: %1$s</string>
+    <string name="telefono">TELEPHONE:</string>
+    <string name="email">EMAIL: </string>
+    <string name="notas">NOTES:</string>
     <string name="guardar">SAVE CLIENT</string>
     <string name="detalle_cliente">DETAIL CLIENT</string>
     <string name="historial">HISTORY</string>
@@ -50,7 +51,5 @@
     <string name="sin_resultados_busqueda_citas">No appointments matching were found with \"%s\"</string>
     <string name="cambiar_idioma">Change Language</string>
     <string name="selecciona_idioma">Select your language</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

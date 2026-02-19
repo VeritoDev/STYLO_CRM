@@ -95,8 +95,6 @@ class LoginActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
-                Toast.makeText(this, "¡Autenticado! Buscando tu perfil...", Toast.LENGTH_SHORT).show()
-
                 val emailLogueado = viewModel.obtenerEmailUsuarioActual()
 
                 if (emailLogueado != null) {

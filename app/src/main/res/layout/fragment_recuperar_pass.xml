@@ -17,7 +17,7 @@
             android:id="@+id/tvTituloDialogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RECUPERAR CUENTA"
+            android:text="string/recuperarCuenta"
             android:textStyle="bold|italic"
             android:textSize="18sp"
             android:textColor="?attr/colorPrimary"
@@ -28,7 +28,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Introduce tu Email">
+            android:hint="@string/email">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmailRecuperar"
                 android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="ENVIAR ENLACE"
+            android:text="string/send"
             android:backgroundTint="?attr/colorPrimary"
             android:textColor="@color/toolbar_claro"/>
     </LinearLayout>

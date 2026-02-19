@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TFG</string>
     <string name="language">ES</string>
-    <string name="loginUser">NOMBRE DE USUARIO</string>
+    <string name="loginUser">EMAIL</string>
+    <string name="registrerUser">NOMBRE</string>
     <string name="loginPassword">CONTRASEÑA</string>
     <string name="enter">ENTRAR</string>
     <string name="home">Inicio</string>
@@ -19,9 +20,9 @@
     <string name="label_nombre">NOMBRE: %1$s</string>
     <string name="label_telefono">TELÉFONO: %1$s</string>
     <string name="cliente_nuevo">NUEVO CLIENTE</string>
-    <string name="telefono">TELÉFONO: %1$s</string>
-    <string name="email">EMAIL: %1$s</string>
-    <string name="notas">NOTAS: %1$s</string>
+    <string name="telefono">TELÉFONO:</string>
+    <string name="email">EMAIL:</string>
+    <string name="notas">NOTAS:</string>
     <string name="guardar">GUARDAR CLIENTE</string>
     <string name="detalle_cliente">DETALLE CLIENTE</string>
     <string name="historial">HISTORIAL</string>

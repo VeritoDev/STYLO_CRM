@@ -51,6 +51,17 @@ class MainRepository {
                 }
             })
     }
+    fun getNombreEstilistaPorUID(uid: String, callback: (String?) -> Unit) {
+        // IMPORTANTE: Asegúrate de que en Firebase la carpeta se llame "estilistas"
+        // y el campo dentro se llame "nombre"
+        FirebaseDatabase.getInstance().getReference("estilistas").child(uid).child("nombre").get()
+            .addOnSuccessListener { snapshot ->
+                callback(snapshot.value?.toString())
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
+    }
     // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
@@ -157,18 +168,6 @@ class MainRepository {
                 onResult(lista)
             }
             override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
-        })
-    }
-    //LÓGICA PARA QUE SE VEA EN LA PANTALLA PRINCIPAL
-    fun getCitasHoy(onResult: (List<Cita>) -> Unit) {
-        getRefCitas().addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val listaCitas = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
-                onResult(listaCitas)
-            }
-            override fun onCancelled(error: DatabaseError) {
-                onResult(emptyList())
-            }
         })
     }
     fun crearCita(cita: Cita, callback: (Boolean) -> Unit) {
