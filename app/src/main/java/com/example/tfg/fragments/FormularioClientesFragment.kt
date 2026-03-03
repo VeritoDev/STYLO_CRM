@@ -10,6 +10,7 @@ import com.example.tfg.R
 import com.example.tfg.databinding.FragmentFormularioClientesBinding
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_clientes) {
@@ -116,6 +117,36 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                         }
                     }
                 }
+
+            mainRepository.buscarClientePorTelefono(telefono) { clienteExistente ->
+                if (clienteExistente != null){
+                    Toast.makeText(requireContext(), "Error: Ya hay un cliente registrado con este teléfono", Toast.LENGTH_SHORT).show()
+                } else {
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "123456")
+                        .addOnCompleteListener { task ->
+                            if (isAdded) {
+                                if(task.isSuccessful){
+                                    val uid = task.result?.user?.uid ?: ""
+                                    val nuevocliente = Cliente (
+                                        id = uid,
+                                        nombre = nombreMayuscula,
+                                        telefono = telefono,
+                                        email = email,
+                                        notas = notas
+                                    )
+                                    mainRepository.insertarCliente(nuevocliente)
+                                    //ESTO HACE QUE SE ENVIE UN CORREO PARA QUE CAMBIE LA CONTRASEÑA POR DEFECTO A LA CONTRASEÑA QUE QUIERA EL CLIENTE
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                                    Toast.makeText(requireContext(), "Cliente Creado", Toast.LENGTH_SHORT).show()
+                                    findNavController().navigateUp()
+                                } else {
+                                    val error = task.exception?.message ?: "Error al crear la cuenta"
+                                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                }
+            }
         }
     }
 }

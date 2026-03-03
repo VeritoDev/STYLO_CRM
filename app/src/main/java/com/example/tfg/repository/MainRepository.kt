@@ -122,17 +122,21 @@ class MainRepository {
             }
     }
 
-    fun buscarClientePorNombreCompleto(nombre: String, callback: (Cliente?) -> Unit) {
-        database.child("clientes")
+    fun buscarClientePorTelefono(telefono: String, callback: (Cliente?) -> Unit) {
+        // Buscamos en la carpeta 'clientes' filtrando por el campo 'telefono'
+        getRefClientes()
             .orderByChild("telefono")
-            .equalTo(nombre)
+            .equalTo(telefono.trim()) // Usamos trim() para evitar errores de espacios
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+                        // Cogemos el primer resultado que coincida
                         val data = snapshot.children.first()
                         val cliente = data.getValue(Cliente::class.java)
+                        cliente?.id = data.key ?: ""
                         callback(cliente)
                     } else {
+                        // Si no hay ningún cliente con ese teléfono
                         callback(null)
                     }
                 }

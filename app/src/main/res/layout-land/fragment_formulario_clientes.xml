@@ -67,7 +67,7 @@
                                 android:id="@+id/etNuevoNombre"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/loginUser" />
+                                android:hint="@string/nombre_cliente" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout

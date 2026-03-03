@@ -136,10 +136,10 @@ class CrearCitasFragment : Fragment() {
         val duracion = duracionServicios[servicio] ?: 30
 
         // BUSCAMOS AL CLIENTE POR NÚMERO DE TELÉFONO
-        mainRepository.buscarClientePorNombreCompleto(telefonoCliente) { cliente ->
+        mainRepository.buscarClientePorTelefono(telefonoCliente) { cliente ->
             if (cliente == null) {
                 Toast.makeText(requireContext(), "El cliente no existe", Toast.LENGTH_SHORT).show()
-                return@buscarClientePorNombreCompleto
+                return@buscarClientePorTelefono
             }
 
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->

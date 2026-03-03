@@ -58,7 +58,7 @@
                         android:id="@+id/etCitaCliente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/nombre_cliente"
+                        android:hint="@string/telefono"
                         android:textColor="@color/toolbar_claro" />
                 </com.google.android.material.textfield.TextInputLayout>
 
