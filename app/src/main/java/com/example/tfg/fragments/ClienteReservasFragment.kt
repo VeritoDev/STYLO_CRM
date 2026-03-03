@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -27,10 +28,10 @@ class ClienteReservasFragment : Fragment() {
 
     // Mapa de duraciones para la validación de choques
     private val duracionServicios = mapOf(
-        "Corte" to 30,
-        "Tinte" to 60,
-        "Barba" to 20,
-        "Peinado" to 45
+        context?.getString(R.string.servicio_corte) to 30,
+        context?.getString(R.string.servicio_tinte) to 60,
+        context?.getString(R.string.servicio_barba) to 20,
+        context?.getString(R.string.servicio_peinado) to 45
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -67,7 +68,8 @@ class ClienteReservasFragment : Fragment() {
         binding.btnHoraCard.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(requireContext(), { _, h, m ->
-                if (h in 9..19) { // Horario comercial
+                if (h in 9..19) {
+                    // Horario comercial
                     val hora = String.format("%02d:%02d", h, m)
                     binding.btnHoraCard.text = hora
                 } else {
@@ -93,7 +95,7 @@ class ClienteReservasFragment : Fragment() {
         if (binding.spinnerServicios.selectedItemPosition == 0 ||
             binding.spinnerEstilistas.selectedItemPosition == 0 ||
             fecha == getString(R.string.fecha) || hora == getString(R.string.hora)) {
-            Toast.makeText(requireContext(), "Completa todos los datos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), context?.getString(R.string.errorLoginCamposVacios), Toast.LENGTH_LONG).show()
             return
         }
 
@@ -105,7 +107,7 @@ class ClienteReservasFragment : Fragment() {
                 // 2. Verificamos que el peluquero no esté ocupado
                 mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
                     if (ocupado) {
-                        Toast.makeText(requireContext(), "Esa hora ya está reservada", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                     } else {
                         // 3. Creamos la cita
                         val nuevaCita = Cita(
@@ -121,7 +123,7 @@ class ClienteReservasFragment : Fragment() {
 
                         mainRepository.crearCita(nuevaCita) { exitoso ->
                             if (exitoso) {
-                                Toast.makeText(requireContext(), "¡Cita reservada!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), context?.getString(R.string.cita_reservada), Toast.LENGTH_SHORT).show()
                                 parentFragmentManager.popBackStack()
                             }
                         }
@@ -134,13 +136,15 @@ class ClienteReservasFragment : Fragment() {
     private fun configurarSpinners() {
         // Estilistas desde el Repo
         mainRepository.obtenerNombresEstilistas { lista ->
-            setCustomAdapter(binding.spinnerEstilistas, "Selecciona estilista", lista)
+            setCustomAdapter(binding.spinnerEstilistas, context?.getString(R.string.seleccionar_estilista), lista)
         }
         // Servicios desde el Mapa
-        setCustomAdapter(binding.spinnerServicios, "Selecciona servicio", duracionServicios.keys.toList())
+        setCustomAdapter(binding.spinnerServicios, context?.getString(R.string.seleccionar_servicio),
+            duracionServicios.keys.toList() as List<String>
+        )
     }
 
-    private fun setCustomAdapter(spinner: android.widget.Spinner, hint: String, items: List<String>) {
+    private fun setCustomAdapter(spinner: Spinner, hint: String?, items: List<String>) {
         val listaConHint = mutableListOf(hint).apply { addAll(items) }
         val adapter = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, listaConHint) {
             override fun isEnabled(position: Int): Boolean = position != 0

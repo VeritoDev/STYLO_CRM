@@ -29,15 +29,15 @@ class RecuperarPassFragment : DialogFragment() {
 
             //COMPRUEBA SI EL EMAIL ES VÁLIDO
             if (email.isEmpty() || !email.contains("@")) {
-                etEmail.error = "Introduce un email válido"
+                etEmail.error = context?.getString(R.string.email_valido)
                 return@setOnClickListener
             }
 
             //SE ENVIA UN EMAIL CON UN ENLACE PARA RESTAURAR LA CONTRASEÑA
             auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(context, "Email de recuperación enviado a $email", Toast.LENGTH_LONG).show()
-                    dismiss()   //CIERRA EL DIALOGFRAGMENT, PERO NO EL FRAGMENT O ACTIVITY QUE HAY DETRÁS
+                    Toast.makeText(requireContext(), getString(R.string.toast_recuperacion_enviado, email), Toast.LENGTH_LONG).show()
+                    dismiss()
                 } else {
                     Toast.makeText(context, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }

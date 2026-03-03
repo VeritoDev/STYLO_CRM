@@ -60,8 +60,6 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
             }
         })
     }
-
-
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation
 

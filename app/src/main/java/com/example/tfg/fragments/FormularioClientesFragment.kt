@@ -10,7 +10,6 @@ import com.example.tfg.R
 import com.example.tfg.databinding.FragmentFormularioClientesBinding
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_clientes) {
@@ -64,7 +63,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         if (nombre.isEmpty() || email.isEmpty() || telefono.length != 9) {
             Toast.makeText(
                 requireContext(),
-                "Revisa los campos (Nombre, Email y Teléfono)",
+                context?.getString(R.string.errorLoginCamposVacios),
                 Toast.LENGTH_SHORT
             ).show()
             return
@@ -82,7 +81,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             )
             mainRepository.actualizarCliente(clienteID!!, datosActualizados) { exito ->
                 if (exito) {
-                    Toast.makeText(requireContext(), "Cliente actualizado", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), context?.getString(R.string.cliente_actualizado), Toast.LENGTH_SHORT)
                         .show()
                     findNavController().navigateUp()
                 }
@@ -107,12 +106,12 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
 
                             Toast.makeText(
                                 requireContext(),
-                                "Cliente creado y aviso enviado",
+                                context?.getString(R.string.cliente_creado),
                                 Toast.LENGTH_SHORT
                             ).show()
                             findNavController().navigateUp()
                         } else {
-                            val error = task.exception?.message ?: "Error al crear cuenta"
+                            val error = task.exception?.message ?: context?.getString(R.string.error_crear_cliente)
                             Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
                         }
                     }
@@ -120,7 +119,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
 
             mainRepository.buscarClientePorTelefono(telefono) { clienteExistente ->
                 if (clienteExistente != null){
-                    Toast.makeText(requireContext(), "Error: Ya hay un cliente registrado con este teléfono", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), context?.getString(R.string.error_cliente_telefono), Toast.LENGTH_SHORT).show()
                 } else {
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "123456")
                         .addOnCompleteListener { task ->
@@ -137,10 +136,10 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                                     mainRepository.insertarCliente(nuevocliente)
                                     //ESTO HACE QUE SE ENVIE UN CORREO PARA QUE CAMBIE LA CONTRASEÑA POR DEFECTO A LA CONTRASEÑA QUE QUIERA EL CLIENTE
                                     FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                                    Toast.makeText(requireContext(), "Cliente Creado", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(requireContext(), context?.getString(R.string.cliente_creado), Toast.LENGTH_SHORT).show()
                                     findNavController().navigateUp()
                                 } else {
-                                    val error = task.exception?.message ?: "Error al crear la cuenta"
+                                    val error = task.exception?.message ?: context?.getString(R.string.error_crear_cliente)
                                     Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
                                 }
                             }

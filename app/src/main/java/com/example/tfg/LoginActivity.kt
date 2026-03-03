@@ -8,7 +8,6 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,54 +22,50 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private val mainRepository = MainRepository()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //CONFIGURAMOS LOS OBSERVERS
         setupObservers()
 
-        //LÓGICA DE REGISTRO
-        val textView = binding.tvIrARegistro
-        val textCompleto = "¿No tienes cuenta? Regístrate"
+        // --- LÓGICA DE REGISTRO ---
+        val textCompleto = getString(R.string.login_no_cuenta)
+        val palabraResaltada = getString(R.string.link_registrate) // "Regístrate" o "Sign up"
         val spannable = SpannableString(textCompleto)
 
-        val inicio = textCompleto.indexOf("Regístrate")
-        val fin = inicio + "Regístrate".length
+        // Buscamos dinámicamente dónde empieza y termina la palabra en el idioma actual
+        val inicio = textCompleto.indexOf(palabraResaltada)
+        val fin = inicio + palabraResaltada.length
 
-        val colorResaltado = ContextCompat.getColor(this, R.color.marron_oscuro_fondo)
-
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                val intent = Intent(this@LoginActivity, RegistroActivity::class.java)
-                startActivity(intent)
+        if (inicio != -1) { // Solo si encuentra la palabra (evita errores)
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    val intent = Intent(this@LoginActivity, RegistroActivity::class.java)
+                    startActivity(intent)
+                }
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                    ds.color = ContextCompat.getColor(this@LoginActivity, R.color.marron_oscuro_fondo)
+                    ds.isFakeBoldText = true
+                }
             }
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = false
-                ds.color = colorResaltado
-                ds.isFakeBoldText = true
-            }
+            spannable.setSpan(clickableSpan, inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
-        spannable.setSpan(clickableSpan, inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        textView.text = spannable
-        textView.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvIrARegistro.text = spannable
+        binding.tvIrARegistro.movementMethod = LinkMovementMethod.getInstance()
 
-        //LÓGICA DE LOGIN
+        // --- LÓGICA DE LOGIN ---
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val pass = binding.etPassword.text.toString().trim()
-
-            //LLAMAMOS A LA LÓGICA DEL VIEWMODEL
             viewModel.entrar(email, pass)
         }
 
-        // LÓGICA DE RECUPERAR CONTRASEÑA
-        val tvOlvide = binding.tvOlvidePass
-        val textoOlvide = "¿Has olvidado tu contraseña?"
+        // --- LÓGICA DE RECUPERAR CONTRASEÑA ---
+        val textoOlvide = getString(R.string.recuperarCuenta)
         val spannableOlvide = SpannableString(textoOlvide)
 
         val clickableOlvide = object : ClickableSpan() {
@@ -87,48 +82,30 @@ class LoginActivity : AppCompatActivity() {
         }
 
         spannableOlvide.setSpan(clickableOlvide, 0, textoOlvide.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        tvOlvide.text = spannableOlvide
-        tvOlvide.movementMethod = LinkMovementMethod.getInstance()
-
+        binding.tvOlvidePass.text = spannableOlvide
+        binding.tvOlvidePass.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun setupObservers() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
                 val emailLogueado = viewModel.obtenerEmailUsuarioActual()
-
-                if (emailLogueado != null) {
-                    dirigirSegunRol(emailLogueado)
-                } else {
-                    val emailBackup = binding.etEmail.text.toString().trim()
-                    dirigirSegunRol(emailBackup)
-                }
+                dirigirSegunRol(emailLogueado ?: binding.etEmail.text.toString().trim())
             }
         }
     }
 
     private fun dirigirSegunRol(email: String?) {
         mainRepository.buscarClientePorEmail(email) { cliente ->
-            if (cliente != null) {
-                val intent = Intent(this, ClientesMisCitasActivity::class.java)
-                intent.putExtra("CLIENTE_ID", cliente.id)
-                startActivity(intent)
+            val intent = if (cliente != null) {
+                Intent(this, ClientesMisCitasActivity::class.java).apply {
+                    putExtra("CLIENTE_ID", cliente.id)
+                }
             } else {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                Intent(this, MainActivity::class.java)
             }
+            startActivity(intent)
             finish()
         }
-    }
-    override fun onStart(){
-        super.onStart()
-
-//        viewModel.sesionActiva.observe(this){ estaLogueado ->
-//            if(estaLogueado){
-//                val emailActual = viewModel.obtenerEmailUsuarioActual()
-//                dirigirSegunRol(emailActual)
-//            }
-//        }
-//        viewModel.comprobarSesion()
     }
 }

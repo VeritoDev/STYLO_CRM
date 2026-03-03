@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TFG</string>
     <string name="language">EN</string>
     <string name="loginUser">EMAIL</string>
@@ -6,7 +6,7 @@
     <string name="loginPassword">PASSWORD</string>
     <string name="enter">ENTER</string>
     <string name="home">Home</string>
-    <string name="clientes">Clients</string>
+    <string name="clientes">Customers</string>
     <string name="citas">Appointments</string>
     <string name="inicio">Welcome</string>
     <string name="afluencia">Customer Influx</string>
@@ -16,15 +16,15 @@
     <string name="proximasCitas">Next Appointments</string>
     <string name="errorLoginCamposVacios">Please, enter all the fields</string>
     <string name="errorLogin">Unknown error</string>
-    <string name="cliente">SEARCH CLIENTS</string>
-    <string name="label_nombre">CLIENT: %1$s</string>
+    <string name="cliente">SEARCH CUSTOMERS</string>
+    <string name="label_nombre">CUSTOMER: %1$s</string>
     <string name="label_telefono">TELEPHONE: %1$s</string>
-    <string name="cliente_nuevo">NEW CLIENT</string>
+    <string name="cliente_nuevo">NEW CUSTOMER</string>
     <string name="telefono">TELEPHONE:</string>
-    <string name="email">EMAIL: </string>
-    <string name="notas">NOTES:</string>
-    <string name="guardar">SAVE CLIENT</string>
-    <string name="detalle_cliente">DETAIL CLIENT</string>
+    <string name="email">EMAIL: %1$s</string>
+    <string name="notas">NOTES: %1$s</string>
+    <string name="guardar">SAVE CUSTOMER</string>
+    <string name="detalle_cliente">DETAIL CUSTOMER</string>
     <string name="historial">HISTORY</string>
     <string name="editar">EDIT</string>
     <string name="eliminar">DELETE</string>
@@ -33,7 +33,7 @@
     <string name="citas_vacio">NO APPOINTMENT FOR TODAY</string>
     <string name="buscarCita">SEARCH APPOINTMENT</string>
     <string name="añadirCita">ADD APPOINTMENT</string>
-    <string name="nombre_cliente">CLIENT NAME</string>
+    <string name="nombre_cliente">CUSTOMER NAME</string>
     <string name="servicio">SERVICE</string>
     <string name="fecha">SELECT DATE</string>
     <string name="fechaDef">DATE</string>
@@ -51,5 +51,44 @@
     <string name="sin_resultados_busqueda_citas">No appointments matching were found with \"%s\"</string>
     <string name="cambiar_idioma">Change Language</string>
     <string name="selecciona_idioma">Select your language</string>
-
+    <string name="send">Send</string>
+    <string name="label_cliente">CUSTOMER</string>
+    <string name="label_estilista">STYLIST</string>
+    <string name="servicio_corte">Haircut</string>
+    <string name="servicio_tinte">Dye</string>
+    <string name="servicio_barba">Beard</string>
+    <string name="servicio_peinado">Hairstyle</string>
+    <string name="hora_reservada">Sorry, that hour is ocuppied</string>
+    <string name="cita_reservada">Booked appointment</string>
+    <string name="seleccionar_estilista">Select a stylist</string>
+    <string name="seleccionar_servicio">Select a service</string>
+    <string name="horario">Opening hours until 8:00 PM</string>
+    <string name="hora_elegida">Please, select an hour between 9AM and 8PM</string>
+    <string name="noExisteCliente">The customer doesn\'t exist</string>
+    <string name="estilistaOcupado">The stylist is ocuppied</string>
+    <string name="eliminar_cliente">¿Delete Customer?</string>
+    <string name="eliminar_mensaje">This action cannot be undone. ¿Are you sure?</string>
+    <string name="cancelar" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="cliente_eliminado">Customer deleted</string>
+    <string name="sin_citas_historial">This customer has no recorded appointments</string>
+    <string name="cliente_actualizado">Actualized customer</string>
+    <string name="cliente_creado">Customer created and email send</string>
+    <string name="error_crear_cliente">Error creating customer</string>
+    <string name="error_cliente_telefono">There is a customer with that telephone</string>
+    <string name="error_nombre_perfil">Profile name not found</string>
+    <string name="email_valido">Enter a valid email</string>
+    <string name="toast_recuperacion_enviado">Recovery email sent to %1$s</string>
+    <string name="toast_cita_con">Appointment with: %1$s</string>
+    <string name="error_sesion_invalida">Invalid session</string>
+    <string name="login_no_cuenta">Don\'t have an account? Sign up</string>
+    <string name="link_registrate">Sign up</string>
+    <string name="recuperarCuenta">Forgot Password?</string>
+    <string name="bienvenida_nombre">Welcome, %1$s</string>
+    <string name="menu_cambiar_pass">Change Password</string>
+    <string name="menu_logout">Log Out</string>
+    <string name="menu_cambiar_idioma">Change Language</string>
+    <string name="error_campos_obligatorios">Please fill all fields</string>
+    <string name="error_pass_corta">Password must be at least 6 characters</string>
+    <string name="error_guardar_perfil">Error saving profile data</string>
+    <string name="error_registro_general">Registration error: %1$s</string>
 </resources>

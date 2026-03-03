@@ -10,6 +10,7 @@ import com.example.tfg.R
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.FragmentInicioBinding
 import com.example.tfg.repository.MainRepository
+import androidx.core.content.edit
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
@@ -72,27 +73,21 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     //SI HAY DATOS LOS ENSEÑA, SI NO MUESTRA UN MENSAJE
     private fun cargarDatos() {
         val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
-        var nombre = prefs.getString("user_name_key", "")?.trim() ?: ""
-
-        android.util.Log.d("DIAGNOSTICO", "Paso 1 - SharedPreferences dice: '$nombre'")
+        val nombre = prefs.getString("user_name_key", "")?.trim() ?: ""
 
         if (nombre.isNotEmpty()) {
             ejecutarConsultaFirebase(nombre)
         } else {
             val uid = mainRepository.getUsuarioActual()?.uid
-            android.util.Log.d("DIAGNOSTICO", "Paso 2 - Buscando en BD para el UID: $uid")
-
             if (uid != null) {
                 mainRepository.getNombreEstilistaPorUID(uid) { nombreBD ->
                     if (!nombreBD.isNullOrEmpty()) {
-                        android.util.Log.d("DIAGNOSTICO", "Paso 3 - Nombre recuperado de Firebase: $nombreBD")
                         // Lo guardamos para que la próxima vez el Paso 1 funcione
-                        prefs.edit().putString("user_name_key", nombreBD).apply()
+                        prefs.edit { putString("user_name_key", nombreBD) }
                         ejecutarConsultaFirebase(nombreBD)
                     } else {
-                        android.util.Log.e("DIAGNOSTICO", "Paso FINAL - No existe el campo 'nombre' en /estilistas/$uid")
                         binding.tvSinCitas.visibility = View.VISIBLE
-                        binding.tvSinCitas.text = "Error: No se encontró tu nombre en el perfil"
+                        binding.tvSinCitas.text = context?.getString(R.string.error_nombre_perfil)
                     }
                 }
             }

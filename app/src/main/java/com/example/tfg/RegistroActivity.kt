@@ -13,22 +13,20 @@ class RegistroActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance().reference
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            binding = ActivityRegistroBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+        // BOTÓN IR HACIA ATRÁS
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
-            //BOTÓN IR HACIA ARTÁS
-            binding.btnBack.setOnClickListener {
-                finish()
-            }
-
-            //BOTÓN PARA GUARDAR EL USUARIO
-            binding.btnGuardarUsuario.setOnClickListener {
-                registrarUsuario()
-            }
+        // BOTÓN PARA GUARDAR EL USUARIO
+        binding.btnGuardarUsuario.setOnClickListener {
+            registrarUsuario()
+        }
     }
 
     private fun registrarUsuario() {
@@ -36,20 +34,20 @@ class RegistroActivity : AppCompatActivity() {
         val correo = binding.etNuevoEmail.text.toString().trim()
         val pass = binding.etNuevaContrasena.text.toString().trim()
 
+        // VALIDACIÓN BILINGÜE
         if (correo.isEmpty() || pass.isEmpty() || nombre.isEmpty()) {
-            Toast.makeText(this, "Rellena todos los campos / Fill all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.error_campos_obligatorios), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (pass.length < 6) {
-            Toast.makeText(this, "Mínimo 6 caracteres / Min 6 characters", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.error_pass_corta), Toast.LENGTH_SHORT).show()
             return
         }
 
-        //CREAMOS EL USUARIO EN FIREBASE
+        // CREAMOS EL USUARIO EN FIREBASE
         auth.createUserWithEmailAndPassword(correo, pass)
             .addOnCompleteListener { task ->
-                //SI SE HA COMPLETADO BIEN LOS CAMPOS, SE GUARDA EN LA BASE DE DATOS
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid
 
@@ -62,7 +60,9 @@ class RegistroActivity : AppCompatActivity() {
 
                         db.child("estilistas").child(uid).setValue(datosEstilista)
                             .addOnSuccessListener {
-                                Toast.makeText(this, "Bienvenido/a $nombre", Toast.LENGTH_SHORT).show()
+                                // Reutilizamos el string de bienvenida que definimos para la MainActivity
+                                Toast.makeText(this, getString(R.string.bienvenida_nombre, nombre), Toast.LENGTH_SHORT).show()
+
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.putExtra("NOMBRE_USUARIO", nombre)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -70,12 +70,13 @@ class RegistroActivity : AppCompatActivity() {
                                 finish()
                             }
                             .addOnFailureListener {
-                                Toast.makeText(this, "@string/errorPerfilGuardar", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, getString(R.string.error_guardar_perfil), Toast.LENGTH_SHORT).show()
                             }
                     }
                 } else {
-                    //SI NO, SALE UN TOAST CON QUE ERROR HA OCURRIDO
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    // Manejo de errores de Firebase bilingüe con detalle técnico
+                    val errorMsg = task.exception?.message ?: ""
+                    Toast.makeText(this, getString(R.string.error_registro_general, errorMsg), Toast.LENGTH_LONG).show()
                 }
             }
     }

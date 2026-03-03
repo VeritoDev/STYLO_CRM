@@ -21,8 +21,8 @@
     <string name="label_telefono">TELÉFONO: %1$s</string>
     <string name="cliente_nuevo">NUEVO CLIENTE</string>
     <string name="telefono">TELÉFONO:</string>
-    <string name="email">EMAIL:</string>
-    <string name="notas">NOTAS:</string>
+    <string name="email">EMAIL: %1$s</string>
+    <string name="notas">NOTAS: %1$s</string>
     <string name="guardar">GUARDAR CLIENTE</string>
     <string name="detalle_cliente">DETALLE CLIENTE</string>
     <string name="historial">HISTORIAL</string>
@@ -43,6 +43,10 @@
     <string name="estado">ESTADO</string>
     <string name="noCitas">No hay citas programadas</string>
     <string name="noClientes">No hay clientes guardados</string>
+    <string name="eliminar_cliente">¿Eliminar Cliente?</string>
+    <string name="eliminar_mensaje">No se puede deshacer. ¿Estás seguro?</string>
+    <string name="cancelar">CANCELAR</string>
+    <string name="cliente_eliminado">Cliente eliminado</string>
     <string name="editarCliente">EDITAR CLIENTE</string>
     <string name="cambiar_password">Cambiar Contraseña</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
@@ -51,20 +55,40 @@
     <string name="sin_resultados_busqueda_citas">No se han encontrado citas que coincidan con \"%s\"</string>
     <string name="cambiar_idioma">Cambiar Idioma</string>
     <string name="selecciona_idioma">Selecciona tu idioma</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="recuperarCuenta">¿Olvidaste la contraseña?</string>
+    <string name="send">Enviar</string>
+    <string name="label_cliente">CLIENTE</string>
+    <string name="label_estilista">ESTILISTA</string>
+    <string name="servicio_corte">Corte</string>
+    <string name="servicio_tinte">Tinte</string>
+    <string name="servicio_barba">Barba</string>
+    <string name="servicio_peinado">Peinado</string>
+    <string name="hora_reservada">Lo siento, esa hora está reservada</string>
+    <string name="cita_reservada">Cita reservada</string>
+    <string name="seleccionar_estilista">Selecciona un estilista</string>
+    <string name="seleccionar_servicio">Selecciona un servicio</string>
+    <string name="horario">El horario es hasta las 20:00</string>
+    <string name="hora_elegida">Por favor, elige una hora entre las 09:00 y las 20:00</string>
+    <string name="noExisteCliente">El cliente no existe</string>
+    <string name="estilistaOcupado">El estilista está ocupado</string>
+    <string name="sin_citas_historial">This customer has no recorded appointments</string>
+    <string name="cliente_actualizado">Se ha actualizado el cliente</string>
+    <string name="cliente_creado">Cliente creado y aviso enviado</string>
+    <string name="error_crear_cliente">Error al crear al cliente</string>
+    <string name="error_cliente_telefono">Ya hay un cliente registrado con este teléfono</string>
+    <string name="error_nombre_perfil">No existe ese nombre de perfil</string>
+    <string name="email_valido">Introduce un email válido</string>
+    <string name="toast_recuperacion_enviado">Email de recuperación enviado a %1$s</string>
+    <string name="toast_cita_con">Cita con: %1$s</string>
+    <string name="error_sesion_invalida">Sesión no válida</string>
+    <string name="login_no_cuenta">¿No tienes cuenta? Regístrate</string>
+    <string name="link_registrate">Regístrate</string>
+    <string name="bienvenida_nombre">Bienvenido/a, %1$s</string>
+    <string name="menu_cambiar_pass">Cambiar Contraseña</string>
+    <string name="menu_logout">Cerrar Sesión</string>
+    <string name="menu_cambiar_idioma">Cambiar Idioma</string>
+    <string name="error_campos_obligatorios">Rellena todos los campos</string>
+    <string name="error_pass_corta">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_guardar_perfil">Error al guardar los datos del perfil</string>
+    <string name="error_registro_general">Error en el registro: %1$s</string>
 </resources>

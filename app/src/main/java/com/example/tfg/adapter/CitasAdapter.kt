@@ -31,9 +31,11 @@ class CitasAdapter(
             val contexto = root.context
 
             if (esEstilista) {
-                holder.binding.tvNombreItem.text = "CLIENTE: ${cita.nombreCliente.uppercase()}"
+                val etiqueta = contexto.getString(R.string.label_cliente)
+                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.nombreCliente.uppercase()}"
             } else {
-                holder.binding.tvNombreItem.text = "ESTILISTA: ${cita.estilista.uppercase()}"
+                val etiqueta = contexto.getString(R.string.label_estilista)
+                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.uppercase()}"
             }
 
             tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"

@@ -18,6 +18,7 @@ import com.example.tfg.databinding.FragmentCrearCitasBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.MainRepository
 import java.util.Calendar
+import kotlin.collections.mapOf
 
 class CrearCitasFragment : Fragment() {
 
@@ -25,10 +26,10 @@ class CrearCitasFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainRepository = MainRepository()
     private val duracionServicios = mapOf(
-        "Corte" to 30,
-        "Tinte" to 60,
-        "Barba" to 20,
-        "Peinado" to 45
+        context?.getString(R.string.servicio_corte) to 30,
+        context?.getString(R.string.servicio_tinte) to 60,
+        context?.getString(R.string.servicio_barba) to 20,
+        context?.getString(R.string.servicio_peinado) to 45
     )
 
     override fun onCreateView(
@@ -94,7 +95,7 @@ class CrearCitasFragment : Fragment() {
                     if (selectedHour == 20 && selectedMinute > 0) {
                         Toast.makeText(
                             requireContext(),
-                            "El horario es hasta las 20:00",
+                            context?.getString(R.string.horario),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
@@ -105,7 +106,7 @@ class CrearCitasFragment : Fragment() {
                     //SI ESTÁ FUERA DE RANGO, AVISAMOS AL USUARIO
                     Toast.makeText(
                         requireContext(),
-                        "Por favor, elige una hora entre las 09:00 y las 20:00",
+                        context?.getString(R.string.hora_elegida),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -124,12 +125,12 @@ class CrearCitasFragment : Fragment() {
         val hora = binding.etCitaHora.text.toString().trim()
 
         if (binding.spinnerServicios?.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), "Selecciona un servicio", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), context?.getString(R.string.seleccionar_servicio), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (telefonoCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-            Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), context?.getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -138,13 +139,13 @@ class CrearCitasFragment : Fragment() {
         // BUSCAMOS AL CLIENTE POR NÚMERO DE TELÉFONO
         mainRepository.buscarClientePorTelefono(telefonoCliente) { cliente ->
             if (cliente == null) {
-                Toast.makeText(requireContext(), "El cliente no existe", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), context?.getString(R.string.noExisteCliente), Toast.LENGTH_SHORT).show()
                 return@buscarClientePorTelefono
             }
 
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
                 if (choque) {
-                    Toast.makeText(requireContext(), "El peluquero está ocupado", Toast.LENGTH_LONG)
+                    Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG)
                         .show()
                 } else {
                     val nuevaCita = Cita(
@@ -170,10 +171,11 @@ class CrearCitasFragment : Fragment() {
             }
         }
     }
+
     private fun configurarSpinner() {
         val placeholder = getString(R.string.servicio)
         val serviciosConHint = mutableListOf(placeholder)
-        serviciosConHint.addAll(duracionServicios.keys)
+        serviciosConHint.addAll(duracionServicios.keys as Collection<String>)
 
         val adapter = object : ArrayAdapter<String>(
             requireContext(),
@@ -182,7 +184,11 @@ class CrearCitasFragment : Fragment() {
         ) {
             override fun isEnabled(position: Int): Boolean = position != 0
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
                 val view = super.getDropDownView(position, convertView, parent)
                 val tv = view as TextView
 

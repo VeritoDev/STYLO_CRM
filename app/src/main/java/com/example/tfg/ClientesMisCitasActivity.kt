@@ -25,7 +25,7 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     private lateinit var adapter: CitasAdapter
     private val listaCitas = mutableListOf<Cita>()
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClienteMisCitasBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,17 +35,21 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         cargarCitasDelCliente()
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         binding.rvMisCitas.layoutManager = LinearLayoutManager(this)
 
         adapter = CitasAdapter(listaCitas, esEstilista = false, onCitaClick = { cita ->
-            Toast.makeText(this, "Cita con: ${cita.estilista}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                getString(R.string.toast_cita_con, cita.estilista),
+                Toast.LENGTH_SHORT
+            ).show()
         })
 
         binding.rvMisCitas.adapter = adapter
     }
 
-    private fun setupListeners(){
+    private fun setupListeners() {
         binding.btnVolverReservar.setOnClickListener {
             val fragment = ClienteReservasFragment()
 
@@ -68,7 +72,11 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         val emailActual = FirebaseAuth.getInstance().currentUser?.email
 
         if (emailActual == null) {
-            Toast.makeText(this, "Sesión no válida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                getString(R.string.error_sesion_invalida),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
@@ -96,7 +104,11 @@ class ClientesMisCitasActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@ClientesMisCitasActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@ClientesMisCitasActivity,
+                        "Error: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
