@@ -1,5 +1,6 @@
 package com.example.tfg.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,5 +38,21 @@ class GestionCitaFragment (
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent)
+
+            val params = attributes
+
+            val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+            params.width = width
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+            attributes = params
+        }
     }
 }
