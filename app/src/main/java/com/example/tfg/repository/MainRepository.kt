@@ -1,5 +1,6 @@
 package com.example.tfg.repository
 
+import android.util.Log
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +21,29 @@ class MainRepository {
     private fun getRefEstilistas() = database.child("estilistas")
 
     // --- LÓGICA DE ESTILISTAS ---
+
+    //BÚSCAR ESTILISTA POR EMAIL
+    fun buscarEstilistaPorEmail(email: String?, callback: (Boolean) -> Unit) {
+        if (email == null){
+            callback(false)
+            return
+        }
+        val emailLimpio = email.trim().lowercase()
+
+        getRefEstilistas().orderByChild("email").equalTo(emailLimpio).get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.exists()){
+                    callback(true)
+                } else {
+                    Log.e("DEBUG_ERROR", "No se encontro estilista con ese email: $emailLimpio")
+                    callback(false)
+                }
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
+
     fun obtenerNombresEstilistas(callback: (List<String>) -> Unit){
         getRefEstilistas().get().addOnSuccessListener { snapshot  ->
             val nombres = mutableListOf<String>()
@@ -146,8 +170,22 @@ class MainRepository {
                 }
             })
     }
-    fun eliminarCliente(clienteId: String) {
+
+    fun eliminarClienteYSusCitas(clienteId: String, callback: (Boolean) -> Unit) {
         getRefClientes().child(clienteId).removeValue()
+            .addOnSuccessListener {
+                getRefCitas().orderByChild("idCliente").equalTo(clienteId).get()
+                    .addOnSuccessListener { snapshot ->
+                        if (snapshot.exists()) {
+                            for (citaSnapshot in snapshot.children) {
+                                citaSnapshot.ref.removeValue()
+                            }
+                        }
+                        callback(true)
+                    }
+                    .addOnFailureListener { callback(true) }
+            }
+            .addOnFailureListener { callback(false) }
     }
     fun actualizarCliente(id: String, datos: Map<String, Any>, callback: (Boolean) -> Unit) {
         //CREAMOS UNA COPIA MUTABLE DE LOS DATOS PARA MODIFICAR EL NOMBRE SI EXISTE

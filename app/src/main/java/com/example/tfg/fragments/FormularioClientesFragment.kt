@@ -87,63 +87,38 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                 }
             }
         } else {
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "123456")
-                .addOnCompleteListener { task ->
-                    if (isAdded) {
-                        if (task.isSuccessful) {
-                            val uid = task.result?.user?.uid ?: ""
-
-                            val nuevoCliente = Cliente(
-                                id = uid,
-                                nombre = nombreMayuscula,
-                                telefono = telefono,
-                                email = email,
-                                notas = notas
-                            )
-
-                            mainRepository.insertarCliente(nuevoCliente)
-                            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-
-                            Toast.makeText(
-                                requireContext(),
-                                context?.getString(R.string.cliente_creado),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigateUp()
+            mainRepository.buscarClientePorEmail(email) { clienteEmail ->
+                if (clienteEmail != null){
+                    Toast.makeText(requireContext(), context?.getString(R.string.error_sesion_invalida), Toast.LENGTH_SHORT).show()
+                } else {
+                    mainRepository.buscarClientePorTelefono(telefono) { clienteTelefono ->
+                        if(clienteTelefono != null){
+                            Toast.makeText(requireContext(), getString(R.string.error_cliente_telefono), Toast.LENGTH_SHORT).show()
                         } else {
-                            val error = task.exception?.message ?: context?.getString(R.string.error_crear_cliente)
-                            Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "123456")
+                                .addOnCompleteListener { task ->
+                                    if(isAdded && task.isSuccessful){
+                                        val uid = task.result?.user?.uid ?: ""
+                                        val nuevoCliente = Cliente(
+                                            id = uid,
+                                            nombre = nombreMayuscula,
+                                            telefono = telefono,
+                                            email = email,
+                                            notas = notas
+                                        )
+                                        mainRepository.insertarCliente(nuevoCliente)
+
+                                        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+
+                                        Toast.makeText(requireContext(), getString(R.string.cliente_creado), Toast.LENGTH_SHORT).show()
+                                        findNavController().navigateUp()
+                                    } else if (isAdded){
+                                        val errorMsg = task.exception?.message ?: getString(R.string.error_crear_cliente)
+                                        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                         }
                     }
-                }
-
-            mainRepository.buscarClientePorTelefono(telefono) { clienteExistente ->
-                if (clienteExistente != null){
-                    Toast.makeText(requireContext(), context?.getString(R.string.error_cliente_telefono), Toast.LENGTH_SHORT).show()
-                } else {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, "123456")
-                        .addOnCompleteListener { task ->
-                            if (isAdded) {
-                                if(task.isSuccessful){
-                                    val uid = task.result?.user?.uid ?: ""
-                                    val nuevocliente = Cliente (
-                                        id = uid,
-                                        nombre = nombreMayuscula,
-                                        telefono = telefono,
-                                        email = email,
-                                        notas = notas
-                                    )
-                                    mainRepository.insertarCliente(nuevocliente)
-                                    //ESTO HACE QUE SE ENVIE UN CORREO PARA QUE CAMBIE LA CONTRASEÑA POR DEFECTO A LA CONTRASEÑA QUE QUIERA EL CLIENTE
-                                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                                    Toast.makeText(requireContext(), context?.getString(R.string.cliente_creado), Toast.LENGTH_SHORT).show()
-                                    findNavController().navigateUp()
-                                } else {
-                                    val error = task.exception?.message ?: context?.getString(R.string.error_crear_cliente)
-                                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
                 }
             }
         }

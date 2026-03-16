@@ -1,10 +1,8 @@
 package com.example.tfg
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +22,8 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     private val db = FirebaseDatabase.getInstance().reference
     private lateinit var adapter: CitasAdapter
     private val listaCitas = mutableListOf<Cita>()
+
+    private var citasListener: ValueEventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +60,12 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         }
 
         binding.btnCerrarSesion.setOnClickListener {
+            citasListener?.let{
+                db.child("citas").removeEventListener(it)
+            }
+
             FirebaseAuth.getInstance().signOut()
+
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -69,47 +74,38 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun cargarCitasDelCliente() {
-        val emailActual = FirebaseAuth.getInstance().currentUser?.email
+        val emailActual = FirebaseAuth.getInstance().currentUser?.email ?: return
 
-        if (emailActual == null) {
-            Toast.makeText(
-                this,
-                getString(R.string.error_sesion_invalida),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
+        citasListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val nuevasCitas = mutableListOf<Cita>()
+                if(snapshot.exists()){
+                    binding.tvSinCitas.visibility = View.GONE
+                    for(data in snapshot.children){
+                        data.getValue(Cita::class.java)?.let { nuevasCitas.add(it)}
+                    }
+                    nuevasCitas.sortByDescending { it.fecha }
+                } else {
+                    binding.tvSinCitas.visibility = View.VISIBLE
+                }
+                adapter.actualizarLista(nuevasCitas)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                if (!isFinishing){
+                    Toast.makeText(this@ClientesMisCitasActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         db.child("citas")
             .orderByChild("emailCliente")
             .equalTo(emailActual)
-            .addValueEventListener(object : ValueEventListener {
+            .addValueEventListener(citasListener!!)
+    }
 
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val nuevasCitas = mutableListOf<Cita>()
-
-                    if (snapshot.exists() && snapshot.childrenCount > 0) {
-                        binding.tvSinCitas.visibility = android.view.View.GONE
-                        for (data in snapshot.children) {
-                            val cita = data.getValue(Cita::class.java)
-                            cita?.let { nuevasCitas.add(it) }
-                        }
-                        nuevasCitas.sortByDescending { it.fecha }
-                    } else {
-                        binding.tvSinCitas.visibility = android.view.View.VISIBLE
-                    }
-
-                    // USAMOS LA FUNCIÓN DE ACTUALIZACIÓN DEL ADAPTADOR
-                    adapter.actualizarLista(nuevasCitas)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        this@ClientesMisCitasActivity,
-                        "Error: ${error.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+    override fun onDestroy() {
+        super.onDestroy()
+        citasListener?.let { db.child("citas").removeEventListener(it) }
     }
 }

@@ -27,12 +27,7 @@ class ClienteReservasFragment : Fragment() {
     private val mainRepository = MainRepository()
 
     // Mapa de duraciones para la validación de choques
-    private val duracionServicios = mapOf(
-        context?.getString(R.string.servicio_corte) to 30,
-        context?.getString(R.string.servicio_tinte) to 60,
-        context?.getString(R.string.servicio_barba) to 20,
-        context?.getString(R.string.servicio_peinado) to 45
-    )
+    private var duracionServicios: Map<String, Int> = emptyMap()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentClienteReservasBinding.inflate(inflater, container, false)
@@ -43,11 +38,21 @@ class ClienteReservasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
         configurarSpinners()
+
+        duracionServicios = mapOf(
+            getString(R.string.servicio_corte) to 30,
+            getString(R.string.servicio_tinte) to 60,
+            getString(R.string.servicio_barba) to 20,
+            getString(R.string.servicio_peinado) to 45
+        )
+
+        setupListeners()
+        configurarSpinners()
     }
 
     @SuppressLint("DefaultLocale")
     private fun setupListeners() {
-        // VOLVER ATRÁS (Simple)
+        // VOLVER ATRÁS
         binding.btnBackCita.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -85,31 +90,31 @@ class ClienteReservasFragment : Fragment() {
     }
 
     private fun validarYReservar() {
-        val servicio = binding.spinnerServicios.selectedItem.toString()
-        val estilista = binding.spinnerEstilistas.selectedItem.toString()
+        val servicio = binding.spinnerServicios.selectedItem?.toString() ?: ""
+        val estilista = binding.spinnerEstilistas.selectedItem?.toString() ?: ""
         val fecha = binding.btnFechaCard.text.toString()
         val hora = binding.btnHoraCard.text.toString()
         val emailActual = FirebaseAuth.getInstance().currentUser?.email
 
         // Validaciones básicas
-        if (binding.spinnerServicios.selectedItemPosition == 0 ||
-            binding.spinnerEstilistas.selectedItemPosition == 0 ||
+        if (binding.spinnerServicios.selectedItemPosition <= 0 ||
+            binding.spinnerEstilistas.selectedItemPosition <= 0 ||
             fecha == getString(R.string.fecha) || hora == getString(R.string.hora)) {
-            Toast.makeText(requireContext(), context?.getString(R.string.errorLoginCamposVacios), Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.errorLoginCamposVacios), Toast.LENGTH_LONG).show()
             return
         }
 
         val duracion = duracionServicios[servicio] ?: 30
 
-        // 1. Buscamos los datos del cliente por su email
+        //Buscamos los datos del cliente por su email
         mainRepository.buscarClientePorEmail(emailActual) { cliente ->
             if (cliente != null) {
-                // 2. Verificamos que el peluquero no esté ocupado
+                //Verificamos que el peluquero no esté ocupado
                 mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
                     if (ocupado) {
                         Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                     } else {
-                        // 3. Creamos la cita
+                        //Creamos la cita
                         val nuevaCita = Cita(
                             id = "",
                             idCliente = cliente.id,
@@ -140,7 +145,7 @@ class ClienteReservasFragment : Fragment() {
         }
         // Servicios desde el Mapa
         setCustomAdapter(binding.spinnerServicios, context?.getString(R.string.seleccionar_servicio),
-            duracionServicios.keys.toList() as List<String>
+            duracionServicios.keys.toList()
         )
     }
 

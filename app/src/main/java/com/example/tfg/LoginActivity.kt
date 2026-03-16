@@ -8,6 +8,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,6 +16,7 @@ import com.example.tfg.fragments.RecuperarPassFragment
 import com.example.tfg.databinding.LoginBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.viewModel.LoginViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,9 +61,19 @@ class LoginActivity : AppCompatActivity() {
 
         // --- LÓGICA DE LOGIN ---
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
+            val email = binding.etEmail.text.toString().trim().lowercase()
             val pass = binding.etPassword.text.toString().trim()
-            viewModel.entrar(email, pass)
+
+            if (email.isEmpty() || pass.isEmpty()){
+                Toast.makeText(this, getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            FirebaseAuth.getInstance().signOut()
+
+            binding.btnLogin.postDelayed({
+                viewModel.entrar(email, pass)
+            }, 250)
         }
 
         // --- LÓGICA DE RECUPERAR CONTRASEÑA ---
@@ -89,23 +101,39 @@ class LoginActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
-                val emailLogueado = viewModel.obtenerEmailUsuarioActual()
-                dirigirSegunRol(emailLogueado ?: binding.etEmail.text.toString().trim())
+                val emailIngresado = binding.etEmail.text.toString().trim().lowercase()
+                dirigirSegunRol(emailIngresado)
+            } else {
+                Toast.makeText(this, getString(R.string.error_sesion_invalida), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun dirigirSegunRol(email: String?) {
-        mainRepository.buscarClientePorEmail(email) { cliente ->
-            val intent = if (cliente != null) {
-                Intent(this, ClientesMisCitasActivity::class.java).apply {
-                    putExtra("CLIENTE_ID", cliente.id)
-                }
+        if (email.isNullOrEmpty()) return
+        val emailSeguro = email.trim().lowercase()
+
+        mainRepository.buscarEstilistaPorEmail(emailSeguro) { esEstilista ->
+            if (esEstilista) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
             } else {
-                Intent(this, MainActivity::class.java)
+                mainRepository.buscarClientePorEmail(emailSeguro) { cliente ->
+                    if (cliente != null) {
+                        val intent = Intent(this, ClientesMisCitasActivity::class.java).apply {
+                            putExtra("CLIENTE_ID", cliente.id)
+                        }
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        FirebaseAuth.getInstance().signOut()
+                        Toast.makeText(this, getString(R.string.error_sesion_invalida), Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
-            startActivity(intent)
-            finish()
         }
     }
 }

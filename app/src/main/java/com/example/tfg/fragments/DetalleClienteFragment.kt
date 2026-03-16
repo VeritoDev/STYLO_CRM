@@ -74,7 +74,12 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
                 builder.setMessage(getString(R.string.eliminar_mensaje))
 
                 builder.setPositiveButton(getString(R.string.eliminar)) { _, _ ->
-                    repository.eliminarCliente(clienteId)
+                    repository.eliminarClienteYSusCitas(clienteId){ exito ->
+                        if (exito){
+                            Toast.makeText(requireContext(), getString(R.string.cliente_eliminado), Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                        }
+                    }
                     Toast.makeText(requireContext(), getString(R.string.cliente_eliminado), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
