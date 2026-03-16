@@ -91,4 +91,8 @@
     <string name="error_pass_corta">Password must be at least 6 characters</string>
     <string name="error_guardar_perfil">Error saving profile data</string>
     <string name="error_registro_general">Registration error: %1$s</string>
+    <string name="afirmar">Yes</string>
+    <string name="negar">No</string>
+    <string name="finalizarCita">Is the appointment finished?</string>
+    <string name="citaFinalizada">The appointment has finished</string>
 </resources>

@@ -91,4 +91,8 @@
     <string name="error_pass_corta">La contraseña debe tener al menos 6 caracteres</string>
     <string name="error_guardar_perfil">Error al guardar los datos del perfil</string>
     <string name="error_registro_general">Error en el registro: %1$s</string>
+    <string name="afirmar">Sí</string>
+    <string name="negar">No</string>
+    <string name="finalizarCita">¿Se ha finalizado la cita?</string>
+    <string name="citaFinalizada">Se ha finalizado la cita</string>
 </resources>

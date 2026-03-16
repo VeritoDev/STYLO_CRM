@@ -267,6 +267,13 @@ class MainRepository {
                 }
             })
     }
+    //LÓGICA PARA TERMINAR LA CITA
+    fun finalizarCita(citaId: String, callback: (Boolean) -> Unit){
+        getRefCitas().child(citaId).removeValue()
+            .addOnFailureListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
 
     //FUNCIONES AUXILIARES
     private fun horaAMinutos(hora: String): Int {

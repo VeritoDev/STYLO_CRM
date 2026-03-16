@@ -3,6 +3,7 @@ package com.example.tfg.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.FragmentInicioBinding
 import com.example.tfg.repository.MainRepository
 import androidx.core.content.edit
+import com.example.tfg.model.Cita
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
@@ -28,7 +30,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     }
 
     private fun setupUI() {
-        val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
 
         val nombreReal = prefs.getString("user_name_key", null)
 
@@ -56,10 +58,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             listaCitas = emptyList(),
             esEstilista = false,
             onCitaClick = { cita ->
-                val bundle = Bundle().apply {
-                    putString("clienteId", cita.idCliente)
-                }
-                findNavController().navigate(R.id.action_inicioFragment_to_formularioClientesFragment, bundle)
+                abrirDialogoGestion(cita)
             }
         )
 
@@ -106,5 +105,25 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
                 citasAdapter.actualizarLista(listaCitas)
             }
         }
+    }
+    private fun abrirDialogoGestion(cita: Cita) {
+        val dialogo = GestionCitaFragment(
+            cita = cita,
+            onFinalizada = {
+                mainRepository.finalizarCita(cita.id) { exito ->
+                    if (exito) {
+                        Toast.makeText(requireContext(), getString(R.string.citaFinalizada), Toast.LENGTH_SHORT).show()
+                        cargarDatos()
+                    }
+                }
+            },
+            onEditar = {
+                val bundle = Bundle().apply {
+                    putString("CITA_ID", cita.id)
+                }
+                findNavController().navigate(R.id.action_inicioFragment_to_crearCitasFragment, bundle)
+            }
+        )
+        dialogo.show(parentFragmentManager, "GestionCita")
     }
 }

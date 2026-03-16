@@ -13,9 +13,7 @@ class CitasAdapter(
     private val onCitaClick: (Cita) -> Unit,
     private val esEstilista: Boolean
 ) : RecyclerView.Adapter<CitasAdapter.CitaViewHolder>() {
-
     private var listaFiltrada: MutableList<Cita> = listaCitas.toMutableList()
-
     class CitaViewHolder(val binding: ItemCitasBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitaViewHolder {

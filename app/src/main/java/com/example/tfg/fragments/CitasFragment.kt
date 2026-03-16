@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,7 @@ import com.example.tfg.R
 import com.example.tfg.databinding.FragmentCitasBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.CitasAdapter
+import com.example.tfg.model.Cita
 
 class CitasFragment : Fragment(R.layout.fragment_citas) {
 
@@ -73,10 +75,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             listaCitas = emptyList(),
             esEstilista = true,
             onCitaClick = { cita ->
-                val bundle = Bundle().apply {
-                    putString("clienteId", cita.idCliente)
-                }
-                findNavController().navigate(R.id.action_citasFragment_to_detalleClienteFragment, bundle)
+                abrirDialogoGestion(cita)
             }
         )
         binding.rvCitas.adapter = citasAdapter
@@ -93,5 +92,25 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
                 citasAdapter.actualizarLista(listaCitas)
             }
         }
+    }
+    private fun abrirDialogoGestion(cita: Cita) {
+        val dialogo = GestionCitaFragment(
+            cita = cita,
+            onFinalizada = {
+                mainRepository.finalizarCita(cita.id) { exito ->
+                    if (exito) {
+                        Toast.makeText(requireContext(), getString(R.string.citaFinalizada), Toast.LENGTH_SHORT).show()
+                        cargarCitas()
+                    }
+                }
+            },
+            onEditar = {
+                val bundle = Bundle().apply {
+                    putString("CITA_ID", cita.id)
+                }
+                findNavController().navigate(R.id.action_inicioFragment_to_crearCitasFragment, bundle)
+            }
+        )
+        dialogo.show(parentFragmentManager, "GestionCita")
     }
 }
