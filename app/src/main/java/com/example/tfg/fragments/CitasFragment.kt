@@ -81,18 +81,19 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         binding.rvCitas.adapter = citasAdapter
     }
 
-    private fun cargarCitas(){
-        mainRepository.getTodasLasCitas { listaCitas ->
-            val listaFiltrada = listaCitas.filter { it.estado != "finalizada" }
+    private fun cargarCitas() {
+        mainRepository.getTodasLasCitas { listaTotal ->
+            val listaPendientes = listaTotal.filter { it.estado != "finalizado" }
 
-            if(listaFiltrada.isEmpty()) {
+            if (listaPendientes.isEmpty()) {
+                binding.tvSinCitas.text = "No tienes citas pendientes"
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvCitas.visibility = View.GONE
                 citasAdapter.actualizarLista(emptyList())
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvCitas.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaFiltrada)
+                citasAdapter.actualizarLista(listaPendientes)
             }
         }
     }

@@ -97,19 +97,17 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     // Función auxiliar para no repetir código
     private fun ejecutarConsultaFirebase(nombre: String) {
         mainRepository.getCitasPorEstilista(nombre) { listaCitas ->
-            val listaFiltrada = listaCitas.filter { it.estado != "finalizada" }
+            val listaPendientes = listaCitas.filter { it.estado?.trim()?.lowercase() != "finalizado" }
 
-            if (listaCitas.isEmpty()) {
-                binding.tvSinCitas.visibility = View.VISIBLE
-                binding.rvDashboard.visibility = View.GONE
-            } else if (listaFiltrada.isEmpty()) {
+            if (listaPendientes.isEmpty()) {
+                binding.tvSinCitas.text = "No tienes citas pendientes"
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvDashboard.visibility = View.GONE
                 citasAdapter.actualizarLista(emptyList())
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvDashboard.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaFiltrada)
+                citasAdapter.actualizarLista(listaPendientes)
             }
         }
     }

@@ -202,6 +202,22 @@ class MainRepository {
     }
 
     // --- LÓGICA DE CITAS ---
+    // BUSCAR UNA CITA ESPECÍFICA POR SU ID (Para cargar los datos al editar)
+    fun getCitaPorId(id: String, callback: (Cita?) -> Unit) {
+        getRefCitas().child(id).get().addOnSuccessListener { snapshot ->
+            val cita = snapshot.getValue(Cita::class.java)
+            callback(cita)
+        }.addOnFailureListener {
+            callback(null)
+        }
+    }
+
+    // ACTUALIZAR UNA CITA EXISTENTE
+    fun actualizarCita(cita: Cita, callback: (Boolean) -> Unit) {
+        getRefCitas().child(cita.id).setValue(cita)
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
     //LÓGICA PARA QUE SE VEA EN LA PANTALLA DE CITAS
     fun getTodasLasCitas(onResult: (List<Cita>) -> Unit) {
         getRefCitas().addValueEventListener(object : ValueEventListener {
@@ -272,7 +288,7 @@ class MainRepository {
         val actualizaciones = mapOf("estado" to "finalizado")
 
         getRefCitas().child(citaId).updateChildren(actualizaciones)
-            .addOnFailureListener { callback(true) }
+            .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
 

@@ -18,19 +18,15 @@ import com.example.tfg.databinding.FragmentCrearCitasBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.MainRepository
 import java.util.Calendar
-import kotlin.collections.mapOf
 
 class CrearCitasFragment : Fragment() {
 
     private var _binding: FragmentCrearCitasBinding? = null
     private val binding get() = _binding!!
     private val mainRepository = MainRepository()
-    private val duracionServicios = mapOf(
-        context?.getString(R.string.servicio_corte) to 30,
-        context?.getString(R.string.servicio_tinte) to 60,
-        context?.getString(R.string.servicio_barba) to 20,
-        context?.getString(R.string.servicio_peinado) to 45
-    )
+    private val duracionServicios = mutableMapOf<String, Int>()
+
+    private var citaIdParaEditar: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +40,15 @@ class CrearCitasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        citaIdParaEditar = arguments?.getString("CITA_ID")
+
+        inicializarServicios()
         setupListeners()
         configurarSpinner()
+
+        if (citaIdParaEditar != null) {
+            configurarModoEdicion(citaIdParaEditar!!)
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -119,18 +122,26 @@ class CrearCitasFragment : Fragment() {
 
     private fun validarYGuardarCita() {
         val telefonoCliente = binding.etCitaCliente.text.toString().trim()
-        val servicio = binding.spinnerServicios?.selectedItem.toString().trim()
+        val servicio = binding.spinnerServicios?.selectedItem?.toString()?.trim() ?: ""
         val estilista = "Vero"
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
 
         if (binding.spinnerServicios?.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), context?.getString(R.string.seleccionar_servicio), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                context?.getString(R.string.seleccionar_servicio),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
         if (telefonoCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-            Toast.makeText(requireContext(), context?.getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                context?.getString(R.string.errorLoginCamposVacios),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
@@ -139,17 +150,24 @@ class CrearCitasFragment : Fragment() {
         // BUSCAMOS AL CLIENTE POR NÚMERO DE TELÉFONO
         mainRepository.buscarClientePorTelefono(telefonoCliente) { cliente ->
             if (cliente == null) {
-                Toast.makeText(requireContext(), context?.getString(R.string.noExisteCliente), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    context?.getString(R.string.noExisteCliente),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@buscarClientePorTelefono
             }
 
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
-                if (choque) {
-                    Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG)
-                        .show()
+                if (choque && citaIdParaEditar == null) {
+                    Toast.makeText(
+                        requireContext(),
+                        context?.getString(R.string.estilistaOcupado),
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     val nuevaCita = Cita(
-                        id = "",
+                        id = citaIdParaEditar ?: "",
                         idCliente = cliente.id,
                         nombreCliente = cliente.nombre,
                         telefonoCliente = cliente.telefono,
@@ -157,14 +175,31 @@ class CrearCitasFragment : Fragment() {
                         estilista = estilista,
                         servicio = servicio,
                         fecha = fecha,
-                        hora = hora
+                        hora = hora,
+                        estado = "pendiente"
                     )
 
-                    mainRepository.crearCita(nuevaCita) { exitoso ->
-                        if (exitoso) {
-                            Toast.makeText(requireContext(), "Cita confirmada", Toast.LENGTH_SHORT)
-                                .show()
-                            findNavController().popBackStack()
+                    if (citaIdParaEditar != null) {
+                        mainRepository.actualizarCita(nuevaCita) { exitoso ->
+                            if (exitoso) {
+                                Toast.makeText(
+                                    requireContext(), "Se ha actualizado la cita",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                findNavController().popBackStack()
+                            }
+                        }
+                    } else {
+                        mainRepository.crearCita(nuevaCita) { exitoso ->
+                            if (exitoso) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Cita confirmada",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                findNavController().popBackStack()
+                            }
                         }
                     }
                 }
@@ -203,6 +238,36 @@ class CrearCitasFragment : Fragment() {
 
         adapter.setDropDownViewResource(R.layout.item_spinner_desplegable)
         binding.spinnerServicios?.adapter = adapter
+    }
+
+    private fun inicializarServicios() {
+        duracionServicios[getString(R.string.servicio_corte)] = 30
+        duracionServicios[getString(R.string.servicio_tinte)] = 60
+        duracionServicios[getString(R.string.servicio_barba)] = 20
+        duracionServicios[getString(R.string.servicio_peinado)] = 45
+    }
+
+    private fun configurarModoEdicion(id: String) {
+        binding.btnGuardarCita.text = context?.getString(R.string.editar)
+
+        mainRepository.getCitaPorId(id) { cita ->
+            if (cita != null) {
+                binding.etCitaCliente.setText(cita.telefonoCliente)
+                binding.etCitaFecha.setText(cita.fecha)
+                binding.etCitaHora.setText(cita.hora)
+
+                val adapter = binding.spinnerServicios?.adapter
+                val totalElementos = adapter?.count ?: 0
+
+                val posicion = (0 until totalElementos).indexOfFirst { i ->
+                    adapter?.getItem(i).toString() == cita.servicio
+                }
+
+                if (posicion != -1) {
+                    binding.spinnerServicios?.setSelection(posicion)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
