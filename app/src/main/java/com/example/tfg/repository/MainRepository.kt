@@ -291,6 +291,21 @@ class MainRepository {
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
+    //LÓGICA PARA OBTENER SOLO CITAS PENDIENTES PARA EL CLIENTE
+    fun getCitasActivasCliente(idCliente: String, onResult: (List<Cita>) -> Unit){
+        getRefCitas().orderByChild("idCliente").equalTo(idCliente)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
+                    val pendientes = lista.filter { it.estado != "finalizado" }
+                    onResult(pendientes.sortedWith (compareBy({it.fecha}, {it.hora})))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onResult(emptyList())
+                }
+            })
+    }
 
 
     //FUNCIONES AUXILIARES

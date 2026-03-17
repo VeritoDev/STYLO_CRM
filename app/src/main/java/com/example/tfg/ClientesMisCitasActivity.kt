@@ -78,17 +78,20 @@ class ClientesMisCitasActivity : AppCompatActivity() {
 
         citasListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val nuevasCitas = mutableListOf<Cita>()
-                if(snapshot.exists()){
-                    binding.tvSinCitas.visibility = View.GONE
-                    for(data in snapshot.children){
-                        data.getValue(Cita::class.java)?.let { nuevasCitas.add(it)}
-                    }
-                    nuevasCitas.sortByDescending { it.fecha }
-                } else {
+                val listaTotal = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
+
+                val listaFiltrada = listaTotal.filter {it.estado != "finalizado"}
+
+                if(listaFiltrada.isEmpty()){
+                    binding.tvSinCitas.text = "No tienes citas próximas"
                     binding.tvSinCitas.visibility = View.VISIBLE
+                    binding.rvMisCitas.visibility = View.GONE
+                    adapter.actualizarLista(emptyList())
+                } else {
+                    binding.tvSinCitas.visibility = View.GONE
+                    binding.rvMisCitas.visibility = View.VISIBLE
+                    adapter.actualizarLista(listaFiltrada.sortedWith(compareBy ({ it.fecha }, { it.hora })))
                 }
-                adapter.actualizarLista(nuevasCitas)
             }
 
             override fun onCancelled(error: DatabaseError) {

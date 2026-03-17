@@ -36,8 +36,6 @@ class ClienteReservasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupListeners()
-        configurarSpinners()
 
         duracionServicios = mapOf(
             getString(R.string.servicio_corte) to 30,
@@ -119,11 +117,13 @@ class ClienteReservasFragment : Fragment() {
                             id = "",
                             idCliente = cliente.id,
                             nombreCliente = cliente.nombre,
-                            emailCliente = emailActual!!,
+                            telefonoCliente = cliente.telefono,
+                            emailCliente = emailActual ?: "",
                             estilista = estilista,
                             servicio = servicio,
                             fecha = fecha,
-                            hora = hora
+                            hora = hora,
+                            estado = "pendiente"
                         )
 
                         mainRepository.crearCita(nuevaCita) { exitoso ->
