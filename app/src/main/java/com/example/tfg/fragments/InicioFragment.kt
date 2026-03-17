@@ -38,7 +38,8 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             binding.tvNombreUsuario.text = nombreReal.uppercase()
         } else {
             val usuario = mainRepository.getUsuarioActual()
-            binding.tvNombreUsuario.text = usuario?.email?.uppercase()?.substringBefore("@") ?: "Profesional"
+            binding.tvNombreUsuario.text =
+                usuario?.email?.uppercase()?.substringBefore("@") ?: "Profesional"
         }
 
         // NAVEGACIÓN PARA NUEVO CLIENTE
@@ -96,23 +97,34 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     // Función auxiliar para no repetir código
     private fun ejecutarConsultaFirebase(nombre: String) {
         mainRepository.getCitasPorEstilista(nombre) { listaCitas ->
+            val listaFiltrada = listaCitas.filter { it.estado != "finalizada" }
+
             if (listaCitas.isEmpty()) {
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvDashboard.visibility = View.GONE
+            } else if (listaFiltrada.isEmpty()) {
+                binding.tvSinCitas.visibility = View.VISIBLE
+                binding.rvDashboard.visibility = View.GONE
+                citasAdapter.actualizarLista(emptyList())
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvDashboard.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaCitas)
+                citasAdapter.actualizarLista(listaFiltrada)
             }
         }
     }
+
     private fun abrirDialogoGestion(cita: Cita) {
         val dialogo = GestionCitaFragment(
             cita = cita,
             onFinalizada = {
                 mainRepository.finalizarCita(cita.id) { exito ->
                     if (exito) {
-                        Toast.makeText(requireContext(), getString(R.string.citaFinalizada), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.citaFinalizada),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         cargarDatos()
                     }
                 }
@@ -121,7 +133,10 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
                 val bundle = Bundle().apply {
                     putString("CITA_ID", cita.id)
                 }
-                findNavController().navigate(R.id.action_inicioFragment_to_crearCitasFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_inicioFragment_to_crearCitasFragment,
+                    bundle
+                )
             }
         )
         dialogo.show(parentFragmentManager, "GestionCita")

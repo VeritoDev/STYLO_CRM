@@ -269,7 +269,9 @@ class MainRepository {
     }
     //LÓGICA PARA TERMINAR LA CITA
     fun finalizarCita(citaId: String, callback: (Boolean) -> Unit){
-        getRefCitas().child(citaId).removeValue()
+        val actualizaciones = mapOf("estado" to "finalizado")
+
+        getRefCitas().child(citaId).updateChildren(actualizaciones)
             .addOnFailureListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }

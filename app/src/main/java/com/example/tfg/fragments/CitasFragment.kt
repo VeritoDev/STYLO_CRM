@@ -83,13 +83,16 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
 
     private fun cargarCitas(){
         mainRepository.getTodasLasCitas { listaCitas ->
-            if(listaCitas.isEmpty()) {
+            val listaFiltrada = listaCitas.filter { it.estado != "finalizada" }
+
+            if(listaFiltrada.isEmpty()) {
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvCitas.visibility = View.GONE
+                citasAdapter.actualizarLista(emptyList())
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvCitas.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaCitas)
+                citasAdapter.actualizarLista(listaFiltrada)
             }
         }
     }

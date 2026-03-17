@@ -9,5 +9,6 @@ data class Cita(
     val estilista: String = "",
     val servicio: String = "",
     val fecha: String = "",
-    val hora: String = ""
+    val hora: String = "",
+    val estado: String = "pendiente"
 )
