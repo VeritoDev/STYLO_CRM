@@ -28,18 +28,22 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         if (clienteId.isNotEmpty()) {
             repository.obtenerDetalleCliente(clienteId) { cliente ->
+                if (!isAdded) return@obtenerDetalleCliente
+
                 if (cliente != null) {
                     rellenarInterfaz(cliente)
                 }
 
                 repository.getHistorialCitasCliente(clienteId) { lista ->
+                    if (!isAdded) return@getHistorialCitasCliente
+
                     if (lista.isEmpty()) {
                         binding.rvHistorialCitas.visibility = View.GONE
                         binding.tvSinCitas.visibility = View.VISIBLE
                         binding.tvSinCitas.text = getString(R.string.sin_citas_historial)
                     } else {
-                        binding.rvHistorialCitas.visibility = View.VISIBLE
                         binding.tvSinCitas.visibility = View.GONE
+                        binding.rvHistorialCitas.visibility = View.VISIBLE
 
                         val adapter = HistorialAdapter(lista)
                         binding.rvHistorialCitas.layoutManager = LinearLayoutManager(requireContext())
@@ -80,8 +84,6 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
                             findNavController().navigateUp()
                         }
                     }
-                    Toast.makeText(requireContext(), getString(R.string.cliente_eliminado), Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
                 }
 
                 builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->

@@ -60,8 +60,9 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         }
 
         binding.btnCerrarSesion.setOnClickListener {
-            citasListener?.let{
+            citasListener?.let {
                 db.child("citas").removeEventListener(it)
+                citasListener = null
             }
 
             FirebaseAuth.getInstance().signOut()
@@ -109,6 +110,11 @@ class ClientesMisCitasActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        citasListener?.let { db.child("citas").removeEventListener(it) }
+    }
+
+    override fun onStop() {
+        super.onStop()
         citasListener?.let { db.child("citas").removeEventListener(it) }
     }
 }
