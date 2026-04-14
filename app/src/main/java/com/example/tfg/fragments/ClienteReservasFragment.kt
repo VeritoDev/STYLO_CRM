@@ -92,11 +92,32 @@ class ClienteReservasFragment : Fragment() {
         val hora = binding.btnHoraCard.text.toString()
         val emailActual = FirebaseAuth.getInstance().currentUser?.email
 
-        // Validaciones básicas
-        if (binding.spinnerServicios.selectedItemPosition <= 0 ||
-            binding.spinnerEstilistas.selectedItemPosition <= 0 ||
-            fecha == getString(R.string.fecha) || hora == getString(R.string.hora)) {
-            Toast.makeText(requireContext(), getString(R.string.errorLoginCamposVacios), Toast.LENGTH_LONG).show()
+        var esValido = true
+
+        //Validaciones Spinners
+        if (binding.spinnerServicios.selectedItemPosition <= 0) {
+            Toast.makeText(requireContext(), getString(R.string.seleccionar_servicio), Toast.LENGTH_SHORT).show()
+            esValido = false
+        }
+
+        if (binding.spinnerEstilistas.selectedItemPosition <= 0){
+            Toast.makeText(requireContext(), getString(R.string.seleccionar_estilista), Toast.LENGTH_SHORT).show()
+            esValido = false
+        }
+
+        //Validaciones para Botones
+        if (fecha == getString(R.string.fecha)) {
+            binding.btnFechaCard.setTextColor(Color.RED)
+            esValido = false
+        }
+
+        if (hora == getString(R.string.hora)) {
+            binding.btnHoraCard.setTextColor(Color.RED)
+            esValido = false
+        }
+
+        if (!esValido) {
+            Toast.makeText(requireContext(), getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -137,7 +158,7 @@ class ClienteReservasFragment : Fragment() {
     }
 
     private fun configurarSpinners() {
-        // Estilistas desde el Repo
+        // Estilistas desde el Repositorio
         mainRepository.obtenerNombresEstilistas { lista ->
             setCustomAdapter(binding.spinnerEstilistas, context?.getString(R.string.seleccionar_estilista), lista)
         }
