@@ -95,4 +95,7 @@
     <string name="negar">No</string>
     <string name="finalizarCita">¿Se ha finalizado la cita?</string>
     <string name="citaFinalizada">Se ha finalizado la cita</string>
+    <string name="horarioHasta">Horario: 9:00 a 20:00</string>
+    <string name="citaActualizado">Se ha actualizado la cita</string>
+    <string name="citaConfirmada">Cita confirmada</string>
 </resources>

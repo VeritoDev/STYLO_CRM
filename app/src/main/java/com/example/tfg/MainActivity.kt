@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // --- APLICACIÓN DEL IDIOMA (Antes de super.onCreate) ---
+        // APLICACIÓN DEL IDIOMA
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
         val lang = prefs.getString("idioma_key", "es") ?: "es"
 
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // --- GESTIÓN DEL NOMBRE DE USUARIO ---
+        // GESTIÓN DEL NOMBRE DE USUARIO
         val nombreDesdeRegistro = intent.getStringExtra("NOMBRE_USUARIO")
         if (!nombreDesdeRegistro.isNullOrEmpty()) {
             prefs.edit(commit = true) {
@@ -40,13 +40,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Recuperamos el nombre o usamos "User" si no hay nada
         val nombreUsuario = prefs.getString("user_name_key", "User")
-
-        // TOAST DE BIENVENIDA (BILINGÜE)
         Toast.makeText(this, getString(R.string.bienvenida_nombre, nombreUsuario), Toast.LENGTH_SHORT).show()
 
-        // --- NAVEGACIÓN ---
+        // NAVEGACIÓN
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -54,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         actualizarIconoTema()
 
-        // --- CAMBIO DE TEMA (MODO OSCURO/CLARO) ---
+        // CAMBIO DE TEMA (MODO OSCURO/CLARO)
         binding.btnThemeToolbar.setOnClickListener {
             binding.btnThemeToolbar.animate()
                 .rotationBy(360f)
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 .start()
         }
 
-        // --- MENÚ DE USUARIO ---
+        // MENÚ DE USUARIO
         binding.btnLoginToolbar.setOnClickListener { view ->
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_usuario, popup.menu)
@@ -106,7 +103,6 @@ class MainActivity : AppCompatActivity() {
         prefs.edit { remove("user_name_key") }
 
         FirebaseAuth.getInstance().signOut()
-        // Uso del string localizado para cerrar sesión
         Toast.makeText(this, getString(R.string.cerrar_sesion), Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, LoginActivity::class.java)
@@ -146,7 +142,6 @@ class MainActivity : AppCompatActivity() {
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
 
-        // Reiniciamos la actividad para que los cambios surtan efecto en toda la UI
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)

@@ -25,8 +25,6 @@ class ClienteReservasFragment : Fragment() {
     private var _binding: FragmentClienteReservasBinding? = null
     private val binding get() = _binding!!
     private val mainRepository = MainRepository()
-
-    // Mapa de duraciones para la validación de choques
     private var duracionServicios: Map<String, Int> = emptyMap()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -76,7 +74,7 @@ class ClienteReservasFragment : Fragment() {
                     val hora = String.format("%02d:%02d", h, m)
                     binding.btnHoraCard.text = hora
                 } else {
-                    Toast.makeText(requireContext(), "Horario: 09:00 a 20:00", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), context?.getString(R.string.horarioHasta), Toast.LENGTH_SHORT).show()
                 }
             }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
         }

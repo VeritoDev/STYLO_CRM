@@ -58,14 +58,14 @@
     <string name="servicio_tinte">Dye</string>
     <string name="servicio_barba">Beard</string>
     <string name="servicio_peinado">Hairstyle</string>
-    <string name="hora_reservada">Sorry, that hour is ocuppied</string>
+    <string name="hora_reservada">Sorry, that hour is occupied</string>
     <string name="cita_reservada">Booked appointment</string>
     <string name="seleccionar_estilista">Select a stylist</string>
     <string name="seleccionar_servicio">Select a service</string>
     <string name="horario">Opening hours until 8:00 PM</string>
     <string name="hora_elegida">Please, select an hour between 9AM and 8PM</string>
-    <string name="noExisteCliente">The customer doesn\'t exist</string>
-    <string name="estilistaOcupado">The stylist is ocuppied</string>
+    <string name="noExisteCliente">The customer does not exist</string>
+    <string name="estilistaOcupado">The stylist is occupied</string>
     <string name="eliminar_cliente">¿Delete Customer?</string>
     <string name="eliminar_mensaje">This action cannot be undone. ¿Are you sure?</string>
     <string name="cancelar" tools:ignore="ButtonCase">CANCEL</string>
@@ -95,4 +95,7 @@
     <string name="negar">No</string>
     <string name="finalizarCita">Is the appointment finished?</string>
     <string name="citaFinalizada">The appointment has finished</string>
+    <string name="horarioHasta">Scheduled: 9:00 to 20:00</string>
+    <string name="citaActualizado">The appointment is updated</string>
+    <string name="citaConfirmada">Appointment accepted</string>
 </resources>

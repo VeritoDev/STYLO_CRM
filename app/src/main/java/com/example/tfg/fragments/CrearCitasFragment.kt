@@ -20,12 +20,10 @@ import com.example.tfg.repository.MainRepository
 import java.util.Calendar
 
 class CrearCitasFragment : Fragment() {
-
     private var _binding: FragmentCrearCitasBinding? = null
     private val binding get() = _binding!!
     private val mainRepository = MainRepository()
     private val duracionServicios = mutableMapOf<String, Int>()
-
     private var citaIdParaEditar: String? = null
 
     override fun onCreateView(
@@ -183,7 +181,7 @@ class CrearCitasFragment : Fragment() {
                         mainRepository.actualizarCita(nuevaCita) { exitoso ->
                             if (exitoso) {
                                 Toast.makeText(
-                                    requireContext(), "Se ha actualizado la cita",
+                                    requireContext(), context?.getString(R.string.citaActualizado),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 findNavController().popBackStack()
@@ -194,10 +192,9 @@ class CrearCitasFragment : Fragment() {
                             if (exitoso) {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Cita confirmada",
+                                    context?.getString(R.string.citaConfirmada),
                                     Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ).show()
                                 findNavController().popBackStack()
                             }
                         }

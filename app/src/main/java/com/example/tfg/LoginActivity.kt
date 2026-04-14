@@ -31,16 +31,15 @@ class LoginActivity : AppCompatActivity() {
 
         setupObservers()
 
-        // --- LÓGICA DE REGISTRO ---
+        // LÓGICA DE REGISTRO
         val textCompleto = getString(R.string.login_no_cuenta)
-        val palabraResaltada = getString(R.string.link_registrate) // "Regístrate" o "Sign up"
+        val palabraResaltada = getString(R.string.link_registrate)
         val spannable = SpannableString(textCompleto)
 
-        // Buscamos dinámicamente dónde empieza y termina la palabra en el idioma actual
         val inicio = textCompleto.indexOf(palabraResaltada)
         val fin = inicio + palabraResaltada.length
 
-        if (inicio != -1) { // Solo si encuentra la palabra (evita errores)
+        if (inicio != -1) {
             val clickableSpan = object : ClickableSpan() {
                 override fun onClick(widget: View) {
                     val intent = Intent(this@LoginActivity, RegistroActivity::class.java)
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         binding.tvIrARegistro.text = spannable
         binding.tvIrARegistro.movementMethod = LinkMovementMethod.getInstance()
 
-        // --- LÓGICA DE LOGIN ---
+        // LÓGICA DE LOGIN
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim().lowercase()
             val pass = binding.etPassword.text.toString().trim()
@@ -76,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
             }, 250)
         }
 
-        // --- LÓGICA DE RECUPERAR CONTRASEÑA ---
+        // LÓGICA DE RECUPERAR CONTRASEÑA
         val textoOlvide = getString(R.string.recuperarCuenta)
         val spannableOlvide = SpannableString(textoOlvide)
 

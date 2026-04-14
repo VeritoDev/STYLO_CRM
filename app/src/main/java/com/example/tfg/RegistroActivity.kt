@@ -60,7 +60,6 @@ class RegistroActivity : AppCompatActivity() {
 
                         db.child("estilistas").child(uid).setValue(datosEstilista)
                             .addOnSuccessListener {
-                                // Reutilizamos el string de bienvenida que definimos para la MainActivity
                                 Toast.makeText(this, getString(R.string.bienvenida_nombre, nombre), Toast.LENGTH_SHORT).show()
 
                                 val intent = Intent(this, MainActivity::class.java)
@@ -74,7 +73,6 @@ class RegistroActivity : AppCompatActivity() {
                             }
                     }
                 } else {
-                    // Manejo de errores de Firebase bilingüe con detalle técnico
                     val errorMsg = task.exception?.message ?: ""
                     Toast.makeText(this, getString(R.string.error_registro_general, errorMsg), Toast.LENGTH_LONG).show()
                 }

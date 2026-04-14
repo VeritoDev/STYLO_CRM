@@ -18,7 +18,6 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
     private val mainRepository = MainRepository()
     private var clienteID: String? = null
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFormularioClientesBinding.bind(view)

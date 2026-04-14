@@ -104,7 +104,6 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
-        // Inyectamos los datos en las plantillas del strings.xml
         binding.tvNombreDetalle.text = getString(R.string.label_nombre, cliente.nombre.uppercase())
         binding.tvTelefonoDetalle.text = getString(R.string.label_telefono, cliente.telefono)
         binding.tvEmailDetalle.text = getString(R.string.email, cliente.email.uppercase())

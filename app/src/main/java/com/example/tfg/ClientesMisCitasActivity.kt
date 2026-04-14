@@ -84,7 +84,7 @@ class ClientesMisCitasActivity : AppCompatActivity() {
                 val listaFiltrada = listaTotal.filter {it.estado != "finalizado"}
 
                 if(listaFiltrada.isEmpty()){
-                    binding.tvSinCitas.text = "No tienes citas próximas"
+                    binding.tvSinCitas.text = getString(R.string.citas_vacio)
                     binding.tvSinCitas.visibility = View.VISIBLE
                     binding.rvMisCitas.visibility = View.GONE
                     adapter.actualizarLista(emptyList())
