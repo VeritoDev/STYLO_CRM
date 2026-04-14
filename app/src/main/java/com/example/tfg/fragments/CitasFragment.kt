@@ -112,7 +112,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
                 val bundle = Bundle().apply {
                     putString("CITA_ID", cita.id)
                 }
-                findNavController().navigate(R.id.action_inicioFragment_to_crearCitasFragment, bundle)
+                findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment, bundle)
             }
         )
         dialogo.show(parentFragmentManager, "GestionCita")
