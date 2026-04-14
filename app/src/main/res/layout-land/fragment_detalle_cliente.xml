@@ -60,22 +60,22 @@
 
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                             <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_home" app:tint="@color/toolbar_claro"/>
-                            <TextView android:id="@+id/tvNombreDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="Nombre Cliente" android:textColor="@color/toolbar_claro" />
+                            <TextView android:id="@+id/tvNombreDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="@string/label_nombre_param" android:textColor="@color/toolbar_claro" />
                         </LinearLayout>
 
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                             <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_phone" app:tint="@color/toolbar_claro"/>
-                            <TextView android:id="@+id/tvTelefonoDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="612 345 678" android:textColor="@color/toolbar_claro" />
+                            <TextView android:id="@+id/tvTelefonoDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="@string/label_telefono_param" android:textColor="@color/toolbar_claro" />
                         </LinearLayout>
 
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                             <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_email" app:tint="@color/toolbar_claro"/>
-                            <TextView android:id="@+id/tvEmailDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="email@ejemplo.com" android:textColor="@color/toolbar_claro" />
+                            <TextView android:id="@+id/tvEmailDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="@string/email_param" android:textColor="@color/toolbar_claro" />
                         </LinearLayout>
 
                         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
                             <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_notes" app:tint="@color/toolbar_claro"/>
-                            <TextView android:id="@+id/tvNotasDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="Notas..." android:textColor="@color/toolbar_claro" />
+                            <TextView android:id="@+id/tvNotasDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" tools:text="@string/notas_param" android:textColor="@color/toolbar_claro" />
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>

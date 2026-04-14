@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/label_nombre"
+                    android:text="@string/label_nombre_param"
                     android:textColor="@color/toolbar_claro" />
             </LinearLayout>
 
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/label_telefono"
+                    android:text="@string/label_telefono_param"
                     android:textColor="@color/toolbar_claro" />
             </LinearLayout>
 
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/email"
+                    android:text="@string/email_param"
                     android:textColor="@color/toolbar_claro" />
             </LinearLayout>
 
@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/notas"
+                    android:text="@string/notas_param"
                     android:textColor="@color/toolbar_claro" />
             </LinearLayout>
 

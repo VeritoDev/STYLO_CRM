@@ -104,9 +104,9 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
-        binding.tvNombreDetalle.text = getString(R.string.label_nombre, cliente.nombre.uppercase())
-        binding.tvTelefonoDetalle.text = getString(R.string.label_telefono, cliente.telefono)
-        binding.tvEmailDetalle.text = getString(R.string.email, cliente.email.uppercase())
-        binding.tvNotasDetalle.text = getString(R.string.notas, cliente.notas)
+        binding.tvNombreDetalle.text = getString(R.string.label_nombre_param, cliente.nombre.uppercase())
+        binding.tvTelefonoDetalle.text = getString(R.string.label_telefono_param, cliente.telefono)
+        binding.tvEmailDetalle.text = getString(R.string.email_param, cliente.email.uppercase())
+        binding.tvNotasDetalle.text = getString(R.string.notas_param, cliente.notas)
     }
 }
