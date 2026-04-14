@@ -1,6 +1,7 @@
 package com.example.tfg.repository
 
 import android.util.Log
+import androidx.compose.animation.core.snap
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.google.firebase.auth.FirebaseAuth
@@ -172,18 +173,25 @@ class MainRepository {
     }
 
     fun eliminarClienteYSusCitas(clienteId: String, callback: (Boolean) -> Unit) {
-        getRefClientes().child(clienteId).removeValue()
-            .addOnSuccessListener {
-                getRefCitas().orderByChild("idCliente").equalTo(clienteId).get()
-                    .addOnSuccessListener { snapshot ->
-                        if (snapshot.exists()) {
-                            for (citaSnapshot in snapshot.children) {
-                                citaSnapshot.ref.removeValue()
-                            }
+        getRefClientes().child(clienteId).equalTo(clienteId).get()
+            .addOnSuccessListener { snapshot ->
+                val rutasABorrar = mutableMapOf<String, Any?>()
+                //Ruta del cliente en el mapa de borrado
+                rutasABorrar["/clientes/$clienteId"] = null
+
+                if (snapshot.exists()) {
+                    for (citaSnapshot in snapshot.children){
+                        val citaId = citaSnapshot.key
+                        if (citaId != null){
+                            rutasABorrar["/citas/$citaId"] = null
                         }
-                        callback(true)
                     }
-                    .addOnFailureListener { callback(true) }
+                }
+
+                //Ejecutamos todas las eliminaciones en una sola operación de red
+                database.updateChildren(rutasABorrar)
+                    .addOnSuccessListener { callback(true) }
+                    .addOnFailureListener { callback(false) }
             }
             .addOnFailureListener { callback(false) }
     }

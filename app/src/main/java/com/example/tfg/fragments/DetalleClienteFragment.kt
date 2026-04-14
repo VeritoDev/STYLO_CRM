@@ -73,27 +73,15 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         binding.btnEliminar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle(getString(R.string.eliminar_cliente))
-                builder.setMessage(getString(R.string.eliminar_mensaje))
-
-                builder.setPositiveButton(getString(R.string.eliminar)) { _, _ ->
-                    repository.eliminarClienteYSusCitas(clienteId){ exito ->
-                        if (exito){
+                val dialog = EliminarClienteDialogFragment(onConfirm = {
+                    repository.eliminarClienteYSusCitas(clienteId) { exito ->
+                        if(exito) {
                             Toast.makeText(requireContext(), getString(R.string.cliente_eliminado), Toast.LENGTH_SHORT).show()
-                            findNavController().navigateUp()
+                            findNavController().popBackStack()
                         }
                     }
-                }
-
-                builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-
-                val dialog = builder.create()
-                dialog.show()
-                // Ponemos el botón de eliminar en rojo para advertir al usuario
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+                })
+                dialog.show(parentFragmentManager, "EliminarClienteDialog")
             }
         }
 
