@@ -121,7 +121,8 @@ class CrearCitasFragment : Fragment() {
     private fun validarYGuardarCita() {
         val telefonoCliente = binding.etCitaCliente.text.toString().trim()
         val servicio = binding.spinnerServicios?.selectedItem?.toString()?.trim() ?: ""
-        val estilista = "Vero"
+        val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
+        val estilista = prefs.getString("user_name_key", "Profesional") ?: "Profesional"
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
 

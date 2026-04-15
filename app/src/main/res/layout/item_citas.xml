@@ -77,5 +77,26 @@
                 android:textColor="?attr/colorOnSurface" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_clock"
+                app:tint="?attr/colorOnSurface" />
+            <TextView
+                android:id="@+id/tvEstilistaItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textSize="12sp"
+                tools:text="Estilista"
+                android:textColor="?attr/colorOnSurface" />
+        </LinearLayout>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

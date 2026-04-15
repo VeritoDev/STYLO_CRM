@@ -36,6 +36,9 @@ class CitasAdapter(
                 holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.uppercase()}"
             }
 
+            val etiquetaPersonal = contexto.getString(R.string.label_estilista)
+            tvEstilistaItem.text = "$etiquetaPersonal: ${cita.estilista}"
+
             val servicioTraducido = when (cita.servicio) {
                 contexto.getString(R.string.servicio_corte), "Corte", "Haircut" -> contexto.getString(R.string.servicio_corte)
                 contexto.getString(R.string.servicio_barba), "Barba", "Beard" -> contexto.getString(R.string.servicio_barba)
