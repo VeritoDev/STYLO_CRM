@@ -5,6 +5,7 @@
     <string name="registrerUser">NOMBRE</string>
     <string name="loginPassword">CONTRASEÑA</string>
     <string name="enter">ENTRAR</string>
+    <string name="login">LOGIN</string>
     <string name="home">Inicio</string>
     <string name="clientes">Clientes</string>
     <string name="citas">Citas</string>

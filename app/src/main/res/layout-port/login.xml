@@ -31,6 +31,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/login_icon"
+                android:contentDescription="icono"
                 app:tint="?attr/colorOnSurface" />
 
             <TextView
@@ -38,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="LOGIN"
+                android:text="@string/login"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="32sp"
                 android:textStyle="bold" />

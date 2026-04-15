@@ -4,6 +4,7 @@
     <string name="loginUser">EMAIL</string>
     <string name="registrerUser">NAME</string>
     <string name="loginPassword">PASSWORD</string>
+    <string name="login">LOGIN</string>
     <string name="enter">ENTER</string>
     <string name="home">Home</string>
     <string name="clientes">Customers</string>
