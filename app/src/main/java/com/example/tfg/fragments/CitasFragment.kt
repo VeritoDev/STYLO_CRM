@@ -49,7 +49,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
                         binding.rvCitas.visibility = View.GONE
                     //SI NO HAY RESULTADOS Y EL QUERY ESTÁ VACÍO
                     } else if (resultados == 0 && query.isEmpty()) {
-                        binding.tvSinCitas.text = getString(R.string.noClientes)
+                        binding.tvSinCitas.text = getString(R.string.noCitas)
                         binding.tvSinCitas.visibility = View.VISIBLE
                         binding.rvCitas.visibility = View.GONE
                     } else {
