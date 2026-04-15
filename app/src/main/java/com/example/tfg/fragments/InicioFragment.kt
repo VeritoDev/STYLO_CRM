@@ -57,7 +57,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     private fun setupRecyclerView() {
         citasAdapter = CitasAdapter(
             listaCitas = emptyList(),
-            esEstilista = false,
+            esEstilista = true,
             onCitaClick = { cita ->
                 abrirDialogoGestion(cita)
             }
@@ -97,10 +97,10 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     // Función auxiliar para no repetir código
     private fun ejecutarConsultaFirebase(nombre: String) {
         mainRepository.getCitasPorEstilista(nombre) { listaCitas ->
-            val listaPendientes = listaCitas.filter { it.estado?.trim()?.lowercase() != "finalizado" }
+            val listaPendientes = listaCitas.filter { it.estado.trim().lowercase() != "finalizado" }
 
             if (listaPendientes.isEmpty()) {
-                binding.tvSinCitas.text = "No tienes citas pendientes"
+                binding.tvSinCitas.text = getString(R.string.citas_vacio)
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvDashboard.visibility = View.GONE
                 citasAdapter.actualizarLista(emptyList())
