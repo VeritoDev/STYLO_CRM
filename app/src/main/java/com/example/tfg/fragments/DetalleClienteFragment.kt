@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.R
 import com.example.tfg.adapter.HistorialAdapter
 import com.example.tfg.databinding.FragmentDetalleClienteBinding
+import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
@@ -44,6 +48,8 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
                     } else {
                         binding.tvSinCitas.visibility = View.GONE
                         binding.rvHistorialCitas.visibility = View.VISIBLE
+
+                        val listaOrdenada = ordenarCitas(lista)
 
                         val adapter = HistorialAdapter(lista)
                         binding.rvHistorialCitas.layoutManager = LinearLayoutManager(requireContext())
@@ -96,5 +102,17 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
         binding.tvTelefonoDetalle.text = getString(R.string.label_telefono_param, cliente.telefono)
         binding.tvEmailDetalle.text = getString(R.string.email_param, cliente.email.uppercase())
         binding.tvNotasDetalle.text = getString(R.string.notas_param, cliente.notas)
+    }
+
+    private fun ordenarCitas(lista: List<Cita>): List<Cita> {
+        val formato = SimpleDateFormat("dd/MM/yyy HH:mm", Locale.getDefault())
+
+        return lista.sortedByDescending { cita ->
+            try{
+                formato.parse("${cita.fecha} ${cita.hora}")
+            } catch (e: Exception) {
+                Date(0)
+            }
+        }
     }
 }
