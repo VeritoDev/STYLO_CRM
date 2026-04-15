@@ -21,7 +21,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="390dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -62,6 +62,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:errorEnabled="true"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoNombre"
@@ -74,6 +75,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            app:errorEnabled="true"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoTelefono"
@@ -87,6 +89,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            app:errorEnabled="true"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoEmail"
@@ -110,7 +113,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoNotas"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="235dp"
                                 android:gravity="top"
                                 android:hint="@string/notas" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -122,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="-25dp"
                     android:layout_marginBottom="80dp"
                     android:text="@string/guardar"
                     android:backgroundTint="?attr/colorPrimary"

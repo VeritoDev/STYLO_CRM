@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro">
                     <com.google.android.material.textfield.TextInputEditText
@@ -66,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
@@ -87,6 +89,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     app:hintTextColor="@color/toolbar_claro">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNuevoEmail"

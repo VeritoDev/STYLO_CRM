@@ -53,6 +53,7 @@
                     android:textColorHint="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaCliente"
@@ -66,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginTop="16dp"
+                    app:errorEnabled="true"
                     android:background="@drawable/spinner_personalizado">
                     <Spinner
                         android:id="@+id/spinnerServicios"
@@ -84,6 +86,7 @@
                     app:endIconMode="custom"
                     app:endIconTint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaFecha"
@@ -104,6 +107,7 @@
                     app:endIconMode="custom"
                     app:endIconTint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaHora"

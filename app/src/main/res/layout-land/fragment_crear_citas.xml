@@ -58,6 +58,7 @@
                     android:textColorHint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaCliente"
@@ -73,6 +74,7 @@
                     android:layout_marginTop="10dp"
                     android:textColorHint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
+                    app:errorEnabled="true"
                     app:boxStrokeColor="@color/toolbar_claro"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
@@ -102,13 +104,14 @@
                     app:endIconMode="custom"
                     app:endIconDrawable="@drawable/ic_calendar"
                     app:endIconTint="@color/toolbar_claro"
-
+                    app:errorEnabled="true"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaFecha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+
                         android:textColor="@color/toolbar_claro"
                         android:focusable="false"
                         android:hint="@string/fecha"/>
@@ -122,6 +125,7 @@
                     app:hintTextColor="@color/toolbar_claro"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:endIconMode="custom"
+                    app:errorEnabled="true"
                     app:endIconDrawable="@drawable/ic_clock"
                     app:endIconTint="@color/toolbar_claro"
 

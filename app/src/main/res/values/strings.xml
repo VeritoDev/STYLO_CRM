@@ -102,4 +102,5 @@
     <string name="horarioHasta">Scheduled: 9:00 to 20:00</string>
     <string name="citaActualizado">The appointment is updated</string>
     <string name="citaConfirmada">Appointment accepted</string>
+    <string name="label_realizado_por">Attended by</string>
 </resources>

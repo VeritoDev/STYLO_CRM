@@ -52,10 +52,12 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    app:errorEnabled="true"
                     android:layout_marginTop="8dp">
                     <Spinner
                         android:id="@+id/spinnerEstilistas"
                         android:layout_width="match_parent"
+
                         android:layout_height="match_parent"
                         android:spinnerMode="dropdown" />
                 </FrameLayout>
@@ -63,6 +65,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    app:errorEnabled="true"
                     android:layout_marginTop="16dp">
                     <Spinner
                         android:id="@+id/spinnerServicios"
@@ -74,6 +77,7 @@
                 <Button
                     android:id="@+id/btnFechaCard"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:errorEnabled="true"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginTop="16dp"
@@ -85,6 +89,7 @@
                 <Button
                     android:id="@+id/btnHoraCard"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:errorEnabled="true"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginTop="8dp"

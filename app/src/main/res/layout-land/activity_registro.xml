@@ -11,6 +11,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
         android:background="@drawable/card_background">
 
         <LinearLayout
@@ -51,12 +52,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
+                        app:errorEnabled="true"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etNuevoNombre"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/loginUser"
+                            android:hint="@string/registrerUser"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,6 +66,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:errorEnabled="true"
                         android:layout_marginTop="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etNuevoEmail"
@@ -77,6 +80,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:errorEnabled="true"
                         android:layout_marginTop="8dp"
                         app:passwordToggleEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +97,7 @@
                     android:layout_width="180dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="30dp"
-                    android:background="?attr/colorOnSurfaceVariant"
+                    android:background="?attr/colorOnSurface"
                     android:text="@string/guardar_usuario"
                     android:textColor="@color/white"
                     android:textStyle="bold"
