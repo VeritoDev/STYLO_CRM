@@ -103,4 +103,6 @@
     <string name="citaActualizado">Se ha actualizado la cita</string>
     <string name="citaConfirmada">Cita confirmada</string>
     <string name="label_realizado_por">Atendido por</string>
+    <string name="nueva_reserva">Nueva Reserva</string>
+    <string name="reservas">Mis Reservas</string>
 </resources>

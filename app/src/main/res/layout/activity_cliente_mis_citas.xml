@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
-                android:text="Mis Reservas"
+                android:text="@string/reservas"
                 android:textColor="@color/gris_oscuro_fondo"
                 android:textSize="26sp"
                 android:textStyle="bold|italic" />
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="16dp"
-                android:text="Nueva Reserva"
+                android:text="@string/nueva_reserva"
                 android:textColor="@color/gris_oscuro_fondo"
                 app:cornerRadius="15dp"
                 app:icon="@drawable/ic_calendar" />

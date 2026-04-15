@@ -103,4 +103,6 @@
     <string name="citaActualizado">The appointment is updated</string>
     <string name="citaConfirmada">Appointment accepted</string>
     <string name="label_realizado_por">Attended by</string>
+    <string name="nueva_reserva">Book Now</string>
+    <string name="reservas">My Appointments</string>
 </resources>
