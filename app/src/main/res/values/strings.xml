@@ -47,7 +47,7 @@
     <string name="estado">STATUS</string>
     <string name="noCitas">There is no scheduled appointments</string>
     <string name="noClientes">There is no saved clients</string>
-    <string name="editarCliente">EDIT CLIENT</string>
+    <string name="editarCliente">EDIT CUSTOMER</string>
     <string name="cambiar_password">Change Password</string>
     <string name="cerrar_sesion">Log Out</string>
     <string name="saludar">HELLO!</string>

@@ -36,7 +36,15 @@ class CitasAdapter(
                 holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.uppercase()}"
             }
 
-            tvServicioItem.text = "${contexto.getString(R.string.servicio)}: ${cita.servicio}"
+            val servicioTraducido = when (cita.servicio) {
+                contexto.getString(R.string.servicio_corte), "Corte", "Haircut" -> contexto.getString(R.string.servicio_corte)
+                contexto.getString(R.string.servicio_barba), "Barba", "Beard" -> contexto.getString(R.string.servicio_barba)
+                contexto.getString(R.string.servicio_peinado), "Peinado", "Styling" -> contexto.getString(R.string.servicio_peinado)
+                contexto.getString(R.string.servicio_tinte), "Tinte", "Dye" -> contexto.getString(R.string.servicio_tinte)
+                else -> cita.servicio
+            }
+
+            tvServicioItem.text = "${contexto.getString(R.string.servicio)}: $servicioTraducido"
 
             tvFechaItem.text = "${cita.fecha} - ${cita.hora}"
 

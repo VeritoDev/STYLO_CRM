@@ -75,7 +75,7 @@
     <string name="hora_elegida">Por favor, elige una hora entre las 09:00 y las 20:00</string>
     <string name="noExisteCliente">El cliente no existe</string>
     <string name="estilistaOcupado">El estilista está ocupado</string>
-    <string name="sin_citas_historial">This customer has no recorded appointments</string>
+    <string name="sin_citas_historial">No hay historial de citas guardado</string>
     <string name="cliente_actualizado">Se ha actualizado el cliente</string>
     <string name="cliente_creado">Cliente creado y aviso enviado</string>
     <string name="error_crear_cliente">Error al crear al cliente</string>
