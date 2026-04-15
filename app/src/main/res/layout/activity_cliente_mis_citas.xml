@@ -6,14 +6,14 @@
     android:background="?android:attr/windowBackground">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/main">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,39 +21,40 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:text="Mis Reservas"
+                android:textColor="@color/gris_oscuro_fondo"
+                android:textSize="26sp"
+                android:textStyle="bold|italic" />
+
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_height="400dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMisCitas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
 
                 <TextView
-                    android:id="@+id/tvTitulo"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvSinCitas"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Mis Reservas"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="@string/noCitas"
                     android:textColor="@color/gris_oscuro_fondo"
-                    android:textSize="26sp"
-                    android:textStyle="bold|italic" />
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/tvSinCitas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center"
-                android:text="No tienes ninguna cita reservada aún"
-                android:textColor="@color/gris_oscuro_fondo"
-                android:textSize="16sp"
-                android:textStyle="italic"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMisCitas"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:scrollbars="vertical" />
 
             <Button
                 android:id="@+id/btnVolverReservar"
@@ -62,9 +63,9 @@
                 android:layout_height="55dp"
                 android:layout_marginTop="16dp"
                 android:text="Nueva Reserva"
-                app:icon="@drawable/ic_calendar"
                 android:textColor="@color/gris_oscuro_fondo"
-                app:cornerRadius="15dp" />
+                app:cornerRadius="15dp"
+                app:icon="@drawable/ic_calendar" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
