@@ -35,11 +35,18 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         val nombreReal = prefs.getString("user_name_key", null)
 
         if (nombreReal != null) {
-            binding.tvNombreUsuario.text = nombreReal.uppercase()
+            val nombreMayus = nombreReal.uppercase()
+            binding.tvNombreUsuario.text = nombreMayus
+
+            Toast.makeText(requireContext(), getString(R.string.bienvenida_nombre, nombreMayus), Toast.LENGTH_SHORT).show()
         } else {
             val usuario = mainRepository.getUsuarioActual()
-            binding.tvNombreUsuario.text =
-                usuario?.email?.uppercase()?.substringBefore("@") ?: "Profesional"
+            val nombreDesdeEmail = usuario?.email?.substringBefore("@")?.uppercase() ?: "Profesional"
+
+            binding.tvNombreUsuario.text = nombreDesdeEmail
+
+            Toast.makeText(requireContext(), getString(R.string.bienvenida_nombre, nombreDesdeEmail),
+                Toast.LENGTH_SHORT).show()
         }
 
         // NAVEGACIÓN PARA NUEVO CLIENTE

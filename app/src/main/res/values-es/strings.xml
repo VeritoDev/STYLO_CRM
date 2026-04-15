@@ -87,7 +87,7 @@
     <string name="error_sesion_invalida">Sesión no válida</string>
     <string name="login_no_cuenta">¿No tienes cuenta? Regístrate</string>
     <string name="link_registrate">Regístrate</string>
-    <string name="bienvenida_nombre">Bienvenido/a, %1$s</string>
+    <string name="bienvenida_nombre">Bienvenido/a, %s</string>
     <string name="menu_cambiar_pass">Cambiar Contraseña</string>
     <string name="menu_logout">Cerrar Sesión</string>
     <string name="menu_cambiar_idioma">Cambiar Idioma</string>
