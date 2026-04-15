@@ -105,4 +105,9 @@
     <string name="label_realizado_por">Attended by</string>
     <string name="nueva_reserva">Book Now</string>
     <string name="reservas">My Appointments</string>
+    <string name="titulo_gestion_cita">Manage my Booking</string>
+    <string name="opcion_editar">Change date/time</string>
+    <string name="opcion_cancelar">Cancel booking</string>
+    <string name="confirmar_cancelacion">Are you sure you want to cancel this booking?</string>
+    <string name="cita_cancelada">Booking successfully cancelled</string>
 </resources>

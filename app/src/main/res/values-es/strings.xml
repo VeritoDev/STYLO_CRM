@@ -105,4 +105,9 @@
     <string name="label_realizado_por">Atendido por</string>
     <string name="nueva_reserva">Nueva Reserva</string>
     <string name="reservas">Mis Reservas</string>
+    <string name="titulo_gestion_cita">Gestionar mi Reserva</string>
+    <string name="opcion_editar">Modificar fecha/hora</string>
+    <string name="opcion_cancelar">Cancelar cita</string>
+    <string name="confirmar_cancelacion">¿Estás seguro de que deseas cancelar esta cita?</string>
+    <string name="cita_cancelada">Reserva cancelada correctamente</string>
 </resources>

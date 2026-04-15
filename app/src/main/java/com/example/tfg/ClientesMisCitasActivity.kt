@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.adapter.CitasAdapter
@@ -39,11 +40,7 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         binding.rvMisCitas.layoutManager = LinearLayoutManager(this)
 
         adapter = CitasAdapter(listaCitas, esEstilista = false, onCitaClick = { cita ->
-            Toast.makeText(
-                this,
-                getString(R.string.toast_cita_con, cita.estilista),
-                Toast.LENGTH_SHORT
-            ).show()
+            mostrarOpcionesCita(cita)
         })
 
         binding.rvMisCitas.adapter = adapter
@@ -106,6 +103,52 @@ class ClientesMisCitasActivity : AppCompatActivity() {
             .orderByChild("emailCliente")
             .equalTo(emailActual)
             .addValueEventListener(citasListener!!)
+    }
+
+    private fun mostrarOpcionesCita(cita: Cita) {
+        val opciones = arrayOf(getString(R.string.opcion_editar), getString(R.string.opcion_cancelar))
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.titulo_gestion_cita))
+        builder.setItems(opciones) { _, which ->
+            when (which) {
+                0 -> editarCita(cita)
+                1 -> confirmarCancelacion(cita)
+            }
+        }
+        builder.show()
+    }
+
+    private fun editarCita(cita: Cita) {
+        val fragment = ClienteReservasFragment()
+        val bundle = Bundle().apply {
+            putString("CITA_ID", cita.id)
+        }
+        fragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun confirmarCancelacion(cita: Cita) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.opcion_cancelar))
+            .setMessage(getString(R.string.confirmar_cancelacion))
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                cancelarCitaEnFireBase(cita)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun cancelarCitaEnFireBase(cita: Cita){
+        db.child("citas").child(cita.id).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(this, getString(R.string.cita_cancelada), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroy() {
