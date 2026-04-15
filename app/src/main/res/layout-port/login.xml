@@ -44,9 +44,11 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                app:errorEnabled="true"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusTopStart="15dp"
                 app:boxCornerRadiusTopEnd="15dp"
@@ -62,6 +64,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilContraseña"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

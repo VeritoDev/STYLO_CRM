@@ -63,10 +63,23 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etEmail.text.toString().trim().lowercase()
             val pass = binding.etPassword.text.toString().trim()
 
-            if (email.isEmpty() || pass.isEmpty()){
-                Toast.makeText(this, getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            var esValido = true
+
+            if (email.isEmpty()) {
+                binding.tilEmail?.error = getString(R.string.errorLoginCamposVacios)
+                esValido = false
+            } else {
+                binding.tilEmail?.error = null
             }
+
+            if (pass.isEmpty()) {
+                binding.tilContraseA?.error = getString(R.string.errorLoginCamposVacios)
+                esValido = false
+            } else {
+                binding.tilContraseA?.error = null
+            }
+
+            if (!esValido) return@setOnClickListener
 
             FirebaseAuth.getInstance().signOut()
 
