@@ -104,6 +104,9 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
     // Función auxiliar para no repetir código
     private fun ejecutarConsultaFirebase(nombre: String) {
         mainRepository.getCitasPorEstilista(nombre) { listaCitas ->
+
+            if (!isAdded) return@getCitasPorEstilista
+
             val listaPendientes = listaCitas.filter { it.estado.trim().lowercase() != "finalizado" }
 
             if (listaPendientes.isEmpty()) {
