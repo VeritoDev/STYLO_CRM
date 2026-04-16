@@ -2,7 +2,10 @@ package com.example.tfg
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -72,12 +75,15 @@ class MainActivity : AppCompatActivity() {
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_usuario, popup.menu)
 
+            val logoutItem = popup.menu.findItem(R.id.menu_logout)
+            val spannable = SpannableString(logoutItem.title)
+            spannable.setSpan(
+                ForegroundColorSpan(Color.RED), 0, spannable.length, 0
+            )
+            logoutItem.title = spannable
+
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.menu_cambiar_pass -> {
-                        abrirDialogoRecuperar()
-                        true
-                    }
                     R.id.menu_logout -> {
                         cerrarSesion()
                         true
@@ -99,14 +105,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cerrarSesion() {
-        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
-        prefs.edit { remove("user_name_key") }
+       FirebaseAuth.getInstance().signOut()
 
-        FirebaseAuth.getInstance().signOut()
-        Toast.makeText(this, getString(R.string.cerrar_sesion), Toast.LENGTH_SHORT).show()
+        getSharedPreferences("config_app", MODE_PRIVATE).edit { clear() }
 
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val intent = android.content.Intent(this, LoginActivity::class.java)
+        intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
