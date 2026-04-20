@@ -48,13 +48,20 @@
                 </FrameLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCitaCliente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/toolbar_claro"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaCliente"
                         android:layout_width="match_parent"
@@ -66,8 +73,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginTop="16dp"
-                    app:errorEnabled="true"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/spinner_personalizado">
                     <Spinner
                         android:id="@+id/spinnerServicios"
@@ -77,17 +83,24 @@
                 </FrameLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCitaFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textColorHint="@color/toolbar_claro"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:endIconDrawable="@drawable/ic_calendar"
                     app:endIconMode="custom"
                     app:endIconTint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaFecha"
                         android:layout_width="match_parent"
@@ -98,17 +111,24 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCitaHora"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textColorHint="@color/toolbar_claro"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="@color/toolbar_claro"
                     app:endIconDrawable="@drawable/ic_clock"
                     app:endIconMode="custom"
                     app:endIconTint="@color/toolbar_claro"
                     app:hintTextColor="@color/toolbar_claro"
                     app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaHora"
                         android:layout_width="match_parent"

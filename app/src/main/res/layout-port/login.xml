@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:paddingTop="100dp"
     android:background="?android:attr/windowBackground"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingTop="100dp"
     tools:ignore="MissingDefaultResource">
 
     <com.google.android.material.card.MaterialCardView
@@ -26,12 +26,22 @@
             android:padding="24dp">
 
             <ImageView
+                android:id="@+id/icon_idioma"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:contentDescription="icono"
+                android:src="@drawable/ic_language"
+                app:tint="?attr/colorOnSurface" />
+
+            <ImageView
                 android:id="@+id/icon_login"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/login_icon"
+                android:layout_marginTop="-30dp"
                 android:contentDescription="icono"
+                android:src="@drawable/login_icon"
                 app:tint="?attr/colorOnSurface" />
 
             <TextView
@@ -49,14 +59,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:errorEnabled="true"  app:errorTextColor="@android:color/holo_red_dark"
-                app:boxStrokeErrorColor="@android:color/holo_red_dark"
-                app:errorIconTint="@android:color/holo_red_dark"
                 app:boxBackgroundMode="outline"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusBottomEnd="15dp">
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
+                app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                app:errorEnabled="true"
+                app:errorIconTint="@android:color/holo_red_dark"
+                app:errorTextColor="@android:color/holo_red_dark">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -71,15 +82,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:passwordToggleEnabled="true"
-                app:errorEnabled="true" app:errorTextColor="@android:color/holo_red_dark"
-                app:boxStrokeErrorColor="@android:color/holo_red_dark"
-                app:errorIconTint="@android:color/holo_red_dark"
                 app:boxBackgroundMode="outline"
-                app:boxCornerRadiusTopStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusBottomEnd="15dp">
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
+                app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                app:errorEnabled="true"
+                app:errorIconTint="@android:color/holo_red_dark"
+                app:errorTextColor="@android:color/holo_red_dark"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -94,29 +106,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/enter"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:backgroundTint="?attr/colorPrimary"
-                android:textColor="@color/white" />
+                android:text="@string/enter"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvIrARegistro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:layout_marginTop="20dp"
                 android:textColor="?attr/colorOnSurface"
-                android:layout_marginTop="20dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvOlvidePass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/blanco_puro"
-                android:textSize="14sp"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:textColor="@color/blanco_puro"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

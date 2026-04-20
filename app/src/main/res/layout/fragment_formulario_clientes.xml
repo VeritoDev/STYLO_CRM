@@ -48,74 +48,98 @@
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNombreCliente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginTop="10dp"
+                    app:boxBackgroundMode="outline"
                     android:textColorHint="@color/toolbar_claro"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
                     app:errorEnabled="true"
-                    app:boxStrokeColor="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro">
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
+
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etNuevoNombre"
+                        android:id="@+id/etNombreCliente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nombre_cliente"
-                        android:textColor="@color/toolbar_claro" />
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTelefonoCliente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:errorEnabled="true"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginTop="10dp"
                     android:textColorHint="@color/toolbar_claro"
-                    app:boxStrokeColor="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro">
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
+
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etNuevoTelefono"
+                        android:id="@+id/etTelefonoCliente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/telefono"
                         android:inputType="phone"
-                        android:maxLength="9"
-                        android:textColor="@color/toolbar_claro" />
+                        android:maxLength="9" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginTop="10dp"
+                    app:boxBackgroundMode="outline"
                     android:textColorHint="@color/toolbar_claro"
-                    app:boxStrokeColor="@color/toolbar_claro"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
                     app:errorEnabled="true"
-                    app:hintTextColor="@color/toolbar_claro">
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
+
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etNuevoEmail"
+                        android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/toolbar_claro" />
+                        android:hint="@string/loginUser"
+                        android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNotas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginTop="10dp"
+                    app:boxBackgroundMode="outline"
                     android:textColorHint="@color/toolbar_claro"
-                    app:boxStrokeColor="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro">
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp">
+
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etNuevoNotas"
+                        android:id="@+id/etNotas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/notas"
                         android:gravity="top"
                         android:lines="4"
-                        android:textColor="@color/toolbar_claro" />
+                        android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -125,7 +149,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/guardar"
                     android:textColor="@color/toolbar_claro"
-                    android:backgroundTint="?attr/colorPrimary"
+                    android:backgroundTint="?attr/colorOnSurface"
                     app:cornerRadius="15dp" />
 
             </LinearLayout>

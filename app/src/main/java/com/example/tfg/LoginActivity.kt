@@ -1,5 +1,6 @@
 package com.example.tfg
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
@@ -8,6 +9,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import com.example.tfg.databinding.LoginBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
 
@@ -25,6 +28,10 @@ class LoginActivity : AppCompatActivity() {
     private val mainRepository = MainRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //CARGAMOS PRIMERO EL IDIOMA ANTES DE CREAR
+        cargarIdiomaPersistente()
+
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -111,6 +118,54 @@ class LoginActivity : AppCompatActivity() {
         spannableOlvide.setSpan(clickableOlvide, 0, textoOlvide.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.tvOlvidePass.text = spannableOlvide
         binding.tvOlvidePass.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun cargarIdiomaPersistente() {
+        val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+        val lang = prefs.getString("idioma_pref", "es") ?: "es"
+        configurarLocale(lang)
+    }
+
+    private fun configurarLocale(codigo: String) {
+        val locale = Locale(codigo)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+    private fun mostrarDialogoIdioma() {
+        val dialog = Dialog(this)
+        val view = layoutInflater.inflate(R.layout.fragment_idioma, null)
+        dialog.setContentView(view)
+
+        view.findViewById<Button>(R.id.btnEspañol).setOnClickListener {
+            aplicarIdioma("es")
+            dialog.dismiss()
+        }
+
+        view.findViewById<Button>(R.id.btnIngles).setOnClickListener {
+            aplicarIdioma("en")
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun aplicarIdioma(codigo: String) {
+        val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+        prefs.edit().putString("idioma_pref", codigo).apply()
+
+        val locale = Locale(codigo)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+
+        resources.updateConfiguration(config, resources.displayMetrics)
+
+        val intent = intent
+        finish()
+        startActivity(intent)
     }
 
     private fun setupObservers() {

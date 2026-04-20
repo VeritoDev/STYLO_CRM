@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // APLICACIÓN DEL IDIOMA
         val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
-        val lang = prefs.getString("idioma_key", "es") ?: "es"
+        val lang = prefs.getString("idioma_pref", "es") ?: "es"
 
         val locale = java.util.Locale(lang)
         java.util.Locale.setDefault(locale)
@@ -124,19 +125,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarDialogoIdiomas(){
-        val idiomas = arrayOf("Español", "English")
-        val codigos = arrayOf("es", "en")
+    private fun mostrarDialogoIdiomas() {
+        val dialog = android.app.Dialog(this)
+        val view = layoutInflater.inflate(R.layout.fragment_idioma, null)
+        dialog.setContentView(view)
 
-        val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.selecciona_idioma))
-        builder.setItems(idiomas) { _, which ->
-            val selectedLang = codigos[which]
-            val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
-            prefs.edit { putString("idioma_key", selectedLang) }
-            aplicarIdioma(selectedLang)
+        view.findViewById<Button>(R.id.btnEspañol).setOnClickListener {
+            guardarYAplicarIdioma("es")
+            dialog.dismiss()
         }
-        builder.show()
+
+        view.findViewById<Button>(R.id.btnIngles).setOnClickListener {
+            guardarYAplicarIdioma("en")
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun guardarYAplicarIdioma(codigo: String) {
+        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        prefs.edit { putString("idioma_pref", codigo) }
+        aplicarIdioma(codigo)
     }
 
     private fun aplicarIdioma(codigo: String){

@@ -21,7 +21,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="390dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -59,11 +59,20 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:layout_marginEnd="8dp">
+
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNuevoNombre"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="15dp"
+                            app:boxCornerRadiusBottomStart="15dp"
+                            app:boxCornerRadiusTopEnd="15dp"
+                            app:boxCornerRadiusTopStart="15dp"
+                            app:boxStrokeErrorColor="@android:color/holo_red_dark"
                             app:errorEnabled="true"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            app:errorIconTint="@android:color/holo_red_dark"
+                            app:errorTextColor="@android:color/holo_red_dark">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoNombre"
                                 android:layout_width="match_parent"
@@ -72,11 +81,19 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNuevoTelefono"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="15dp"
+                            app:boxCornerRadiusBottomStart="15dp"
+                            app:boxCornerRadiusTopEnd="15dp"
+                            app:boxCornerRadiusTopStart="15dp"
+                            app:boxStrokeErrorColor="@android:color/holo_red_dark"
                             app:errorEnabled="true"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            app:errorIconTint="@android:color/holo_red_dark"
+                            app:errorTextColor="@android:color/holo_red_dark">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoTelefono"
                                 android:layout_width="match_parent"
@@ -86,11 +103,19 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNuevoEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="15dp"
+                            app:boxCornerRadiusBottomStart="15dp"
+                            app:boxCornerRadiusTopEnd="15dp"
+                            app:boxCornerRadiusTopStart="15dp"
+                            app:boxStrokeErrorColor="@android:color/holo_red_dark"
                             app:errorEnabled="true"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            app:errorIconTint="@android:color/holo_red_dark"
+                            app:errorTextColor="@android:color/holo_red_dark">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoEmail"
                                 android:layout_width="match_parent"
@@ -107,9 +132,14 @@
                         android:orientation="vertical"
                         android:layout_marginStart="8dp">
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNuevoNotas"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusBottomEnd="15dp"
+                            app:boxCornerRadiusBottomStart="15dp"
+                            app:boxCornerRadiusTopEnd="15dp"
+                            app:boxCornerRadiusTopStart="15dp">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etNuevoNotas"
                                 android:layout_width="match_parent"
@@ -125,8 +155,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="-25dp"
-                    android:layout_marginBottom="80dp"
+                    android:layout_marginTop="-20dp"
+                    android:layout_marginBottom="24dp"
                     android:text="@string/guardar"
                     android:backgroundTint="?attr/colorPrimary"
                     android:textColor="@color/toolbar_claro"

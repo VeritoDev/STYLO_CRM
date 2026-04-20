@@ -49,60 +49,116 @@
                         android:textStyle="bold|italic" />
                 </FrameLayout>
 
-                <FrameLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEstilista"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="wrap_content"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
                     app:errorEnabled="true"
-                    android:layout_marginTop="8dp">
-                    <Spinner
-                        android:id="@+id/spinnerEstilistas"
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
+
+                    <FrameLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+                        <Spinner
+                            android:id="@+id/spinnerEstilistas"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:spinnerMode="dropdown" />
+                    </FrameLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        android:layout_height="match_parent"
-                        android:spinnerMode="dropdown" />
-                </FrameLayout>
-
-                <FrameLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilServicio"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    app:errorEnabled="true"
-                    android:layout_marginTop="16dp">
-                    <Spinner
-                        android:id="@+id/spinnerServicios"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:spinnerMode="dropdown" />
-                </FrameLayout>
-
-                <Button
-                    android:id="@+id/btnFechaCard"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:errorEnabled="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/fecha"
-                    app:icon="@drawable/ic_calendar"
-                    android:textColor="@color/gris_oscuro_fondo"
-                    app:cornerRadius="15dp" />
-
-                <Button
-                    android:id="@+id/btnHoraCard"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:errorEnabled="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/hora"
-                    app:icon="@drawable/ic_clock"
-                    android:textColor="@color/gris_oscuro_fondo"
-                    app:cornerRadius="15dp" />
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+                        <Spinner
+                            android:id="@+id/spinnerServicios"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:spinnerMode="dropdown" />
+                    </FrameLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFechaCard"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_calendar">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFechaReserva"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/fecha"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilHoraCard"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@android:color/holo_red_dark"
+                    app:errorTextColor="@android:color/holo_red_dark"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_clock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etHoraReserva"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/hora"
+                        android:inputType="time" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnConfirmarReserva"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
                     android:backgroundTint="@color/toolbar_oscuro"
                     android:text="@string/añadirCita"
                     android:textColor="@color/toolbar_claro"
