@@ -1,6 +1,5 @@
 package com.example.tfg
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -15,10 +14,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import com.example.tfg.databinding.ActivityMainBinding
 import androidx.navigation.ui.setupWithNavController
-import com.example.tfg.fragments.RecuperarPassFragment
 import com.google.firebase.auth.FirebaseAuth
 import androidx.core.content.edit
-import androidx.work.Configuration
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
@@ -65,8 +62,8 @@ class MainActivity : AppCompatActivity() {
                 .rotationBy(360f)
                 .setDuration(400)
                 .withEndAction {
-                    val modoActual = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
-                    if (modoActual == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+                    val modoActual = resources.configuration.uiMode and UI_MODE_NIGHT_MASK
+                    if (modoActual == UI_MODE_NIGHT_YES) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     } else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
