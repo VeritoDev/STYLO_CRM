@@ -25,13 +25,14 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/icon_idioma"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_gravity="end"
-                android:contentDescription="icono"
                 android:src="@drawable/ic_language"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Cambiar idioma"
                 app:tint="?attr/colorOnSurface" />
 
             <ImageView

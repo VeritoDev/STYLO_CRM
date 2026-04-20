@@ -2,6 +2,8 @@ package com.example.tfg
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
@@ -16,6 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.tfg.fragments.RecuperarPassFragment
 import com.google.firebase.auth.FirebaseAuth
 import androidx.core.content.edit
+import androidx.work.Configuration
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // APLICACIÓN DEL IDIOMA
-        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
         val lang = prefs.getString("idioma_pref", "es") ?: "es"
 
-        val locale = java.util.Locale(lang)
-        java.util.Locale.setDefault(locale)
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
         val config = resources.configuration
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
@@ -100,25 +104,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun abrirDialogoRecuperar() {
-        val dialogo = RecuperarPassFragment()
-        dialogo.show(supportFragmentManager, "Recuperar")
-    }
-
     private fun cerrarSesion() {
        FirebaseAuth.getInstance().signOut()
 
         getSharedPreferences("config_app", MODE_PRIVATE).edit { clear() }
 
-        val intent = android.content.Intent(this, LoginActivity::class.java)
-        intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
 
-    private fun actualizarIconoTema(){
-        val modoActual = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
-        if(modoActual == android.content.res.Configuration.UI_MODE_NIGHT_YES){
+    private fun actualizarIconoTema() {
+        val modoActual = resources.configuration.uiMode and UI_MODE_NIGHT_MASK
+
+        if (modoActual == UI_MODE_NIGHT_YES) {
             binding.btnThemeToolbar.setImageResource(R.drawable.icon_light_mode)
         } else {
             binding.btnThemeToolbar.setImageResource(R.drawable.icon_dark_mode)
@@ -144,14 +144,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun guardarYAplicarIdioma(codigo: String) {
-        val prefs = getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
         prefs.edit { putString("idioma_pref", codigo) }
         aplicarIdioma(codigo)
     }
 
     private fun aplicarIdioma(codigo: String){
-        val locale = java.util.Locale(codigo)
-        java.util.Locale.setDefault(locale)
+        val locale = Locale(codigo)
+        Locale.setDefault(locale)
         val config = resources.configuration
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)

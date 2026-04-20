@@ -54,11 +54,11 @@ class ClienteReservasFragment : Fragment() {
         }
 
         // SELECCIONAR FECHA
-        binding.btnFechaCard.setOnClickListener {
+        binding.etFechaReserva.setOnClickListener {
             val cal = Calendar.getInstance()
             DatePickerDialog(requireContext(), { _, y, m, d ->
                 val fecha = String.format("%02d/%02d/%d", d, m + 1, y)
-                binding.btnFechaCard.text = fecha
+                binding.etFechaReserva.setText(fecha)
             }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).apply {
                 datePicker.minDate = System.currentTimeMillis()
                 show()
@@ -66,13 +66,13 @@ class ClienteReservasFragment : Fragment() {
         }
 
         // SELECCIONAR HORA
-        binding.btnHoraCard.setOnClickListener {
+        binding.etHoraReserva.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(requireContext(), { _, h, m ->
                 if (h in 9..19) {
                     // Horario comercial
                     val hora = String.format("%02d:%02d", h, m)
-                    binding.btnHoraCard.text = hora
+                    binding.etHoraReserva.setText(hora)
                 } else {
                     Toast.makeText(requireContext(), context?.getString(R.string.horarioHasta), Toast.LENGTH_SHORT).show()
                 }
@@ -88,8 +88,8 @@ class ClienteReservasFragment : Fragment() {
     private fun validarYReservar() {
         val servicio = binding.spinnerServicios.selectedItem?.toString() ?: ""
         val estilista = binding.spinnerEstilistas.selectedItem?.toString() ?: ""
-        val fecha = binding.btnFechaCard.text.toString()
-        val hora = binding.btnHoraCard.text.toString()
+        val fecha = binding.etFechaReserva.text.toString()
+        val hora = binding.etHoraReserva.text.toString()
         val emailActual = FirebaseAuth.getInstance().currentUser?.email
 
         var esValido = true
@@ -107,12 +107,12 @@ class ClienteReservasFragment : Fragment() {
 
         //Validaciones para Botones
         if (fecha == getString(R.string.fecha)) {
-            binding.btnFechaCard.setTextColor(Color.RED)
+            binding.etFechaReserva.setTextColor(Color.RED)
             esValido = false
         }
 
         if (hora == getString(R.string.hora)) {
-            binding.btnHoraCard.setTextColor(Color.RED)
+            binding.etHoraReserva.setTextColor(Color.RED)
             esValido = false
         }
 

@@ -118,6 +118,10 @@ class LoginActivity : AppCompatActivity() {
         spannableOlvide.setSpan(clickableOlvide, 0, textoOlvide.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.tvOlvidePass.text = spannableOlvide
         binding.tvOlvidePass.movementMethod = LinkMovementMethod.getInstance()
+
+        binding.iconIdioma?.setOnClickListener {
+            mostrarDialogoIdioma()
+        }
     }
 
     private fun cargarIdiomaPersistente() {
