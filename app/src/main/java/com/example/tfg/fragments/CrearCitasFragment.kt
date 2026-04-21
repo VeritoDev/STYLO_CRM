@@ -40,9 +40,16 @@ class CrearCitasFragment : Fragment() {
 
         citaIdParaEditar = arguments?.getString("CITA_ID")
 
+        val telefonoRecibido = arguments?.getString("TELEFONO_CLIENTE")
+
         inicializarServicios()
         setupListeners()
         configurarSpinner()
+
+        if (!telefonoRecibido.isNullOrEmpty()) {
+            binding.etCitaCliente.setText(telefonoRecibido)
+            binding.tilCitaCliente.isEnabled = false //DESHABILITAMOS PARA QUE NO SE CAMBIE EL NUMERO DE TELÉFONO
+        }
 
         if (citaIdParaEditar != null) {
             configurarModoEdicion(citaIdParaEditar!!)
@@ -126,21 +133,36 @@ class CrearCitasFragment : Fragment() {
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
 
-        if (binding.spinnerServicios?.selectedItemPosition == 0) {
-            Toast.makeText(
-                requireContext(),
-                context?.getString(R.string.seleccionar_servicio),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
+        //RESETEAMOS LOS ERRORES
+        binding.tilCitaCliente.error = null
+        binding.tilCitaServicio?.error = null
+        binding.tilCitaFecha.error = null
+        binding.etCitaHora.error = null
+
+        var esValido = true
+
+        if(binding.spinnerServicios?.selectedItemPosition == 0) {
+            binding.tilCitaServicio?.error = " "
+            esValido = false
         }
 
-        if (telefonoCliente.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                context?.getString(R.string.errorLoginCamposVacios),
-                Toast.LENGTH_SHORT
-            ).show()
+        if (telefonoCliente.isEmpty()) {
+            binding.tilCitaCliente.error = " "
+            esValido = false
+        }
+
+        if (fecha.isEmpty()) {
+            binding.tilCitaFecha.error = " "
+            esValido = false
+        }
+
+        if (hora.isEmpty()) {
+            binding.tilCitaHora.error = " "
+            esValido = false
+        }
+
+        if (!esValido) {
+            Toast.makeText(requireContext(), getString(R.string.errorLoginCamposVacios), Toast.LENGTH_SHORT).show()
             return
         }
 
