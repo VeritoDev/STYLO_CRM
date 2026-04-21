@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg.databinding.ActivityRegistroBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import java.util.Locale
 
 class RegistroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroBinding
@@ -30,14 +31,20 @@ class RegistroActivity : AppCompatActivity() {
     }
 
     private fun registrarUsuario() {
-        val nombre = binding.etNuevoNombre.text.toString().trim()
+        val nombreEscrito = binding.etNuevoNombre.text.toString().trim()
         val correo = binding.etNuevoEmail.text.toString().trim()
         val pass = binding.etNuevaContrasena.text.toString().trim()
 
         // VALIDACIÓN BILINGÜE
-        if (correo.isEmpty() || pass.isEmpty() || nombre.isEmpty()) {
+        if (correo.isEmpty() || pass.isEmpty() || nombreEscrito.isEmpty()) {
             Toast.makeText(this, getString(R.string.error_campos_obligatorios), Toast.LENGTH_SHORT).show()
             return
+        }
+
+        val nombre = nombreEscrito.lowercase().replaceFirstChar {
+            if (it.isLowerCase()){
+                it.titlecase(Locale.getDefault())
+            } else it.toString()
         }
 
         if (pass.length < 6) {
