@@ -145,6 +145,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun mostrarDialogoIdioma() {
         val dialog = Dialog(this)
+        dialog.window?.attributes?.windowAnimations = R.style.MaterialAlertDialog_Material3_Animation_
+        dialog.show()
+
         val view = layoutInflater.inflate(R.layout.fragment_idioma, null)
         dialog.setContentView(view)
 

@@ -9,4 +9,9 @@
         <item name="colorOnPrimary">@color/toolbar_claro</item>
         <item name="colorOnSurface">#000000</item>
     </style>
+
+    <style name="MaterialAlertDialog.Material3.Animation.">
+        <item name="android:windowEnterAnimation">@anim/dialog_zoom_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>
