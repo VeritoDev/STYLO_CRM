@@ -39,14 +39,19 @@ class MainActivity : AppCompatActivity() {
 
         // GESTIÓN DEL NOMBRE DE USUARIO
         val nombreDesdeRegistro = intent.getStringExtra("NOMBRE_USUARIO")
-        if (!nombreDesdeRegistro.isNullOrEmpty()) {
-            prefs.edit(commit = true) {
+
+        val nombreFinal = if (!nombreDesdeRegistro.isNullOrEmpty()) {
+            prefs.edit {
                 putString("user_name_key", nombreDesdeRegistro)
             }
+            nombreDesdeRegistro
+        } else {
+            prefs.getString("user_name_key", "User") ?: "User"
         }
 
-        val nombreUsuario = prefs.getString("user_name_key", "User")
-        Toast.makeText(this, getString(R.string.bienvenida_nombre, nombreUsuario), Toast.LENGTH_SHORT).show()
+        if (savedInstanceState == null) {
+            Toast.makeText(this, getString(R.string.bienvenida_nombre, nombreFinal), Toast.LENGTH_SHORT).show()
+        }
 
         // NAVEGACIÓN
         val navHostFragment = supportFragmentManager
