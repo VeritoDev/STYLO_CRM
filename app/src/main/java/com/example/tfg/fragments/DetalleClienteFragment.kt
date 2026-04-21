@@ -51,7 +51,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
                         val listaOrdenada = ordenarCitas(lista)
 
-                        val adapter = HistorialAdapter(lista)
+                        val adapter = HistorialAdapter(listaOrdenada)
                         binding.rvHistorialCitas.layoutManager = LinearLayoutManager(requireContext())
                         binding.rvHistorialCitas.adapter = adapter
                     }
@@ -92,6 +92,9 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
         }
 
         binding.btnAAdirCita.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("TELEFONO_CLIENTE", binding.tvTelefonoDetalle.text.toString().substringAfter(": ").trim())
+            }
             findNavController().navigate(R.id.action_detalleClienteFragment_to_crearCitasFragment)
         }
     }
@@ -105,7 +108,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
     }
 
     private fun ordenarCitas(lista: List<Cita>): List<Cita> {
-        val formato = SimpleDateFormat("dd/MM/yyy HH:mm", Locale.getDefault())
+        val formato = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         return lista.sortedByDescending { cita ->
             try{
