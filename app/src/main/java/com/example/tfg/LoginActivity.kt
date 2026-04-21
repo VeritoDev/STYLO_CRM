@@ -104,7 +104,12 @@ class LoginActivity : AppCompatActivity() {
 
         val clickableOlvide = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                val dialogo = RecuperarPassFragment()
+                val emailEscrito = binding.etEmail.text.toString().trim()
+                val dialogo = RecuperarPassFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("EMAIL_PREVIO", emailEscrito)
+                    }
+                }
                 dialogo.show(supportFragmentManager, "Recuperar")
             }
             override fun updateDrawState(ds: TextPaint) {

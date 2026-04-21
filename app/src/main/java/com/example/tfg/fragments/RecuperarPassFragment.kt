@@ -14,32 +14,39 @@ import com.google.firebase.auth.FirebaseAuth
 //UN DIALOG ES UNA VENTANA FLOTANTE ENCIMA DEL FRAGMENT O ACTIVITY
 class RecuperarPassFragment : DialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_recuperar_pass, container, false)
 
         val etEmail = view.findViewById<EditText>(R.id.etEmailRecuperar)
         val btn = view.findViewById<Button>(R.id.btnEnviarRecuperacion)
         val auth = FirebaseAuth.getInstance()
 
-        //SI ESTÁ DENTRO DE LA SESIÓN, SE PONE DIRECTAMENTE EL EMAIL QUE TIENE
-        auth.currentUser?.email?.let { etEmail.setText(it) }
+        val emailDesdeLogin = arguments?.getString("EMAIL_PREVIO")
+
+        if (!emailDesdeLogin.isNullOrEmpty()) {
+            etEmail.setText(emailDesdeLogin)
+        } else {
+            auth.currentUser?.email?.let { etEmail.setText(it) }
+        }
 
         btn.setOnClickListener {
             val email = etEmail.text.toString().trim()
 
-            //COMPRUEBA SI EL EMAIL ES VÁLIDO
             if (email.isEmpty() || !email.contains("@")) {
                 etEmail.error = context?.getString(R.string.email_valido)
                 return@setOnClickListener
             }
 
-            //SE ENVIA UN EMAIL CON UN ENLACE PARA RESTAURAR LA CONTRASEÑA
             auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), getString(R.string.toast_recuperacion_enviado, email), Toast.LENGTH_LONG).show()
-                    dismiss()
+                    Toast.makeText(requireContext(), getString(R.string.toast_recuperacion_enviado, email),
+                        Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "ERROR: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
