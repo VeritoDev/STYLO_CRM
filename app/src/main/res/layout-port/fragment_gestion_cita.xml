@@ -17,14 +17,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
-        android:background="@color/toolbar_claro">
+        android:background="?attr/colorPrimary">
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_calendar"
-            app:tint="@color/marron_boton" />
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:id="@+id/tvPregunta"
@@ -33,7 +33,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/finalizarCita"
             android:textAlignment="center"
-            android:textColor="@color/toolbar_oscuro"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold"
             android:lineSpacingExtra="4sp" /> <LinearLayout
@@ -50,9 +50,9 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="@string/afirmar"
-            android:textColor="@color/white"
+            android:textColor="@color/toolbar_oscuro"
             android:textSize="12sp"
-            app:backgroundTint="@color/toolbar_oscuro"
+            app:backgroundTint="@color/blanco_puro"
             app:cornerRadius="12dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -64,8 +64,8 @@
             android:layout_weight="1"
             android:text="@string/negar"
             android:textSize="11sp"
-            android:textColor="@color/marron_oscuro_fondo"
-            app:backgroundTint="@color/blanco_puro"
+            android:textColor="@color/blanco_puro"
+            app:backgroundTint="@color/toolbar_oscuro"
             app:cornerRadius="12dp"
             app:strokeColor="@color/marron_oscuro_fondo"
             app:strokeWidth="1dp" />
