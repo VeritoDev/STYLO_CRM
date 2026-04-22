@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.core.snap
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
+import com.example.tfg.model.Estilista
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,10 +49,14 @@ class MainRepository {
     fun obtenerNombresEstilistas(callback: (List<String>) -> Unit){
         getRefEstilistas().get().addOnSuccessListener { snapshot  ->
             val nombres = mutableListOf<String>()
+
             if(snapshot.exists()){
                 for(data in snapshot.children){
-                    val nombre = data.child("nombre").value.toString()
-                    if(nombre != "null") nombres.add(nombre)
+                    val nombre = data.child("nombre").getValue(String::class.java)
+
+                    if(!nombre.isNullOrEmpty()) {
+                        nombres.add(nombre.capitalizarFormato())
+                    }
                 }
             }
             callback(nombres)
@@ -59,6 +64,22 @@ class MainRepository {
             callback(emptyList())
         }
     }
+
+    fun obtenerDatosEstilista(email: String, callback: (Estilista?) -> Unit) {
+        database.child("estilistas").orderByChild("email").equalTo(email)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    // Sacamos el objeto Estilista entero
+                    val estilista = snapshot.children.firstOrNull()?.getValue(Estilista::class.java)
+                    callback(estilista)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(null)
+                }
+            })
+    }
+
     fun getCitasPorEstilista(nombreEstilista: String, onResult: (List<Cita>) -> Unit) {
         val nombreLimpio = nombreEstilista.trim()
 

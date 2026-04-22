@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    companion object {
+        var yaSaludeEnEstaSesion = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // APLICACIÓN DEL IDIOMA
         val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
@@ -50,10 +54,6 @@ class MainActivity : AppCompatActivity() {
             nombreDesdeRegistro
         } else {
             prefs.getString("user_name_key", "User") ?: "User"
-        }
-
-        if (savedInstanceState == null) {
-            Toast.makeText(this, getString(R.string.bienvenida_nombre, nombreFinal), Toast.LENGTH_SHORT).show()
         }
 
         // NAVEGACIÓN

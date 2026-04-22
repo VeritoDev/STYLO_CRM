@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.example.tfg.fragments.RecuperarPassFragment
 import com.example.tfg.databinding.LoginBinding
 import com.example.tfg.repository.MainRepository
+import com.example.tfg.repository.capitalizarFormato
 import com.example.tfg.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
@@ -212,9 +213,11 @@ class LoginActivity : AppCompatActivity() {
         if (email.isNullOrEmpty()) return
         val emailSeguro = email.trim().lowercase()
 
-        mainRepository.buscarEstilistaPorEmail(emailSeguro) { esEstilista ->
-            if (esEstilista) {
-                val intent = Intent(this, MainActivity::class.java)
+        mainRepository.obtenerDatosEstilista(emailSeguro) { estilista ->
+            if (estilista != null) {
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("NOMBRE_USUARIO", estilista.nombre.capitalizarFormato())
+                }
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
@@ -223,6 +226,8 @@ class LoginActivity : AppCompatActivity() {
                     if (cliente != null) {
                         val intent = Intent(this, ClientesMisCitasActivity::class.java).apply {
                             putExtra("CLIENTE_ID", cliente.id)
+                            putExtra("NOMBRE_USUARIO", cliente.nombre.capitalizarFormato())
+                            putExtra("BIENVENIDA_MOSTRADA", false)
                         }
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
