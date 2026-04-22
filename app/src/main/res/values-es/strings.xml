@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TFG</string>
+    <string name="app_name">Stylo</string>
     <string name="language">ES</string>
     <string name="loginUser">EMAIL</string>
     <string name="registrerUser">NOMBRE</string>
