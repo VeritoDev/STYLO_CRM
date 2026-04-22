@@ -148,7 +148,7 @@
                     android:layout_height="55dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/guardar"
-                    android:textColor="@color/toolbar_claro"
+                    android:textColor="?attr/colorOnPrimary"
                     android:backgroundTint="?attr/colorOnSurface"
                     app:cornerRadius="15dp" />
 
