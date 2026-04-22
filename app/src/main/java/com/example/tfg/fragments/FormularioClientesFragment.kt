@@ -44,18 +44,18 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
 
     private fun rellenarDatosParaEditar() {
         //RELLENAMOS LOS DATOS EXISTENTES DE LA BASE DE DATOS PARA EDITARLOS
-        binding.etNuevoNombre?.setText(arguments?.getString("nombre"))
-        binding.etNuevoTelefono?.setText(arguments?.getString("telefono"))
-        binding.etNuevoEmail?.setText(arguments?.getString("email"))
-        binding.etNuevoNotas?.setText(arguments?.getString("notas"))
+        binding.etNombreCliente?.setText(arguments?.getString("nombre"))
+        binding.etTelefonoCliente?.setText(arguments?.getString("telefono"))
+        binding.etEmail?.setText(arguments?.getString("email"))
+        binding.etNotas?.setText(arguments?.getString("notas"))
 
     }
 
     private fun guardarDatos() {
-        val nombre = binding.etNuevoNombre?.text.toString().trim()
-        val telefono = binding.etNuevoTelefono?.text.toString().trim()
-        val email = binding.etNuevoEmail?.text.toString().trim()
-        val notas = binding.etNuevoNotas?.text.toString().trim()
+        val nombre = binding.etNombreCliente?.text.toString().trim()
+        val telefono = binding.etTelefonoCliente?.text.toString().trim()
+        val email = binding.etEmail?.text.toString().trim()
+        val notas = binding.etNotas?.text.toString().trim()
 
         // VALIDACIÓN BÁSICA
         if (nombre.isEmpty() || email.isEmpty() || telefono.length != 9) {

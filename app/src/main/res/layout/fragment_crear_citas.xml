@@ -20,133 +20,133 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorPrimarySurface"
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="20dp">
 
                     <ImageView
                         android:id="@+id/btnBackCita"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_gravity="start|center_vertical"
                         android:src="@drawable/ic_back"
-                        app:tint="@color/toolbar_claro" />
+                        app:tint="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_centerInParent="true"
                         android:text="@string/nuevaCita"
-                        android:textColor="@color/toolbar_claro"
-                        android:textSize="26sp"
-                        android:textStyle="bold|italic" />
-                </FrameLayout>
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCitaCliente"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/toolbar_claro"
-                    app:boxBackgroundMode="outline"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/telefono"
                     app:boxCornerRadiusBottomEnd="15dp"
                     app:boxCornerRadiusBottomStart="15dp"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
-                    app:boxStrokeColor="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro"
-                    app:errorEnabled="true"
-                    app:errorIconTint="@android:color/holo_red_dark"
-                    app:errorTextColor="@android:color/holo_red_dark">
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:hintTextColor="?attr/colorOnSurface">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaCliente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/telefono"
-                        android:textColor="@color/toolbar_claro" />
+                        android:textColor="?attr/colorOnSurface"
+                        android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/spinner_personalizado">
-                    <Spinner
-                        android:id="@+id/spinnerServicios"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:spinnerMode="dropdown" />
-                </FrameLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilCitaFecha"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textColorHint="@color/toolbar_claro"
-                    app:boxBackgroundMode="outline"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/servicio"
                     app:boxCornerRadiusBottomEnd="15dp"
                     app:boxCornerRadiusBottomStart="15dp"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
-                    app:boxStrokeColor="@color/toolbar_claro"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:hintTextColor="?attr/colorOnSurface">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinnerServicios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textColor="?attr/colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCitaFecha"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/fecha"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:hintTextColor="?attr/colorOnSurface"
                     app:endIconDrawable="@drawable/ic_calendar"
                     app:endIconMode="custom"
-                    app:endIconTint="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro"
-                    app:errorEnabled="true"
-                    app:errorIconTint="@android:color/holo_red_dark"
-                    app:errorTextColor="@android:color/holo_red_dark">
+                    app:endIconTint="?attr/colorOnSurface">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaFecha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="@string/fecha"
-                        android:textColor="@color/toolbar_claro" />
+                        android:textColor="?attr/colorOnSurface" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCitaHora"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textColorHint="@color/toolbar_claro"
-                    app:boxBackgroundMode="outline"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/hora"
                     app:boxCornerRadiusBottomEnd="15dp"
                     app:boxCornerRadiusBottomStart="15dp"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
-                    app:boxStrokeColor="@color/toolbar_claro"
+                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:hintTextColor="?attr/colorOnSurface"
                     app:endIconDrawable="@drawable/ic_clock"
                     app:endIconMode="custom"
-                    app:endIconTint="@color/toolbar_claro"
-                    app:hintTextColor="@color/toolbar_claro"
-                    app:errorEnabled="true"
-                    app:errorIconTint="@android:color/holo_red_dark"
-                    app:errorTextColor="@android:color/holo_red_dark">
+                    app:endIconTint="?attr/colorOnSurface">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCitaHora"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="@string/hora"
-                        android:textColor="@color/toolbar_claro" />
+                        android:textColor="?attr/colorOnSurface" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnGuardarCita"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="32dp"
-                    android:backgroundTint="@color/toolbar_oscuro"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/añadirCita"
-                    android:textColor="@color/toolbar_claro"
-                    android:textSize="18sp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     app:cornerRadius="15dp" />
 
             </LinearLayout>

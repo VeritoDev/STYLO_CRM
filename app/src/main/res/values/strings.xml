@@ -13,7 +13,7 @@
     <string name="afluencia">Customer Influx</string>
     <string name="accionRapido">Quick Access</string>
     <string name="nuevoCliente">New Customer</string>
-    <string name="nuevaCita">New Appointment</string>
+    <string name="nuevaCita">NEW APPOINTMENT</string>
     <string name="proximasCitas">Next Appointments</string>
     <string name="errorLoginCamposVacios">Please, enter all the fields</string>
     <string name="errorLogin">Unknown error</string>
