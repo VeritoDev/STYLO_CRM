@@ -110,4 +110,7 @@
     <string name="opcion_cancelar">Cancelar cita</string>
     <string name="confirmar_cancelacion">¿Estás seguro de que deseas cancelar esta cita?</string>
     <string name="cita_cancelada">Reserva cancelada correctamente</string>
+    <string name="fecha_param">Fecha: %1$s</string>
+    <string name="servicio_param">Servicio: %1$s</string>
+    <string name="cerrar">Cerrar</string>
 </resources>

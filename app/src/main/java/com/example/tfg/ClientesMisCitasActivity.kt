@@ -1,11 +1,13 @@
 package com.example.tfg
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.ActivityClienteMisCitasBinding
@@ -16,6 +18,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.example.tfg.fragments.GestionarReservaDialog
 
 class ClientesMisCitasActivity : AppCompatActivity() {
 
@@ -106,17 +109,17 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun mostrarOpcionesCita(cita: Cita) {
-        val opciones = arrayOf(getString(R.string.opcion_editar), getString(R.string.opcion_cancelar))
-
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.titulo_gestion_cita))
-        builder.setItems(opciones) { _, which ->
-            when (which) {
-                0 -> editarCita(cita)
-                1 -> confirmarCancelacion(cita)
+        val dialog = GestionarReservaDialog(
+            cita = cita,
+            onEditar = { citaAEditar ->
+                editarCita(citaAEditar)
+            },
+            onEliminar = { citaAEliminar ->
+                confirmarCancelacion(citaAEliminar)
             }
-        }
-        builder.show()
+        )
+
+        dialog.show(supportFragmentManager, "GestionarReserva")
     }
 
     private fun editarCita(cita: Cita) {
@@ -133,14 +136,23 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun confirmarCancelacion(cita: Cita) {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.opcion_cancelar))
-            .setMessage(getString(R.string.confirmar_cancelacion))
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                cancelarCitaEnFireBase(cita)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.opcion_cancelar))
+        builder.setMessage(getString(R.string.confirmar_cancelacion))
+
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            cancelarCitaEnFireBase(cita)
+        }
+        builder.setNegativeButton(android.R.string.cancel, null)
+
+        val dialog = builder.create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.marron_oscuro_fondo))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
+        }
+
+        dialog.show()
     }
 
     private fun cancelarCitaEnFireBase(cita: Cita){

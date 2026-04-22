@@ -27,6 +27,8 @@ class ClienteReservasFragment : Fragment() {
     private val mainRepository = MainRepository()
     private var duracionServicios: Map<String, Int> = emptyMap()
 
+    private var citaIdParaEditar: String? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentClienteReservasBinding.inflate(inflater, container, false)
         return binding.root
@@ -34,6 +36,8 @@ class ClienteReservasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        citaIdParaEditar = arguments?.getString("CITA_ID")
 
         duracionServicios = mapOf(
             getString(R.string.servicio_corte) to 30,
@@ -44,6 +48,19 @@ class ClienteReservasFragment : Fragment() {
 
         setupListeners()
         configurarSpinners()
+
+        if(citaIdParaEditar != null) {
+            cargarDatosCita(citaIdParaEditar!!)
+        }
+    }
+
+    private fun cargarDatosCita(id: String) {
+        mainRepository.getCitaPorId(id) { cita ->
+            if (cita != null) {
+                binding.etFechaReserva.setText(cita.fecha)
+                binding.etHoraReserva.setText(cita.hora)
+            }
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -128,12 +145,12 @@ class ClienteReservasFragment : Fragment() {
             if (cliente != null) {
                 //Verificamos que el peluquero no esté ocupado
                 mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
-                    if (ocupado) {
+                    if (ocupado && citaIdParaEditar == null) {
                         Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                     } else {
                         //Creamos la cita
                         val nuevaCita = Cita(
-                            id = "",
+                            id = citaIdParaEditar ?: "",
                             idCliente = cliente.id,
                             nombreCliente = cliente.nombre,
                             telefonoCliente = cliente.telefono,
@@ -145,10 +162,19 @@ class ClienteReservasFragment : Fragment() {
                             estado = "pendiente"
                         )
 
-                        mainRepository.crearCita(nuevaCita) { exitoso ->
-                            if (exitoso) {
-                                Toast.makeText(requireContext(), context?.getString(R.string.cita_reservada), Toast.LENGTH_SHORT).show()
-                                parentFragmentManager.popBackStack()
+                        if (citaIdParaEditar != null) {
+                            mainRepository.actualizarCita(nuevaCita) { exitoso ->
+                                if (exitoso) {
+                                    Toast.makeText(requireContext(), getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
+                                    parentFragmentManager.popBackStack()
+                                }
+                            }
+                        } else {
+                            mainRepository.crearCita(nuevaCita) { exitoso ->
+                                if (exitoso) {
+                                    Toast.makeText(requireContext(), context?.getString(R.string.cita_reservada), Toast.LENGTH_SHORT).show()
+                                    parentFragmentManager.popBackStack()
+                                }
                             }
                         }
                     }

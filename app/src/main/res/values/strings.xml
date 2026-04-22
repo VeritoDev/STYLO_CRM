@@ -110,4 +110,7 @@
     <string name="opcion_cancelar">Cancel booking</string>
     <string name="confirmar_cancelacion">Are you sure you want to cancel this booking?</string>
     <string name="cita_cancelada">Booking successfully cancelled</string>
+    <string name="fecha_param">Day: %1$s</string>
+    <string name="servicio_param">Service: %1$s</string>
+    <string name="cerrar">Close</string>
 </resources>
