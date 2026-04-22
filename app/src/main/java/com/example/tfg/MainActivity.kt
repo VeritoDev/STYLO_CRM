@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Color
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -11,6 +13,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import android.graphics.RenderEffect
 import androidx.navigation.fragment.NavHostFragment
 import com.example.tfg.databinding.ActivityMainBinding
 import androidx.navigation.ui.setupWithNavController
@@ -59,6 +62,10 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            aplicarEfectoBlur()
+        }
+
         actualizarIconoTema()
 
         // CAMBIO DE TEMA (MODO OSCURO/CLARO)
@@ -103,6 +110,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             popup.show()
+        }
+    }
+
+    private fun aplicarEfectoBlur() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val blurEffect = RenderEffect.createBlurEffect(15f, 15f, Shader.TileMode.CLAMP)
+
+            binding.navHostFragment.setRenderEffect(blurEffect)
+
+            binding.navHostFragment.postDelayed({
+                binding.navHostFragment.setRenderEffect(null)
+            }, 400)
         }
     }
 
