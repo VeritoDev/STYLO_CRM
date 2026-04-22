@@ -2,6 +2,9 @@ package com.example.tfg
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -54,6 +57,12 @@ class ClientesMisCitasActivity : AppCompatActivity() {
             val fragment = ClienteReservasFragment()
 
             supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.deslizar_derecha_dentro,
+                    R.anim.deslizar_izquierda_fuera,
+                    R.anim.deslizar_izquierda_dentro,
+                    R.anim.deslizar_derecha_fuera
+                )
                 .replace(R.id.main, fragment)
                 .addToBackStack(null)
                 .commit()
@@ -88,10 +97,14 @@ class ClientesMisCitasActivity : AppCompatActivity() {
                     binding.tvSinCitas.visibility = View.VISIBLE
                     binding.rvMisCitas.visibility = View.GONE
                     adapter.actualizarLista(emptyList())
+                    val resId = R.anim.item_animation_fall_down
+                    binding.rvMisCitas.scheduleLayoutAnimation()
                 } else {
                     binding.tvSinCitas.visibility = View.GONE
                     binding.rvMisCitas.visibility = View.VISIBLE
                     adapter.actualizarLista(listaFiltrada.sortedWith(compareBy ({ it.fecha }, { it.hora })))
+                    val resId = R.anim.item_animation_fall_down
+                    binding.rvMisCitas.scheduleLayoutAnimation()
                 }
             }
 
@@ -109,6 +122,9 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun mostrarOpcionesCita(cita: Cita) {
+
+        aplicarEfectoBlur(true)
+
         val dialog = GestionarReservaDialog(
             cita = cita,
             onEditar = { citaAEditar ->
@@ -120,6 +136,10 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         )
 
         dialog.show(supportFragmentManager, "GestionarReserva")
+        supportFragmentManager.executePendingTransactions()
+        dialog.dialog?.setOnDismissListener {
+            aplicarEfectoBlur(false)
+        }
     }
 
     private fun editarCita(cita: Cita) {
@@ -159,6 +179,17 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         db.child("citas").child(cita.id).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(this, getString(R.string.cita_cancelada), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun aplicarEfectoBlur(activar: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(activar) {
+                val blur = RenderEffect.createBlurEffect(15f, 15f, Shader.TileMode.CLAMP)
+                binding.root.setRenderEffect(blur)
+            } else {
+                binding.root.setRenderEffect(null)
             }
         }
     }

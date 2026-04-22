@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="?attr/colorOnPrimary"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="?attr/colorPrimarySurface" />
+
+            <TextView
+                android:id="@+id/tvDialogNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_nombre_param"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="CLIENTE: JUAN" />
+
+            <TextView
+                android:id="@+id/tvDialogFechaHora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/fecha_param"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                tools:text="12/04/2026 - 10:00" />
+
+            <TextView
+                android:id="@+id/tvDialogServicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/servicio_param"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                tools:text="Servicio: Corte" />
+
+            <TextView
+                android:id="@+id/tvDialogEstilista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/estilista_param"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                tools:text="Estilista: Ana" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#E0E0E0" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <Button
+                android:id="@+id/btnDialogEditar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/marron_oscuro_fondo"
+                android:text="@string/editar"
+                android:textColor="@android:color/white"
+                app:cornerRadius="12dp" />
+
+            <Button
+                android:id="@+id/btnDialogEliminar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/eliminar"
+                android:textColor="@android:color/holo_red_dark"
+                app:cornerRadius="12dp"
+                app:strokeColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:id="@+id/tvDialogCerrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/cerrar"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
