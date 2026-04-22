@@ -2,6 +2,7 @@ package com.example.tfg
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -13,6 +14,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.example.tfg.fragments.RecuperarPassFragment
 import com.example.tfg.databinding.LoginBinding
@@ -126,6 +128,21 @@ class LoginActivity : AppCompatActivity() {
 
         binding.iconIdioma?.setOnClickListener {
             mostrarDialogoIdioma()
+        }
+
+        binding.btnThemeLogin?.setOnClickListener {
+            binding.btnThemeLogin!!.animate()
+                .rotationBy(360f)
+                .setDuration(400)
+                .withEndAction {
+                    val modoActual = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    if (modoActual == Configuration.UI_MODE_NIGHT_YES) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                }
+                .start()
         }
     }
 

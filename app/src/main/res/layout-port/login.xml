@@ -25,15 +25,29 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <ImageButton
-                android:id="@+id/icon_idioma"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_language"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Cambiar idioma"
-                app:tint="?attr/colorOnSurface" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btnThemeLogin"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentStart="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/icon_dark_mode"
+                    app:tint="@color/marron_oscuro_fondo" />
+
+                <ImageButton
+                    android:id="@+id/icon_idioma"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Cambiar idioma"
+                    android:src="@drawable/ic_language"
+                    app:tint="?attr/colorOnSurface" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/icon_login"
