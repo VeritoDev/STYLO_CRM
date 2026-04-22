@@ -112,5 +112,6 @@
     <string name="cita_cancelada">Reserva cancelada correctamente</string>
     <string name="fecha_param">Fecha: %1$s</string>
     <string name="servicio_param">Servicio: %1$s</string>
+    <string name="estilista_param">Estilista: %1$s</string>
     <string name="cerrar">Cerrar</string>
 </resources>

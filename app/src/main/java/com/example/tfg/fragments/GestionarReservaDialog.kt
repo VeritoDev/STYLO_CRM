@@ -28,13 +28,15 @@ class GestionarReservaDialog(
         val tvNombre = view.findViewById<TextView>(R.id.tvDialogNombre)
         val tvFechaHora = view.findViewById<TextView>(R.id.tvDialogFechaHora)
         val tvServicio = view.findViewById<TextView>(R.id.tvDialogServicio)
+        val tvEstilista = view.findViewById<TextView>(R.id.tvDialogEstilista)
         val btnEditar = view.findViewById<Button>(R.id.btnDialogEditar)
         val btnEliminar = view.findViewById<Button>(R.id.btnDialogEliminar)
         val tvCerrar = view.findViewById<TextView>(R.id.tvDialogCerrar)
 
         tvNombre.text = getString(R.string.label_nombre_param, cita.nombreCliente.uppercase())
-        tvFechaHora.text = "${cita.fecha} - ${cita.hora}"
-        tvServicio.text = cita.servicio
+        tvFechaHora.text = getString(R.string.fecha_param, "${cita.fecha} - ${cita.hora}")
+        tvServicio.text = getString(R.string.servicio_param, cita.servicio.uppercase())
+        tvEstilista.text = getString(R.string.estilista_param, cita.estilista.uppercase())
 
         btnEditar.setOnClickListener {
             onEditar(cita)

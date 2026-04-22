@@ -86,7 +86,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_clock"
+                android:src="@drawable/ic_clientes"
                 app:tint="?attr/colorOnSurface" />
             <TextView
                 android:id="@+id/tvEstilistaItem"
