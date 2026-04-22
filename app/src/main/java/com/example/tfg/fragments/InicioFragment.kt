@@ -13,6 +13,7 @@ import com.example.tfg.databinding.FragmentInicioBinding
 import com.example.tfg.repository.MainRepository
 import androidx.core.content.edit
 import com.example.tfg.model.Cita
+import com.example.tfg.repository.capitalizarFormato
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
@@ -35,13 +36,13 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         val nombreReal = prefs.getString("user_name_key", null)
 
         if (nombreReal != null) {
-            val nombreMayus = nombreReal.uppercase()
+            val nombreMayus = nombreReal.capitalizarFormato()
             binding.tvNombreUsuario.text = nombreMayus
 
             Toast.makeText(requireContext(), getString(R.string.bienvenida_nombre, nombreMayus), Toast.LENGTH_SHORT).show()
         } else {
             val usuario = mainRepository.getUsuarioActual()
-            val nombreDesdeEmail = usuario?.email?.substringBefore("@")?.uppercase() ?: "Profesional"
+            val nombreDesdeEmail = usuario?.email?.substringBefore("@")?.capitalizarFormato() ?: "Profesional"
 
             binding.tvNombreUsuario.text = nombreDesdeEmail
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.model.Cita
+import com.example.tfg.repository.capitalizarFormato
 
 class HistorialAdapter(private val listaCitas: List<Cita>) :
     RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder>() {
@@ -24,7 +25,7 @@ class HistorialAdapter(private val listaCitas: List<Cita>) :
     override fun onBindViewHolder(holder: HistorialViewHolder, position: Int) {
         val cita = listaCitas[position]
         holder.tvFecha.text = cita.fecha
-        holder.tvServicio.text = cita.servicio.uppercase()
+        holder.tvServicio.text = cita.servicio.capitalizarFormato()
     }
 
     override fun getItemCount() = listaCitas.size

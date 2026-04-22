@@ -7,6 +7,7 @@ import com.example.tfg.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.databinding.ItemCitasBinding
 import com.example.tfg.model.Cita
+import com.example.tfg.repository.capitalizarFormato
 
 class CitasAdapter(
     private var listaCitas: List<Cita>,
@@ -30,14 +31,14 @@ class CitasAdapter(
 
             if (esEstilista) {
                 val etiqueta = contexto.getString(R.string.label_cliente)
-                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.nombreCliente.uppercase()}"
+                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.nombreCliente.capitalizarFormato()}"
             } else {
                 val etiqueta = contexto.getString(R.string.label_estilista)
-                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.uppercase()}"
+                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.capitalizarFormato()}"
             }
 
             val etiquetaPersonal = contexto.getString(R.string.label_estilista)
-            tvEstilistaItem?.text = "$etiquetaPersonal: ${cita.estilista}"
+            tvEstilistaItem?.text = "$etiquetaPersonal: ${cita.estilista.capitalizarFormato()}"
 
             val servicioTraducido = when (cita.servicio) {
                 contexto.getString(R.string.servicio_corte), "Corte", "Haircut" -> contexto.getString(R.string.servicio_corte)

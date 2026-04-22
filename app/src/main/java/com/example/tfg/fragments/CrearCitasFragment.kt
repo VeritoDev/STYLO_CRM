@@ -17,6 +17,7 @@ import com.example.tfg.R
 import com.example.tfg.databinding.FragmentCrearCitasBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.MainRepository
+import com.example.tfg.repository.capitalizarFormato
 import java.util.Calendar
 
 class CrearCitasFragment : Fragment() {
@@ -190,10 +191,10 @@ class CrearCitasFragment : Fragment() {
                     val nuevaCita = Cita(
                         id = citaIdParaEditar ?: "",
                         idCliente = cliente.id,
-                        nombreCliente = cliente.nombre,
+                        nombreCliente = cliente.nombre.capitalizarFormato(),
                         telefonoCliente = cliente.telefono,
                         emailCliente = cliente.email,
-                        estilista = estilista,
+                        estilista = estilista.capitalizarFormato(),
                         servicio = servicio,
                         fecha = fecha,
                         hora = hora,

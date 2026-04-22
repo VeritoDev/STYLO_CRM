@@ -343,3 +343,9 @@ class MainRepository {
 
     fun getUsuarioActual() = auth.currentUser
 }
+
+fun String.capitalizarFormato(): String {
+    return this.lowercase().trim().split(" ").joinToString(" ") { palabra ->
+        palabra.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+    }
+}

@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.tfg.R
 import com.example.tfg.model.Cita
+import com.example.tfg.repository.capitalizarFormato
 
 class GestionarReservaDialog(
     private val cita: Cita,
@@ -33,10 +34,10 @@ class GestionarReservaDialog(
         val btnEliminar = view.findViewById<Button>(R.id.btnDialogEliminar)
         val tvCerrar = view.findViewById<TextView>(R.id.tvDialogCerrar)
 
-        tvNombre.text = getString(R.string.label_nombre_param, cita.nombreCliente.uppercase())
+        tvNombre.text = getString(R.string.label_nombre_param, cita.nombreCliente.capitalizarFormato())
         tvFechaHora.text = getString(R.string.fecha_param, "${cita.fecha} - ${cita.hora}")
-        tvServicio.text = getString(R.string.servicio_param, cita.servicio.uppercase())
-        tvEstilista.text = getString(R.string.estilista_param, cita.estilista.uppercase())
+        tvServicio.text = getString(R.string.servicio_param, cita.servicio.capitalizarFormato())
+        tvEstilista.text = getString(R.string.estilista_param, cita.estilista.capitalizarFormato())
 
         btnEditar.setOnClickListener {
             onEditar(cita)

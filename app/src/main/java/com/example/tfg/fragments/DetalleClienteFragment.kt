@@ -15,6 +15,7 @@ import com.example.tfg.databinding.FragmentDetalleClienteBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.example.tfg.repository.MainRepository
+import com.example.tfg.repository.capitalizarFormato
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -101,7 +102,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
-        binding.tvNombreDetalle.text = getString(R.string.label_nombre_param, cliente.nombre.uppercase())
+        binding.tvNombreDetalle.text = getString(R.string.label_nombre_param, cliente.nombre.capitalizarFormato())
         binding.tvTelefonoDetalle.text = getString(R.string.label_telefono_param, cliente.telefono)
         binding.tvEmailDetalle.text = getString(R.string.email_param, cliente.email.uppercase())
         binding.tvNotasDetalle.text = getString(R.string.notas_param, cliente.notas)
