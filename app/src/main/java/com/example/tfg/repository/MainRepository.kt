@@ -336,6 +336,32 @@ class MainRepository {
             })
     }
 
+    // NUEVA FUNCIÓN: Comprobar si el cliente ya tiene cita el mismo día
+    fun verificarCitaMismoDiaCliente(idCliente: String, fecha: String, citaIdIgnorar: String?, onResult: (Boolean) -> Unit) {
+        getRefCitas().orderByChild("idCliente").equalTo(idCliente)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var yaTieneCita = false
+                    for (data in snapshot.children) {
+                        val cita = data.getValue(Cita::class.java)
+
+                        // Si la cita es del mismo día, NO es la que estamos editando, y NO está finalizada...
+                        if (cita != null && cita.fecha == fecha && cita.id != citaIdIgnorar) {
+                            if (cita.estado != "finalizado" && cita.estado != "cancelado") {
+                                yaTieneCita = true
+                                break
+                            }
+                        }
+                    }
+                    onResult(yaTieneCita)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onResult(false)
+                }
+            })
+    }
+
 
     //FUNCIONES AUXILIARES
     private fun horaAMinutos(hora: String): Int {

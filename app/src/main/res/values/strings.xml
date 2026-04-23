@@ -12,7 +12,7 @@
     <string name="inicio">Welcome</string>
     <string name="afluencia">Customer Influx</string>
     <string name="accionRapido">Quick Access</string>
-    <string name="nuevoCliente">New Customer</string>
+    <string name="nuevoCliente">NEW CUSTOMER</string>
     <string name="nuevaCita">NEW APPOINTMENT</string>
     <string name="proximasCitas">Next Appointments</string>
     <string name="errorLoginCamposVacios">Please, enter all the fields</string>
@@ -114,4 +114,5 @@
     <string name="servicio_param">Service: %1$s</string>
     <string name="estilista_param">Stylist: %1$s</string>
     <string name="cerrar">Close</string>
+    <string name="error_cita_mismo_dia">The customer has an appointment that day</string>
 </resources>

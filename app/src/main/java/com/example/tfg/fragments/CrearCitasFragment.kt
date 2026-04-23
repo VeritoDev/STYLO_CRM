@@ -163,6 +163,13 @@ class CrearCitasFragment : Fragment() {
                 return@buscarClientePorTelefono
             }
 
+            mainRepository.verificarCitaMismoDiaCliente(cliente.id, fecha, citaIdParaEditar) { yaTieneCita ->
+                if(yaTieneCita) {
+                    Toast.makeText(requireContext(), getString(R.string.error_cita_mismo_dia), Toast.LENGTH_SHORT).show()
+                    return@verificarCitaMismoDiaCliente
+                }
+            }
+
             mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
                 if (choque && citaIdParaEditar == null) {
                     Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG).show()
