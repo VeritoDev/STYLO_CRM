@@ -203,9 +203,11 @@ class LoginActivity : AppCompatActivity() {
             if (success) {
                 val emailIngresado = binding.etEmail.text.toString().trim().lowercase()
                 dirigirSegunRol(emailIngresado)
-            } else {
-                Toast.makeText(this, getString(R.string.error_sesion_invalida), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        viewModel.errorMessage.observe(this) { mensajeResId ->
+            Toast.makeText(this, getString(mensajeResId), Toast.LENGTH_SHORT).show()
         }
     }
 

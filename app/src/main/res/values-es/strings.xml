@@ -84,7 +84,7 @@
     <string name="email_valido">Introduce un email válido</string>
     <string name="toast_recuperacion_enviado">Email de recuperación enviado a %1$s</string>
     <string name="toast_cita_con">Cita con: %1$s</string>
-    <string name="error_sesion_invalida">Sesión no válida</string>
+    <string name="error_sesion_invalida">El usuario no ha introducido bien las credenciales</string>
     <string name="login_no_cuenta">¿No tienes cuenta? Regístrate</string>
     <string name="link_registrate">Regístrate</string>
     <string name="bienvenida_nombre">Bienvenido/a, %s</string>
