@@ -25,7 +25,8 @@
             android:text="Nombre Cliente"
             android:textColor="?attr/colorOnSurface"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Nombre Cliente - 600000000" />
 
         <View
             android:layout_width="match_parent"
@@ -86,7 +87,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_clientes"
+                android:src="@drawable/ic_person"
                 app:tint="?attr/colorOnSurface" />
             <TextView
                 android:id="@+id/tvEstilistaItem"

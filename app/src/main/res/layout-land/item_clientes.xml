@@ -25,7 +25,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_home"
+                android:src="@drawable/ic_person"
                 app:tint="?attr/colorOnSurface"/>
             <TextView
                 android:id="@+id/tvNombreItem"

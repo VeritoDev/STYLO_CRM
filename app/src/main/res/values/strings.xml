@@ -115,4 +115,5 @@
     <string name="estilista_param">Stylist: %1$s</string>
     <string name="cerrar">Close</string>
     <string name="error_cita_mismo_dia">The customer has an appointment that day</string>
+    <string name="pais">Country</string>
 </resources>

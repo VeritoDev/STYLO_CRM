@@ -2,6 +2,8 @@ package com.example.tfg.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -44,18 +46,31 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
 
     private fun rellenarDatosParaEditar() {
         //RELLENAMOS LOS DATOS EXISTENTES DE LA BASE DE DATOS PARA EDITARLOS
-        binding.etNombreCliente?.setText(arguments?.getString("nombre"))
-        binding.etTelefonoCliente?.setText(arguments?.getString("telefono"))
-        binding.etEmail?.setText(arguments?.getString("email"))
-        binding.etNotas?.setText(arguments?.getString("notas"))
+        binding.etNombreCliente.setText(arguments?.getString("nombre"))
+        binding.etTelefonoCliente.setText(arguments?.getString("telefono"))
+        binding.etEmail.setText(arguments?.getString("email"))
+        binding.etNotas.setText(arguments?.getString("notas"))
+
+        val telCompleto = arguments?.getString("telefono") ?: ""
+        if (telCompleto.contains(" ")) {
+            val partes = telCompleto.split(" ")
+            binding.etPrefijo?.setText(partes[0])
+            binding.etTelefonoCliente.setText(partes[1])
+        } else {
+            binding.etPrefijo?.setText("+34")
+            binding.etTelefonoCliente.setText(telCompleto)
+        }
 
     }
 
     private fun guardarDatos() {
-        val nombre = binding.etNombreCliente?.text.toString().trim()
-        val telefono = binding.etTelefonoCliente?.text.toString().trim()
-        val email = binding.etEmail?.text.toString().trim()
-        val notas = binding.etNotas?.text.toString().trim()
+        val nombre = binding.etNombreCliente.text.toString().trim()
+        val telefono = binding.etTelefonoCliente.text.toString().trim()
+        val prefijo = binding.etPrefijo?.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val notas = binding.etNotas.text.toString().trim()
+
+        val telefonoFinal = "$prefijo $telefono"
 
         // VALIDACIÓN BÁSICA
         if (nombre.isEmpty() || email.isEmpty() || telefono.length != 9) {
@@ -73,7 +88,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             // LÓGICA DE EDICIÓN
             val datosActualizados = mapOf(
                 "nombre" to nombreMayuscula,
-                "telefono" to telefono,
+                "telefono" to telefonoFinal,
                 "email" to email,
                 "notas" to notas
             )
@@ -89,7 +104,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                 if (clienteEmail != null){
                     Toast.makeText(requireContext(), context?.getString(R.string.error_sesion_invalida), Toast.LENGTH_SHORT).show()
                 } else {
-                    mainRepository.buscarClientePorTelefono(telefono) { clienteTelefono ->
+                    mainRepository.buscarClientePorTelefono(telefonoFinal) { clienteTelefono ->
                         if(clienteTelefono != null){
                             Toast.makeText(requireContext(), getString(R.string.error_cliente_telefono), Toast.LENGTH_SHORT).show()
                         } else {

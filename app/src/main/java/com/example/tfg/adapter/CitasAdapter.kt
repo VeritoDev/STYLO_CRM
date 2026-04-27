@@ -31,7 +31,10 @@ class CitasAdapter(
 
             if (esEstilista) {
                 val etiqueta = contexto.getString(R.string.label_cliente)
-                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.nombreCliente.capitalizarFormato()}"
+                val nombreCap = cita.nombreCliente.capitalizarFormato()
+                val telefono = cita.telefonoCliente
+
+                holder.binding.tvNombreItem.text = "$etiqueta: $nombreCap - $telefono"
             } else {
                 val etiqueta = contexto.getString(R.string.label_estilista)
                 holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.capitalizarFormato()}"

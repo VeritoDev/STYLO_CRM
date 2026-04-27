@@ -115,4 +115,5 @@
     <string name="estilista_param">Estilista: %1$s</string>
     <string name="cerrar">Cerrar</string>
     <string name="error_cita_mismo_dia">El cliente ya tiene una cita reservada este día</string>
+    <string name="pais">País</string>
 </resources>
