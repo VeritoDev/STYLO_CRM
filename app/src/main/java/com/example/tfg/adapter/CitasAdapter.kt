@@ -31,13 +31,32 @@ class CitasAdapter(
 
             if (esEstilista) {
                 val etiqueta = contexto.getString(R.string.label_cliente)
-                val nombreCap = cita.nombreCliente.capitalizarFormato()
-                val telefono = cita.telefonoCliente
 
-                holder.binding.tvNombreItem.text = "$etiqueta: $nombreCap - $telefono"
+                // CAPITALIZAR CADA PALABRA DEL NOMBRE
+                val nombreCap = cita.nombreCliente.lowercase().split(" ").joinToString(" ") { palabra ->
+                    if (palabra.isNotEmpty()) palabra.replaceFirstChar { it.uppercase() } else ""
+                }
+
+                // FORMATO DE TELÉFONO SEPARADO (Con o sin prefijo)
+                val telLimpio = cita.telefonoCliente.replace(" ", "")
+                val telFormateado = if (telLimpio.length >= 9) {
+                    val numero = telLimpio.takeLast(9)
+                    val prefijo = telLimpio.dropLast(9)
+
+                    val separado = "${numero.substring(0, 3)} ${numero.substring(3, 6)} ${numero.substring(6, 9)}"
+                    if (prefijo.isNotEmpty()) "$prefijo $separado" else separado
+                } else {
+                    cita.telefonoCliente
+                }
+
+                holder.binding.tvNombreItem.text = "$etiqueta: $nombreCap - $telFormateado"
             } else {
                 val etiqueta = contexto.getString(R.string.label_estilista)
-                holder.binding.tvNombreItem.text = "$etiqueta: ${cita.estilista.capitalizarFormato()}"
+
+                val estilistaCap = cita.estilista.lowercase().split(" ").joinToString(" ") { palabra ->
+                    if (palabra.isNotEmpty()) palabra.replaceFirstChar { it.uppercase() } else ""
+                }
+                holder.binding.tvNombreItem.text = "$etiqueta: $estilistaCap"
             }
 
             val etiquetaPersonal = contexto.getString(R.string.label_estilista)
@@ -71,7 +90,9 @@ class CitasAdapter(
         } else {
         //SI NO, FILTRA LA LISTA CON LO QUE SE HA ESCRITO EN EL BUSCADOR
             listaCitas.filter {
-                it.nombreCliente.lowercase().contains(bus) || it.servicio.lowercase().contains(bus) || it.telefonoCliente.lowercase().contains(bus)
+                it.nombreCliente.lowercase().contains(bus) ||
+                        it.servicio.lowercase().contains(bus) ||
+                        it.telefonoCliente.lowercase().contains(bus)
             }.toMutableList()
         }
         notifyDataSetChanged()

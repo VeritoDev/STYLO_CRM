@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg.databinding.ItemClientesBinding
 import com.example.tfg.model.Cliente
+import com.example.tfg.repository.capitalizarFormato
 
 class ClientesAdapter(
     private var lista: List<Cliente>,
@@ -25,7 +26,7 @@ class ClientesAdapter(
         val cliente = listaFiltrada[position]
 
         holder.binding.apply {
-            tvNombreItem.text = cliente.nombre
+            tvNombreItem.text = cliente.nombre.capitalizarFormato()
             tvTelefonoDetalle.text = cliente.telefono
 
             root.setOnClickListener { onClick(cliente) }
