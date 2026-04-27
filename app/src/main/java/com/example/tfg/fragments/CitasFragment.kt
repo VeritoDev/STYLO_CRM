@@ -80,13 +80,14 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
 
     private fun cargarCitas() {
         mainRepository.getTodasLasCitas { listaTotal ->
+            if (!isAdded) return@getTodasLasCitas
             val listaPendientes = listaTotal.filter { it.estado != "finalizado" }
 
             // FILTRAMOS Y BORRAMOS LAS CITAS PASADAS AL MISMO TIEMPO
             val listaValida = limpiarCitasPasadasYFiltrar(listaPendientes)
 
             if (listaValida.isEmpty()) {
-                binding.tvSinCitas.text = getString(R.string.noCitas) // Cambiado para usar tu string
+                binding.tvSinCitas.text = getString(R.string.noCitas)
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvCitas.visibility = View.GONE
                 citasAdapter.actualizarLista(emptyList())

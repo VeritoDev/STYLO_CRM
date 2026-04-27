@@ -194,22 +194,20 @@ class MainRepository {
     }
 
     fun eliminarClienteYSusCitas(clienteId: String, callback: (Boolean) -> Unit) {
-        getRefClientes().child(clienteId).equalTo(clienteId).get()
+        getRefCitas().orderByChild("idCliente").equalTo(clienteId).get()
             .addOnSuccessListener { snapshot ->
                 val rutasABorrar = mutableMapOf<String, Any?>()
-                //Ruta del cliente en el mapa de borrado
                 rutasABorrar["/clientes/$clienteId"] = null
 
                 if (snapshot.exists()) {
-                    for (citaSnapshot in snapshot.children){
+                    for (citaSnapshot in snapshot.children) {
                         val citaId = citaSnapshot.key
-                        if (citaId != null){
+                        if (citaId != null) {
                             rutasABorrar["/citas/$citaId"] = null
                         }
                     }
                 }
 
-                //Ejecutamos todas las eliminaciones en una sola operación de red
                 database.updateChildren(rutasABorrar)
                     .addOnSuccessListener { callback(true) }
                     .addOnFailureListener { callback(false) }
