@@ -19,8 +19,9 @@
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:boxStrokeColor="?attr/colorPrimary"
+        app:boxStrokeColor="?attr/colorOnSurface"
         app:hintTextColor="?attr/colorPrimary"
+        app:hintEnabled="false"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
