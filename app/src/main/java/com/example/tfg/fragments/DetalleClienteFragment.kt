@@ -1,8 +1,8 @@
 package com.example.tfg.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.graphics.Color
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -24,6 +24,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     private lateinit var binding: FragmentDetalleClienteBinding
     private val repository = MainRepository()
+    private var telefonoSinFormato: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,7 +71,8 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
                     putString("clienteId", clienteId)
                     // Extraemos solo el valor después de los dos puntos ":"
                     putString("nombre", binding.tvNombreDetalle.text.toString().substringAfter(": ").trim())
-                    putString("telefono", binding.tvTelefonoDetalle.text.toString().substringAfter(": ").trim())
+                    // PASAMOS EL TELÉFONO ORIGINAL PARA QUE NO SE ROMPA EL SPLIT DEL FORMULARIO
+                    putString("telefono", telefonoSinFormato)
                     putString("email", binding.tvEmailDetalle.text.toString().substringAfter(": ").trim())
                     putString("notas", binding.tvNotasDetalle.text.toString().substringAfter(": ").trim())
                 }
@@ -94,7 +96,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
         binding.btnAAdirCita.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("TELEFONO_CLIENTE", binding.tvTelefonoDetalle.text.toString().substringAfter(": ").trim())
+                putString("TELEFONO_CLIENTE", telefonoSinFormato)
             }
             findNavController().navigate(R.id.action_detalleClienteFragment_to_crearCitasFragment)
         }
@@ -102,10 +104,29 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
+        telefonoSinFormato = cliente.telefono // GUARDAMOS EN MEMORIA
+
         binding.tvNombreDetalle.text = getString(R.string.label_nombre_param, cliente.nombre.capitalizarFormato())
-        binding.tvTelefonoDetalle.text = getString(R.string.label_telefono_param, cliente.telefono)
+
+        //FORMATEAR PARA MOSTRAR (+34 600 111 222)
+        val telLimpio = cliente.telefono.replace(" ", "")
+        val telFormateado = if (telLimpio.startsWith("+") && telLimpio.length >= 12) {
+            "${telLimpio.substring(0, 3)} ${telLimpio.substring(3, 6)} ${telLimpio.substring(6, 9)} ${telLimpio.substring(9)}"
+        } else {
+            cliente.telefono
+        }
+
+        binding.tvTelefonoDetalle.text = getString(R.string.label_telefono_param, telFormateado)
         binding.tvEmailDetalle.text = getString(R.string.email_param, cliente.email.uppercase())
         binding.tvNotasDetalle.text = getString(R.string.notas_param, cliente.notas)
+
+        //LÓGICA DE LLAMADA AL PULSAR EL TEXTO
+        binding.tvTelefonoDetalle.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$telLimpio")
+            }
+            startActivity(intent)
+        }
     }
 
     private fun ordenarCitas(lista: List<Cita>): List<Cita> {

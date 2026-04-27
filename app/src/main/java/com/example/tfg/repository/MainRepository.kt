@@ -396,3 +396,16 @@ fun String.capitalizarFormato(): String {
         palabra.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }
 }
+
+fun formatearTelefono(tel:String): String {
+    val limpio = tel.replace(" ", "")
+    return if (limpio.length >= 12) {
+        val prefijo = limpio.substring(0, 3)
+        val p1 = limpio.substring(3, 5)
+        val p2 = limpio.substring(5, 7)
+        val p3 = limpio.substring(7, 9)
+        "$prefijo $p1 $p2 $p3"
+    } else {
+        limpio
+    }
+}
