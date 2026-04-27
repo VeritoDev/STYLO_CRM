@@ -68,7 +68,7 @@ class CitasAdapter(
         } else {
         //SI NO, FILTRA LA LISTA CON LO QUE SE HA ESCRITO EN EL BUSCADOR
             listaCitas.filter {
-                it.nombreCliente.lowercase().contains(bus) || it.servicio.lowercase().contains(bus)
+                it.nombreCliente.lowercase().contains(bus) || it.servicio.lowercase().contains(bus) || it.telefonoCliente.lowercase().contains(bus)
             }.toMutableList()
         }
         notifyDataSetChanged()

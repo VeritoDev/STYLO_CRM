@@ -8,6 +8,7 @@
         <item name="colorPrimary">@color/marron_boton</item>
         <item name="colorOnPrimary">@color/toolbar_claro</item>
         <item name="colorOnSurface">#000000</item>
+        <item name="colorOnBackground">@color/blanco_puro</item>
     </style>
 
     <style name="MaterialAlertDialog.Material3.Animation.">

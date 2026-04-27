@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,32 +34,31 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
         }
 
         //SEARCHBAR DE BUSQUEDA DE USUARIOS
-        binding.etBuscarCliente.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s.toString()
-                if (::adapter.isInitialized) {
-                    val resultados = adapter.filtrar(query)
+        binding.tilBuscarCliente?.editText?.addTextChangedListener { editable ->
+            val query = editable.toString().trim()
 
-                    //SI NO EXISTE ESE USUARIO Y EL QUERY TIENE DATOS
-                    if (resultados == 0 && query.isNotEmpty()) {
+            if (::adapter.isInitialized) {
+                // El adapter filtrará por Nombre, Teléfono y Servicio/Email internamente
+                val resultados = adapter.filtrar(query)
+
+                if (resultados == 0) {
+                    binding.rvClientes.visibility = View.GONE
+                    binding.tvSinClientes.visibility = View.VISIBLE
+
+                    // Si no hay resultados pero hay texto escrito -> Mensaje de "no se encontró X"
+                    if (query.isNotEmpty()) {
                         binding.tvSinClientes.text = getString(R.string.sin_resultados_busqueda, query)
-                        binding.tvSinClientes.visibility = View.VISIBLE
-                        binding.rvClientes.visibility = View.GONE
-                    //SI NO EXISTE ESE USUARIO Y EL QUERY NO TIENE DATOS
-                    } else if (resultados == 0 && query.isEmpty()) {
-                        binding.tvSinClientes.text = getString(R.string.noClientes)
-                        binding.tvSinClientes.visibility = View.VISIBLE
-                        binding.rvClientes.visibility = View.GONE
                     } else {
-                        //SI HAY RESULTADOS, OCULTAMOS EL AVISO
-                        binding.tvSinClientes.visibility = View.GONE
-                        binding.rvClientes.visibility = View.VISIBLE
+                        // Si la lista está vacía de base -> Mensaje de "no hay clientes"
+                        binding.tvSinClientes.text = getString(R.string.noClientes)
                     }
+                } else {
+                    // Si hay resultados, mostramos la lista
+                    binding.tvSinClientes.visibility = View.GONE
+                    binding.rvClientes.visibility = View.VISIBLE
                 }
             }
-        })
+        }
     }
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation

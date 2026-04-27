@@ -8,5 +8,6 @@
         <item name="colorPrimary">@color/marron_boton</item>
         <item name="colorOnPrimary">@color/toolbar_oscuro</item>
         <item name="colorOnSurface">@color/blanco_puro</item>
+        <item name="colorOnBackground">#383838</item>
     </style>
 </resources>
