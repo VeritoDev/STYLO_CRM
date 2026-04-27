@@ -1,6 +1,8 @@
 package com.example.tfg.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.tfg.R
@@ -43,13 +45,21 @@ class CitasAdapter(
                     val numero = telLimpio.takeLast(9)
                     val prefijo = telLimpio.dropLast(9)
 
-                    val separado = "${numero.substring(0, 3)} ${numero.substring(3, 6)} ${numero.substring(6, 9)}"
+                    val separado = "${numero.substring(0, 3)} ${numero.substring(3, 5)} ${numero.substring(5, 7)} ${numero.substring(7, 9)}"
                     if (prefijo.isNotEmpty()) "$prefijo $separado" else separado
                 } else {
                     cita.telefonoCliente
                 }
 
-                holder.binding.tvNombreItem.text = "$etiqueta: $nombreCap - $telFormateado"
+                holder.binding.tvNombreItem.text = "$etiqueta: $nombreCap"
+                holder.binding.tvTelefonoItem?.text = telFormateado
+
+                holder.binding.tvTelefonoItem?.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:$telLimpio")
+                    }
+                    contexto.startActivity(intent)
+                }
             } else {
                 val etiqueta = contexto.getString(R.string.label_estilista)
 

@@ -2,8 +2,6 @@ package com.example.tfg.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -38,7 +36,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        //BOTÓN PARA GUARDAR EL CLIENTE EN LA BASE DE DATOS
+
         binding.btnGuardarCliente.setOnClickListener {
             guardarDatos()
         }
@@ -47,7 +45,6 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
     private fun rellenarDatosParaEditar() {
         //RELLENAMOS LOS DATOS EXISTENTES DE LA BASE DE DATOS PARA EDITARLOS
         binding.etNombreCliente.setText(arguments?.getString("nombre"))
-        binding.etTelefonoCliente.setText(arguments?.getString("telefono"))
         binding.etEmail.setText(arguments?.getString("email"))
         binding.etNotas.setText(arguments?.getString("notas"))
 
@@ -69,7 +66,6 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         val prefijo = binding.etPrefijo?.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val notas = binding.etNotas.text.toString().trim()
-
         val telefonoFinal = "$prefijo $telefono"
 
         // VALIDACIÓN BÁSICA
@@ -94,8 +90,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             )
             mainRepository.actualizarCliente(clienteID!!, datosActualizados) { exito ->
                 if (exito) {
-                    Toast.makeText(requireContext(), context?.getString(R.string.cliente_actualizado), Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), context?.getString(R.string.cliente_actualizado), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
             }
@@ -115,7 +110,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
                                         val nuevoCliente = Cliente(
                                             id = uid,
                                             nombre = nombreMayuscula,
-                                            telefono = telefono,
+                                            telefono = telefonoFinal,
                                             email = email,
                                             notas = notas
                                         )

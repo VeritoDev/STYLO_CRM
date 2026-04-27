@@ -42,11 +42,21 @@ class CrearCitasFragment : Fragment() {
 
         inicializarServicios()
         setupListeners()
-        configurarSpinner() // ¡Ahora es mucho más sencillo!
+        configurarSpinner()
 
+        // CARGAR EL TELÉFONO SEPARANDO PREFIJO Y NÚMERO
         if (!telefonoRecibido.isNullOrEmpty()) {
-            binding.etCitaCliente.setText(telefonoRecibido)
-            binding.tilCitaCliente.isEnabled = false // DESHABILITAMOS PARA QUE NO SE CAMBIE
+            if (telefonoRecibido.contains(" ")) {
+                val partes = telefonoRecibido.split(" ")
+                binding.etPrefijo?.setText(partes[0])
+                binding.etCitaCliente.setText(partes[1])
+            } else {
+                binding.etPrefijo?.setText("+34")
+                binding.etCitaCliente.setText(telefonoRecibido)
+            }
+            binding.tilCitaCliente.isEnabled = false
+            // SI TIENES UN tilPrefijo EN EL XML, AÑADE ESTO TAMBIÉN:
+            // binding.tilPrefijo?.isEnabled = false
         }
 
         if (citaIdParaEditar != null) {
@@ -57,17 +67,14 @@ class CrearCitasFragment : Fragment() {
     @SuppressLint("DefaultLocale")
     private fun setupListeners() {
 
-        // BOTÓN VOLVER HACIA ATRÁS
         binding.btnBackCita.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        // BOTÓN GUARDAR CITA
         binding.btnGuardarCita.setOnClickListener {
             validarYGuardarCita()
         }
 
-        // BOTÓN CON CALENDARIO PARA ELEGIR EL DÍA
         binding.etCitaFecha.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -79,12 +86,10 @@ class CrearCitasFragment : Fragment() {
                 binding.etCitaFecha.setText(date)
             }, year, month, day)
 
-            // LÓGICA PARA QUE NO TE DEJE ELEGIR LOS DÍAS ANTERIORES
             picker.datePicker.minDate = System.currentTimeMillis()
             picker.show()
         }
 
-        // BOTÓN CON RELOJ PARA ELEGIR LA HORA
         binding.etCitaHora.setOnClickListener {
             val calendar = Calendar.getInstance()
             val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -92,7 +97,6 @@ class CrearCitasFragment : Fragment() {
 
             val timePicker = TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
 
-                // COMPROBAMOS SI LA HORA ESTÁ ENTRE LAS 9 Y LAS 20
                 if (selectedHour in 9..20) {
                     if (selectedHour == 20 && selectedMinute > 0) {
                         Toast.makeText(requireContext(), context?.getString(R.string.horario), Toast.LENGTH_SHORT).show()
@@ -111,29 +115,29 @@ class CrearCitasFragment : Fragment() {
     }
 
     private fun validarYGuardarCita() {
-        val telefonoCliente = binding.etCitaCliente.text.toString().trim()
+        val numeroBase = binding.etCitaCliente.text.toString().trim()
+        val prefijo = binding.etPrefijo?.text.toString().trim()
 
-        // ¡MAGIA 1! Ahora se lee como un texto normal, adiós al selectedItem
+        // UNIMOS EL TELÉFONO ANTES DE BUSCAR Y GUARDAR
+        val telefonoFinal = "$prefijo $numeroBase"
+
         val servicio = binding.spinnerServicios?.text.toString().trim()
-
         val prefs = requireContext().getSharedPreferences("config_app", android.content.Context.MODE_PRIVATE)
         val estilista = prefs.getString("user_name_key", "Profesional") ?: "Profesional"
         val fecha = binding.etCitaFecha.text.toString().trim()
         val hora = binding.etCitaHora.text.toString().trim()
 
-        // RESETEAMOS LOS ERRORES
         binding.tilCitaCliente.error = null
         binding.tilCitaFecha.error = null
         binding.tilCitaHora.error = null
 
         var esValido = true
 
-        if (telefonoCliente.isEmpty()) {
+        if (numeroBase.isEmpty()) {
             binding.tilCitaCliente.error = " "
             esValido = false
         }
 
-        // Validamos el servicio (como ya no hay posición 0, solo comprobamos que no esté vacío)
         if (servicio.isEmpty()) {
             Toast.makeText(requireContext(), "Por favor, elige un servicio", Toast.LENGTH_SHORT).show()
             esValido = false
@@ -156,8 +160,8 @@ class CrearCitasFragment : Fragment() {
 
         val duracion = duracionServicios[servicio] ?: 30
 
-        // BUSCAMOS AL CLIENTE POR NÚMERO DE TELÉFONO
-        mainRepository.buscarClientePorTelefono(telefonoCliente) { cliente ->
+        // BUSCAMOS CON EL TELÉFONO COMPLETO
+        mainRepository.buscarClientePorTelefono(telefonoFinal) { cliente ->
             if (cliente == null) {
                 Toast.makeText(requireContext(), context?.getString(R.string.noExisteCliente), Toast.LENGTH_SHORT).show()
                 return@buscarClientePorTelefono
@@ -178,7 +182,7 @@ class CrearCitasFragment : Fragment() {
                         id = citaIdParaEditar ?: "",
                         idCliente = cliente.id,
                         nombreCliente = cliente.nombre.capitalizarFormato(),
-                        telefonoCliente = cliente.telefono,
+                        telefonoCliente = telefonoFinal, // GUARDAMOS EL TELÉFONO COMPLETO
                         emailCliente = cliente.email,
                         estilista = estilista.capitalizarFormato(),
                         servicio = servicio,
@@ -230,7 +234,17 @@ class CrearCitasFragment : Fragment() {
 
         mainRepository.getCitaPorId(id) { cita ->
             if (cita != null) {
-                binding.etCitaCliente.setText(cita.telefonoCliente)
+                // SEPARAR EL PREFIJO AL EDITAR LA CITA
+                val telCompleto = cita.telefonoCliente
+                if (telCompleto.contains(" ")) {
+                    val partes = telCompleto.split(" ")
+                    binding.etPrefijo?.setText(partes[0])
+                    binding.etCitaCliente.setText(partes[1])
+                } else {
+                    binding.etPrefijo?.setText("+34")
+                    binding.etCitaCliente.setText(telCompleto)
+                }
+
                 binding.etCitaFecha.setText(cita.fecha)
                 binding.etCitaHora.setText(cita.hora)
 
