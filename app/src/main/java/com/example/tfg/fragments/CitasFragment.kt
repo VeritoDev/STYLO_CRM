@@ -15,6 +15,9 @@ import com.example.tfg.databinding.FragmentCitasBinding
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.model.Cita
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class CitasFragment : Fragment(R.layout.fragment_citas) {
 
@@ -29,34 +32,29 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         setupRecyclerView()
         cargarCitas()
 
-        //BOTÓN DE AÑADIR CITAS
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
 
-        //SEARCHVIEW DE CITAS
         binding.tilBuscarCita?.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
-                    val resultados = citasAdapter.filtrar(query)
+                val resultados = citasAdapter.filtrar(query)
 
-                    //SI NO HAY RESULTADOS Y EL QUERY NO ESTÁ VACÍO
-                    if (resultados == 0 && query.isNotEmpty()) {
-                        binding.tvSinCitas.text = getString(R.string.sin_resultados_busqueda_citas, query)
-                        binding.tvSinCitas.visibility = View.VISIBLE
-                        binding.rvCitas.visibility = View.GONE
-                    //SI NO HAY RESULTADOS Y EL QUERY ESTÁ VACÍO
-                    } else if (resultados == 0 && query.isEmpty()) {
-                        binding.tvSinCitas.text = getString(R.string.noCitas)
-                        binding.tvSinCitas.visibility = View.VISIBLE
-                        binding.rvCitas.visibility = View.GONE
-                    } else {
-                        //SI HAY RESULTADOS, OCULTAMOS EL AVISO
-                        binding.tvSinCitas.visibility = View.GONE
-                        binding.rvCitas.visibility = View.VISIBLE
-                    }
+                if (resultados == 0 && query.isNotEmpty()) {
+                    binding.tvSinCitas.text = getString(R.string.sin_resultados_busqueda_citas, query)
+                    binding.tvSinCitas.visibility = View.VISIBLE
+                    binding.rvCitas.visibility = View.GONE
+                } else if (resultados == 0 && query.isEmpty()) {
+                    binding.tvSinCitas.text = getString(R.string.noCitas)
+                    binding.tvSinCitas.visibility = View.VISIBLE
+                    binding.rvCitas.visibility = View.GONE
+                } else {
+                    binding.tvSinCitas.visibility = View.GONE
+                    binding.rvCitas.visibility = View.VISIBLE
+                }
             }
         })
     }
@@ -64,7 +62,6 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
     private fun setupRecyclerView() {
         val orientation = resources.configuration.orientation
 
-        //LÓGICA PARA QUE SALGAN EN DOS COLUMNAS LAS CITAS EN HORIZONTAL SOLO
         if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             binding.rvCitas.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
@@ -85,18 +82,22 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         mainRepository.getTodasLasCitas { listaTotal ->
             val listaPendientes = listaTotal.filter { it.estado != "finalizado" }
 
-            if (listaPendientes.isEmpty()) {
-                binding.tvSinCitas.text = "No tienes citas pendientes"
+            // FILTRAMOS Y BORRAMOS LAS CITAS PASADAS AL MISMO TIEMPO
+            val listaValida = limpiarCitasPasadasYFiltrar(listaPendientes)
+
+            if (listaValida.isEmpty()) {
+                binding.tvSinCitas.text = getString(R.string.noCitas) // Cambiado para usar tu string
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvCitas.visibility = View.GONE
                 citasAdapter.actualizarLista(emptyList())
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvCitas.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaPendientes)
+                citasAdapter.actualizarLista(listaValida)
             }
         }
     }
+
     private fun abrirDialogoGestion(cita: Cita) {
         val dialogo = GestionCitaFragment(
             cita = cita,
@@ -116,5 +117,33 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             }
         )
         dialogo.show(parentFragmentManager, "GestionCita")
+    }
+
+    // DEVUELVE UNA LISTA SOLO CON LAS CITAS DE HOY Y FUTURAS (Y BORRA LAS VIEJAS DE FIREBASE)
+    private fun limpiarCitasPasadasYFiltrar(lista: List<Cita>): List<Cita> {
+        val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val hoy = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
+        val citasValidas = mutableListOf<Cita>()
+
+        lista.forEach { cita ->
+            try {
+                val fechaCita = formato.parse(cita.fecha)
+                if (fechaCita != null && fechaCita.before(hoy)) {
+                    mainRepository.eliminarCita(cita.id) {}
+                } else {
+                    citasValidas.add(cita)
+                }
+            } catch (e: Exception) {
+                citasValidas.add(cita)
+                e.printStackTrace()
+            }
+        }
+        return citasValidas
     }
 }

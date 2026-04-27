@@ -247,6 +247,14 @@ class MainRepository {
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
+
+    // ELIMINAR UNA CITA DE FIREBASE
+    fun eliminarCita(citaId: String, callback: (Boolean) -> Unit) {
+        getRefCitas().child(citaId).removeValue()
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
     //LÓGICA PARA QUE SE VEA EN LA PANTALLA DE CITAS
     fun getTodasLasCitas(onResult: (List<Cita>) -> Unit) {
         getRefCitas().addValueEventListener(object : ValueEventListener {
