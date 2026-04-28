@@ -129,29 +129,25 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
 
     // DEVUELVE UNA LISTA SOLO CON LAS CITAS DE HOY Y FUTURAS (Y BORRA LAS VIEJAS DE FIREBASE)
     private fun limpiarCitasPasadasYFiltrar(lista: List<Cita>): List<Cita> {
-        val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val hoy = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.time
+        val formatoCompleto = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val ahora = Calendar.getInstance()
 
-        val citasValidas = mutableListOf<Cita>()
+        // Le damos un margen de 30 minutos: la cita no desaparece hasta 30 min después de su hora
+        ahora.add(Calendar.MINUTE, -30)
 
-        lista.forEach { cita ->
+        val listaFiltrada = lista.filter { cita ->
             try {
-                val fechaCita = formato.parse(cita.fecha)
-                if (fechaCita != null && fechaCita.before(hoy)) {
-                    mainRepository.eliminarCita(cita.id) {}
-                } else {
-                    citasValidas.add(cita)
-                }
+                val fechaHoraCita = formatoCompleto.parse("${cita.fecha} ${cita.hora}")
+                // Solo incluimos la cita si su hora es DESPUÉS de "ahora" (hace 30 min)
+                fechaHoraCita?.after(ahora.time) ?: true
             } catch (e: Exception) {
-                citasValidas.add(cita)
-                e.printStackTrace()
+                true
             }
         }
-        return citasValidas
+
+        // Devolvemos la lista ordenada para que la más próxima salga arriba
+        return listaFiltrada.sortedBy {
+            try { formatoCompleto.parse("${it.fecha} ${it.hora}") } catch (e: Exception) { null }
+        }
     }
 }

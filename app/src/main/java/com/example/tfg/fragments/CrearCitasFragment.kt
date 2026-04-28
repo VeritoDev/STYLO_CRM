@@ -172,42 +172,46 @@ class CrearCitasFragment : Fragment() {
                 return@buscarClientePorTelefono
             }
 
+            // Comprobamos si ya tiene cita ese día
             mainRepository.verificarCitaMismoDiaCliente(cliente.id, fecha, citaIdParaEditar) { yaTieneCita ->
-                if(yaTieneCita) {
+                if (yaTieneCita) {
+                    // Si ya tiene cita, avisamos y DETENEMOS el proceso
                     Toast.makeText(requireContext(), getString(R.string.error_cita_mismo_dia), Toast.LENGTH_SHORT).show()
-                    return@verificarCitaMismoDiaCliente
-                }
-            }
-
-            mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
-                if (choque && citaIdParaEditar == null) {
-                    Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG).show()
                 } else {
-                    val nuevaCita = Cita(
-                        id = citaIdParaEditar ?: "",
-                        idCliente = cliente.id,
-                        nombreCliente = cliente.nombre.capitalizarFormato(),
-                        telefonoCliente = telefonoFinal, // GUARDAMOS EL TELÉFONO COMPLETO
-                        emailCliente = cliente.email,
-                        estilista = estilista.capitalizarFormato(),
-                        servicio = servicio,
-                        fecha = fecha,
-                        hora = hora,
-                        estado = "pendiente"
-                    )
+                    // SI NO TIENE CITA, procedemos a mirar si el ESTILISTA está libre
+                    mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
+                        if (choque && citaIdParaEditar == null) {
+                            Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG).show()
+                        } else {
+                            val nuevaCita = Cita(
+                                id = citaIdParaEditar ?: "",
+                                idCliente = cliente.id,
+                                nombreCliente = cliente.nombre.capitalizarFormato(),
+                                telefonoCliente = telefonoFinal,
+                                emailCliente = cliente.email,
+                                estilista = estilista.capitalizarFormato(),
+                                servicio = servicio,
+                                fecha = fecha,
+                                hora = hora,
+                                estado = "pendiente"
+                            )
 
-                    if (citaIdParaEditar != null) {
-                        mainRepository.actualizarCita(nuevaCita) { exitoso ->
-                            if (exitoso) {
-                                Toast.makeText(requireContext(), context?.getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
-                                findNavController().popBackStack()
-                            }
-                        }
-                    } else {
-                        mainRepository.crearCita(nuevaCita) { exitoso ->
-                            if (exitoso) {
-                                Toast.makeText(requireContext(), context?.getString(R.string.citaConfirmada), Toast.LENGTH_SHORT).show()
-                                findNavController().popBackStack()
+                            if (citaIdParaEditar != null) {
+                                mainRepository.actualizarCita(nuevaCita) { exitoso ->
+                                    if (exitoso) {
+                                        programarNotificacion(nuevaCita) // Programar tras editar
+                                        Toast.makeText(requireContext(), context?.getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
+                                        findNavController().popBackStack()
+                                    }
+                                }
+                            } else {
+                                mainRepository.crearCita(nuevaCita) { exitoso ->
+                                    if (exitoso) {
+                                        programarNotificacion(nuevaCita) // Programar tras crear
+                                        Toast.makeText(requireContext(), context?.getString(R.string.citaConfirmada), Toast.LENGTH_SHORT).show()
+                                        findNavController().popBackStack()
+                                    }
+                                }
                             }
                         }
                     }
