@@ -98,7 +98,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             val bundle = Bundle().apply {
                 putString("TELEFONO_CLIENTE", telefonoSinFormato)
             }
-            findNavController().navigate(R.id.action_detalleClienteFragment_to_crearCitasFragment)
+            findNavController().navigate(R.id.action_detalleClienteFragment_to_crearCitasFragment, bundle)
         }
     }
 

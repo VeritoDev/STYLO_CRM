@@ -44,19 +44,17 @@ class CrearCitasFragment : Fragment() {
         setupListeners()
         configurarSpinner()
 
-        // CARGAR EL TELÉFONO SEPARANDO PREFIJO Y NÚMERO
         if (!telefonoRecibido.isNullOrEmpty()) {
-            if (telefonoRecibido.contains(" ")) {
-                val partes = telefonoRecibido.split(" ")
-                binding.etPrefijo?.setText(partes[0])
-                binding.etCitaCliente.setText(partes[1])
-            } else {
-                binding.etPrefijo?.setText("+34")
-                binding.etCitaCliente.setText(telefonoRecibido)
+            binding.root.post {
+                if (telefonoRecibido.contains(" ")) {
+                    val partes = telefonoRecibido.split(" ")
+                    binding.etPrefijo?.setText(partes[0])
+                    binding.etCitaCliente.setText(partes[1])
+                } else {
+                    binding.etPrefijo?.setText("+34")
+                    binding.etCitaCliente.setText(telefonoRecibido)
+                }
             }
-            binding.tilCitaCliente.isEnabled = false
-            // SI TIENES UN tilPrefijo EN EL XML, AÑADE ESTO TAMBIÉN:
-            // binding.tilPrefijo?.isEnabled = false
         }
 
         if (citaIdParaEditar != null) {
