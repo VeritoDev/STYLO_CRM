@@ -119,4 +119,8 @@
     <string name="login_biometrico_titulo">Acceso Rápido</string>
     <string name="login_biometrico_subtitulo">Usa tu huella</string>
     <string name="credenciales_guardadas">No hay credenciales guardadas</string>
+    <string name="cita_proxima">Citá Próxima</string>
+    <string name="cita_programada">Tienes una cita programada</string>
+    <string name="notif_recordatorio_titulo">Recordatorio de Cita</string>
+    <string name="notif_recordatorio_detalle">Tienes cita para %1$s a las %2$s</string>
 </resources>

@@ -119,4 +119,8 @@
     <string name="login_biometrico_titulo">Biometric Login</string>
     <string name="login_biometrico_subtitulo">Use your fingerprint to log in quickly</string>
     <string name="credenciales_guardadas">There isn\'t saved credentials</string>
+    <string name="cita_proxima">Upcoming Appointment</string>
+    <string name="cita_programada">You have a scheduled appointment</string>
+    <string name="notif_recordatorio_titulo">Appointment Reminder</string>
+    <string name="notif_recordatorio_detalle">You have an appointment for %1$s at %2$s</string>
 </resources>

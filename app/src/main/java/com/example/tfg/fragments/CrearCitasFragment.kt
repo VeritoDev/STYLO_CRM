@@ -11,12 +11,19 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.tfg.R
 import com.example.tfg.databinding.FragmentCrearCitasBinding
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.MainRepository
 import com.example.tfg.repository.capitalizarFormato
+import com.example.tfg.worker.NotificacionWorker
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class CrearCitasFragment : Fragment() {
     private var _binding: FragmentCrearCitasBinding? = null
@@ -249,6 +256,26 @@ class CrearCitasFragment : Fragment() {
                 binding.spinnerServicios?.setText(cita.servicio, false)
             }
         }
+    }
+
+    private fun programarNotificacion(cita: Cita) {
+        val formato = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val fechaCita = formato.parse("${cita.fecha} ${cita.hora}") ?: return
+
+        // Calculamos cuánto tiempo falta para la cita
+        val ahora = System.currentTimeMillis()
+        val delay = (fechaCita.time - 3600000) - ahora
+        val delayFinal = if (delay > 0) delay else 10000L
+
+        val data = workDataOf("SERVICIO" to cita.servicio, "HORA" to cita.hora)
+
+        val request = OneTimeWorkRequestBuilder<NotificacionWorker>()
+            .setInitialDelay(delayFinal, TimeUnit.MILLISECONDS)
+            .setInputData(data)
+            .addTag(cita.id)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueue(request)
     }
 
     override fun onDestroyView() {
