@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //CARGAMOS PRIMERO EL IDIOMA ANTES DE CREAR
         cargarIdiomaPersistente()
 
         super.onCreate(savedInstanceState)
@@ -40,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupObservers()
+        actualizarIconoTema()
 
         // LÓGICA DE REGISTRO
         val textCompleto = getString(R.string.login_no_cuenta)
@@ -137,13 +137,28 @@ class LoginActivity : AppCompatActivity() {
                 .setDuration(400)
                 .withEndAction {
                     val modoActual = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                    if (modoActual == Configuration.UI_MODE_NIGHT_YES) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    val nuevoModo = if (modoActual == Configuration.UI_MODE_NIGHT_YES) {
+                        AppCompatDelegate.MODE_NIGHT_NO
                     } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        AppCompatDelegate.MODE_NIGHT_YES
                     }
+
+                    val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+                    prefs.edit().putBoolean("modo_oscuro", nuevoModo == AppCompatDelegate.MODE_NIGHT_YES).apply()
+
+                    AppCompatDelegate.setDefaultNightMode(nuevoModo)
+                    actualizarIconoTema()
                 }
                 .start()
+        }
+    }
+
+    private fun actualizarIconoTema() {
+        val modoActual = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if(modoActual == Configuration.UI_MODE_NIGHT_YES) {
+            binding.btnThemeLogin?.setImageResource(R.drawable.icon_dark_mode)
+        } else {
+            binding.btnThemeLogin?.setImageResource(R.drawable.icon_light_mode)
         }
     }
 
