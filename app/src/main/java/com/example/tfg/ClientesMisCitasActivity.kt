@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.ActivityClienteMisCitasBinding
+import com.example.tfg.fragments.CancelarCitaDialog
 import com.example.tfg.fragments.ClienteReservasFragment
 import com.example.tfg.model.Cita
 import com.google.firebase.auth.FirebaseAuth
@@ -144,23 +145,10 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun confirmarCancelacion(cita: Cita) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.opcion_cancelar))
-        builder.setMessage(getString(R.string.confirmar_cancelacion))
-
-        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+        val dialog = CancelarCitaDialog {
             cancelarCitaEnFireBase(cita)
         }
-        builder.setNegativeButton(android.R.string.cancel, null)
-
-        val dialog = builder.create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.marron_oscuro_fondo))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GRAY)
-        }
-
-        dialog.show()
+        dialog.show(supportFragmentManager, "CancelarCita")
     }
 
     private fun cancelarCitaEnFireBase(cita: Cita){
