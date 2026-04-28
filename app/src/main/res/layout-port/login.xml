@@ -36,7 +36,7 @@
                     android:layout_alignParentStart="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/icon_dark_mode"
-                    app:tint="@color/marron_oscuro_fondo" />
+                    app:tint="?attr/colorOnSurface" />
 
                 <ImageButton
                     android:id="@+id/icon_idioma"
