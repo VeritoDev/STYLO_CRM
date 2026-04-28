@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="#7FECDFCD"
     android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView

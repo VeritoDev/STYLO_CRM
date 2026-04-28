@@ -2,16 +2,16 @@ package com.example.tfg
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg.adapter.CitasAdapter
 import com.example.tfg.databinding.ActivityClienteMisCitasBinding
-import com.example.tfg.fragments.CancelarCitaDialog
 import com.example.tfg.fragments.ClienteReservasFragment
 import com.example.tfg.model.Cita
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.example.tfg.fragments.GestionarReservaDialog
+import com.example.tfg.fragments.CancelarCitaDialog
 
 class ClientesMisCitasActivity : AppCompatActivity() {
 
@@ -35,9 +36,27 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         binding = ActivityClienteMisCitasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportFragmentManager.addOnBackStackChangedListener {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                aplicarEfectoBlur(false)
+            }
+        }
+
         setupRecyclerView()
         setupListeners()
         cargarCitasDelCliente()
+    }
+
+    // FUNCION DE BLUR
+    private fun aplicarEfectoBlur(activar: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(activar) {
+                val blur = RenderEffect.createBlurEffect(15f, 15f, Shader.TileMode.CLAMP)
+                binding.root.setRenderEffect(blur)
+            } else {
+                binding.root.setRenderEffect(null)
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -52,6 +71,9 @@ class ClientesMisCitasActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnVolverReservar.setOnClickListener {
+
+            aplicarEfectoBlur(true)
+
             val fragment = ClienteReservasFragment()
 
             supportFragmentManager.beginTransaction()
@@ -61,7 +83,7 @@ class ClientesMisCitasActivity : AppCompatActivity() {
                     R.anim.deslizar_izquierda_dentro,
                     R.anim.deslizar_derecha_fuera
                 )
-                .replace(R.id.main, fragment)
+                .add(android.R.id.content, fragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -132,6 +154,9 @@ class ClientesMisCitasActivity : AppCompatActivity() {
     }
 
     private fun editarCita(cita: Cita) {
+
+        aplicarEfectoBlur(true)
+
         val fragment = ClienteReservasFragment()
         val bundle = Bundle().apply {
             putString("CITA_ID", cita.id)
@@ -139,7 +164,13 @@ class ClientesMisCitasActivity : AppCompatActivity() {
         fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main, fragment)
+            .setCustomAnimations(
+                R.anim.deslizar_derecha_dentro,
+                R.anim.deslizar_izquierda_fuera,
+                R.anim.deslizar_izquierda_dentro,
+                R.anim.deslizar_derecha_fuera
+            )
+            .add(android.R.id.content, fragment)
             .addToBackStack(null)
             .commit()
     }
