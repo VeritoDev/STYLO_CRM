@@ -102,5 +102,15 @@
         android:name="com.example.tfg.fragments.CrearCitasFragment"
         android:label="fragment_crear_citas"
         tools:layout="@layout/fragment_crear_citas" />
+    <fragment
+        android:id="@+id/perfilFragment" android:name="com.example.tfg.fragments.EditarPerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" >
+
+        <action
+            android:id="@+id/action_perfilFragment_to_PerfilFragment"
+            app:destination="@id/perfilFragment" />
+    </fragment>
+
 
 </navigation>

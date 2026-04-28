@@ -123,4 +123,10 @@
     <string name="cita_programada">You have a scheduled appointment</string>
     <string name="notif_recordatorio_titulo">Appointment Reminder</string>
     <string name="notif_recordatorio_detalle">You have an appointment for %1$s at %2$s</string>
+    <string name="perfil">Profile</string>
+    <string name="editar_perfil">Edit Profile</string>
+    <string name="datos_personales">Personal Data</string>
+    <string name="datos_acceso">Access Data</string>
+    <string name="contraseña_actual">ACTUAL PASSWORD:</string>
+    <string name="nuevaContraseña"> NEW PASSWORD:</string>
 </resources>

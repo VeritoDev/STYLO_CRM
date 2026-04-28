@@ -123,4 +123,10 @@
     <string name="cita_programada">Tienes una cita programada</string>
     <string name="notif_recordatorio_titulo">Recordatorio de Cita</string>
     <string name="notif_recordatorio_detalle">Tienes cita para %1$s a las %2$s</string>
+    <string name="perfil">Perfil</string>
+    <string name="editar_perfil">Editar Perfil</string>
+    <string name="datos_personales">Datos Personales</string>
+    <string name="datos_acceso">Datos de Acceso</string>
+    <string name="contraseña_actual">CONTRASEÑA ACTUAL:</string>
+    <string name="nuevaContraseña">NUEVA CONTRASEÑA:</string>
 </resources>

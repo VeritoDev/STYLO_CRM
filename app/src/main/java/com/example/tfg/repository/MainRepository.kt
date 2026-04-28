@@ -5,7 +5,9 @@ import androidx.compose.animation.core.snap
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.example.tfg.model.Estilista
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,6 +25,70 @@ class MainRepository {
     private fun getRefEstilistas() = database.child("estilistas")
 
     // --- LÓGICA DE ESTILISTAS ---
+
+    // --- LÓGICA DE ESTILISTAS ---
+
+    fun actualizarDatosEstilista(
+        id: String,
+        emailActual: String,
+        passActual: String,
+        nuevoNombre: String,
+        nuevoEmail: String,
+        nuevaPass: String?,
+        onResult: (Boolean, String) -> Unit
+    ) {
+        val user = auth.currentUser
+
+        if (user != null && user.email != null) {
+            // 1. REAUTENTICAR POR SEGURIDAD
+            val credential = EmailAuthProvider.getCredential(emailActual, passActual)
+            user.reauthenticate(credential).addOnCompleteListener { authTask ->
+                if (authTask.isSuccessful) {
+                    // 2. ACTUALIZAR EMAIL (Solo si ha cambiado)
+                    if (emailActual != nuevoEmail) {
+                        user.updateEmail(nuevoEmail).addOnCompleteListener { emailTask ->
+                            if (emailTask.isSuccessful) {
+                                continuarActualizacionPerfil(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
+                            } else {
+                                onResult(false, "Error al actualizar el correo electrónico")
+                            }
+                        }
+                    } else {
+                        // Si el email es el mismo, pasamos directamente a guardar
+                        continuarActualizacionPerfil(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
+                    }
+                } else {
+                    onResult(false, "La contraseña actual es incorrecta")
+                }
+            }
+        } else {
+            onResult(false, "Sesión inválida")
+        }
+    }
+
+    private fun continuarActualizacionPerfil(
+        id: String,
+        user: FirebaseUser,
+        nuevoNombre: String,
+        nuevoEmail: String,
+        nuevaPass: String?,
+        onResult: (Boolean, String) -> Unit
+    ) {
+        // 3. ACTUALIZAR CONTRASEÑA (Solo si se proporcionó una nueva)
+        if (!nuevaPass.isNullOrEmpty()) {
+            user.updatePassword(nuevaPass)
+        }
+
+        // 4. ACTUALIZAR BASE DE DATOS
+        val updates = mapOf(
+            "nombre" to nuevoNombre.lowercase().trim(),
+            "email" to nuevoEmail.lowercase().trim()
+        )
+
+        getRefEstilistas().child(id).updateChildren(updates)
+            .addOnSuccessListener { onResult(true, "Perfil actualizado correctamente") }
+            .addOnFailureListener { onResult(false, "Error al guardar en la base de datos") }
+    }
 
     //BÚSCAR ESTILISTA POR EMAIL
     fun buscarEstilistaPorEmail(email: String?, callback: (Boolean) -> Unit) {

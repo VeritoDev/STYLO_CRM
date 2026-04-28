@@ -13,4 +13,8 @@
         android:id="@+id/citasFragment"
         android:icon="@drawable/ic_citas"
         android:title="@string/citas" />
+    <item
+        android:id="@+id/perfilFragment"
+        android:icon="@drawable/ic_person"
+        android:title="@string/perfil" />
 </menu>
