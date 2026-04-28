@@ -1,12 +1,11 @@
 package com.example.tfg.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.tfg.R
 import androidx.fragment.app.DialogFragment
+import com.example.tfg.R
 import com.example.tfg.databinding.FragmentGestionCitaBinding
 import com.example.tfg.model.Cita
 
@@ -44,14 +43,10 @@ class GestionCitaFragment (
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent)
-
             val params = attributes
-
             val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
             params.width = width
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-
             attributes = params
         }
     }

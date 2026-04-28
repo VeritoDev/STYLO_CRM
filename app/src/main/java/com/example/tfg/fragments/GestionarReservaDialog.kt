@@ -24,8 +24,6 @@ class GestionarReservaDialog(
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_gestionar_reserva, container, false)
 
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         val tvNombre = view.findViewById<TextView>(R.id.tvDialogNombre)
         val tvFechaHora = view.findViewById<TextView>(R.id.tvDialogFechaHora)
         val tvServicio = view.findViewById<TextView>(R.id.tvDialogServicio)

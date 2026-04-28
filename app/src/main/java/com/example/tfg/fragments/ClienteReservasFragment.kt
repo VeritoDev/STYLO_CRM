@@ -50,15 +50,38 @@ class ClienteReservasFragment : Fragment() {
         configurarSpinners()
 
         if(citaIdParaEditar != null) {
-            cargarDatosCita(citaIdParaEditar!!)
+            binding.btnConfirmarReserva.text = getString(R.string.editar)
+            binding.tvTitulo?.text = getString(R.string.editarCliente)
         }
     }
 
     private fun cargarDatosCita(id: String) {
         mainRepository.getCitaPorId(id) { cita ->
             if (cita != null) {
-                binding.etFechaReserva.setText(cita.fecha)
-                binding.etHoraReserva.setText(cita.hora)
+                binding.root.post {
+                    binding.etFechaReserva.setText(cita.fecha)
+                    binding.etHoraReserva.setText(cita.hora)
+
+                    val adaptadorServicios = binding.spinnerServicios.adapter as? ArrayAdapter<String>
+                    if (adaptadorServicios != null) {
+                        for (i in 0 until adaptadorServicios.count) {
+                            if (adaptadorServicios.getItem(i) == cita.servicio) {
+                                binding.spinnerServicios.setSelection(i)
+                                break
+                            }
+                        }
+                    }
+
+                    val adaptadorEstilistas = binding.spinnerEstilistas.adapter as? ArrayAdapter<String>
+                    if (adaptadorEstilistas != null) {
+                        for (i in 0 until adaptadorEstilistas.count) {
+                            if (adaptadorEstilistas.getItem(i) == cita.estilista) {
+                                binding.spinnerEstilistas.setSelection(i)
+                                break
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -122,13 +145,12 @@ class ClienteReservasFragment : Fragment() {
             esValido = false
         }
 
-        //Validaciones para Botones
-        if (fecha == getString(R.string.fecha)) {
+        if (fecha == getString(R.string.fecha) || fecha.isEmpty()) {
             binding.etFechaReserva.setTextColor(Color.RED)
             esValido = false
         }
 
-        if (hora == getString(R.string.hora)) {
+        if (hora == getString(R.string.hora) || hora.isEmpty()) {
             binding.etHoraReserva.setTextColor(Color.RED)
             esValido = false
         }
@@ -143,37 +165,42 @@ class ClienteReservasFragment : Fragment() {
         //Buscamos los datos del cliente por su email
         mainRepository.buscarClientePorEmail(emailActual) { cliente ->
             if (cliente != null) {
-                //Verificamos que el peluquero no esté ocupado
-                mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
-                    if (ocupado && citaIdParaEditar == null) {
-                        Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
-                    } else {
-                        //Creamos la cita
-                        val nuevaCita = Cita(
-                            id = citaIdParaEditar ?: "",
-                            idCliente = cliente.id,
-                            nombreCliente = cliente.nombre,
-                            telefonoCliente = cliente.telefono,
-                            emailCliente = emailActual ?: "",
-                            estilista = estilista,
-                            servicio = servicio,
-                            fecha = fecha,
-                            hora = hora,
-                            estado = "pendiente"
-                        )
+                mainRepository.verificarCitaMismoDiaCliente(cliente.id, fecha, citaIdParaEditar) { yaTieneCita ->
+                    if(yaTieneCita) {
+                        Toast.makeText(requireContext(), getString(R.string.error_cita_mismo_dia), Toast.LENGTH_SHORT).show()
+                        return@verificarCitaMismoDiaCliente
+                    }
 
-                        if (citaIdParaEditar != null) {
-                            mainRepository.actualizarCita(nuevaCita) { exitoso ->
-                                if (exitoso) {
-                                    Toast.makeText(requireContext(), getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
-                                    parentFragmentManager.popBackStack()
-                                }
-                            }
+                    mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
+                        if (ocupado && citaIdParaEditar == null) {
+                            Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                         } else {
-                            mainRepository.crearCita(nuevaCita) { exitoso ->
-                                if (exitoso) {
-                                    Toast.makeText(requireContext(), context?.getString(R.string.cita_reservada), Toast.LENGTH_SHORT).show()
-                                    parentFragmentManager.popBackStack()
+                            val nuevaCita = Cita(
+                                id = citaIdParaEditar ?: "",
+                                idCliente = cliente.id,
+                                nombreCliente = cliente.nombre,
+                                telefonoCliente = cliente.telefono,
+                                emailCliente = emailActual ?: "",
+                                estilista = estilista,
+                                servicio = servicio,
+                                fecha = fecha,
+                                hora = hora,
+                                estado = "pendiente"
+                            )
+
+                            if (citaIdParaEditar != null) {
+                                mainRepository.actualizarCita(nuevaCita) { exitoso ->
+                                    if (exitoso) {
+                                        Toast.makeText(requireContext(), getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
+                                        parentFragmentManager.popBackStack()
+                                    }
+                                }
+                            } else {
+                                mainRepository.crearCita(nuevaCita) { exitoso ->
+                                    if (exitoso) {
+                                        Toast.makeText(requireContext(), context?.getString(R.string.cita_reservada), Toast.LENGTH_SHORT).show()
+                                        parentFragmentManager.popBackStack()
+                                    }
                                 }
                             }
                         }
@@ -184,14 +211,17 @@ class ClienteReservasFragment : Fragment() {
     }
 
     private fun configurarSpinners() {
-        // Estilistas desde el Repositorio
-        mainRepository.obtenerNombresEstilistas { lista ->
-            setCustomAdapter(binding.spinnerEstilistas, context?.getString(R.string.seleccionar_estilista), lista)
-        }
-        // Servicios desde el Mapa
         setCustomAdapter(binding.spinnerServicios, context?.getString(R.string.seleccionar_servicio),
             duracionServicios.keys.toList()
         )
+
+        mainRepository.obtenerNombresEstilistas { lista ->
+            setCustomAdapter(binding.spinnerEstilistas, context?.getString(R.string.seleccionar_estilista), lista)
+
+            if (citaIdParaEditar != null) {
+                cargarDatosCita(citaIdParaEditar!!)
+            }
+        }
     }
 
     private fun setCustomAdapter(spinner: Spinner, hint: String?, items: List<String>) {
