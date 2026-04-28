@@ -100,24 +100,31 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
     }
 
     private fun abrirDialogoGestion(cita: Cita) {
-        val dialogo = GestionCitaFragment(
+        val dialogo = GestionarReservaDialog(
             cita = cita,
-            onFinalizada = {
-                mainRepository.finalizarCita(cita.id) { exito ->
-                    if (exito) {
-                        Toast.makeText(requireContext(), getString(R.string.citaFinalizada), Toast.LENGTH_SHORT).show()
-                        cargarCitas()
-                    }
-                }
-            },
-            onEditar = {
+            onEditar = { citaAEditar ->
                 val bundle = Bundle().apply {
-                    putString("CITA_ID", cita.id)
+                    putString("CITA_ID", citaAEditar.id)
                 }
                 findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment, bundle)
+            },
+            onEliminar = { citaAEliminar ->
+                confirmarCancelacion(citaAEliminar)
             }
         )
-        dialogo.show(parentFragmentManager, "GestionCita")
+        dialogo.show(parentFragmentManager, "GestionarReserva")
+    }
+
+    private fun confirmarCancelacion(cita: Cita) {
+        val dialog = CancelarCitaDialog {
+            mainRepository.eliminarCita(cita.id) { exito ->
+                if (exito) {
+                    Toast.makeText(requireContext(), getString(R.string.cita_cancelada), Toast.LENGTH_SHORT).show()
+                    cargarCitas() // Refrescamos la lista
+                }
+            }
+        }
+        dialog.show(parentFragmentManager, "CancelarCita")
     }
 
     // DEVUELVE UNA LISTA SOLO CON LAS CITAS DE HOY Y FUTURAS (Y BORRA LAS VIEJAS DE FIREBASE)
