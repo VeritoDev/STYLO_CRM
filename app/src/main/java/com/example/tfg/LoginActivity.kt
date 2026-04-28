@@ -23,16 +23,23 @@ import com.example.tfg.repository.capitalizarFormato
 import com.example.tfg.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
+import androidx.biometric.BiometricPrompt
+import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginBinding
     private val viewModel: LoginViewModel by viewModels()
     private val mainRepository = MainRepository()
+    private lateinit var executor: Executor
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         cargarIdiomaPersistente()
+        setupBiometria()
+        verificarYMostrarHuella()
 
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
@@ -216,8 +223,8 @@ class LoginActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
-                val emailIngresado = binding.etEmail.text.toString().trim().lowercase()
-                dirigirSegunRol(emailIngresado)
+                val email = binding.etEmail.text.toString().trim().lowercase()
+                dirigirSegunRol(email)
             }
         }
 
@@ -255,6 +262,49 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setupBiometria() {
+        executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+
+                val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+                val email = prefs.getString("user_email", "") ?: ""
+                val pass = prefs.getString("user_pass", "") ?: ""
+
+                if (email.isNotEmpty() && pass.isNotEmpty()) {
+                    binding.etEmail.setText(email)
+                    binding.etPassword.setText(pass)
+
+                    // LLAMAMOS AL LOGIN
+                    viewModel.entrar(email, pass)
+                }
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+            }
+        })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.login_biometrico_titulo))
+            .setSubtitle(getString(R.string.login_biometrico_subtitulo))
+            .setNegativeButtonText(getString(R.string.cancelar))
+            .build()
+    }
+
+    private fun verificarYMostrarHuella() {
+        val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+        if (prefs.contains("user_email") && prefs.contains("user_pass")) {
+
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (!isFinishing) {
+                    biometricPrompt.authenticate(promptInfo)
+                }
+            }, 500)
         }
     }
 }

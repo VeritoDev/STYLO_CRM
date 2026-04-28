@@ -116,4 +116,7 @@
     <string name="cerrar">Cerrar</string>
     <string name="error_cita_mismo_dia">El cliente ya tiene una cita reservada este día</string>
     <string name="pais">País</string>
+    <string name="login_biometrico_titulo">Acceso Rápido</string>
+    <string name="login_biometrico_subtitulo">Usa tu huella</string>
+    <string name="credenciales_guardadas">No hay credenciales guardadas</string>
 </resources>
