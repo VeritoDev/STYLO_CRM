@@ -14,6 +14,9 @@ import com.example.tfg.repository.MainRepository
 import androidx.core.content.edit
 import com.example.tfg.model.Cita
 import com.example.tfg.repository.capitalizarFormato
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
@@ -98,9 +101,16 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
             if (!isAdded) return@getCitasPorEstilista
 
-            val listaPendientes = listaCitas.filter { it.estado.trim().lowercase() != "finalizado" }
+            // 1. Filtramos las finalizadas y las canceladas
+            val listaPendientes = listaCitas.filter {
+                val estado = it.estado.trim().lowercase()
+                estado != "finalizado" && estado != "cancelado"
+            }
 
-            if (listaPendientes.isEmpty()) {
+            // 2. Limpiamos las citas que ya han pasado (igual que en el CitasFragment)
+            val listaValida = limpiarCitasPasadasYFiltrar(listaPendientes)
+
+            if (listaValida.isEmpty()) {
                 binding.tvSinCitas.text = getString(R.string.citas_vacio)
                 binding.tvSinCitas.visibility = View.VISIBLE
                 binding.rvDashboard.visibility = View.GONE
@@ -108,7 +118,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             } else {
                 binding.tvSinCitas.visibility = View.GONE
                 binding.rvDashboard.visibility = View.VISIBLE
-                citasAdapter.actualizarLista(listaPendientes)
+                citasAdapter.actualizarLista(listaValida)
             }
         }
     }
@@ -139,5 +149,29 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             }
         )
         dialogo.show(parentFragmentManager, "GestionCita")
+    }
+
+    // DEVUELVE UNA LISTA SOLO CON LAS CITAS DE HOY Y FUTURAS (Y ORDENADA)
+    private fun limpiarCitasPasadasYFiltrar(lista: List<Cita>): List<Cita> {
+        val formatoCompleto = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val ahora = Calendar.getInstance()
+
+        // Le damos un margen de 30 minutos: la cita no desaparece hasta 30 min después de su hora
+        ahora.add(Calendar.MINUTE, -30)
+
+        val listaFiltrada = lista.filter { cita ->
+            try {
+                val fechaHoraCita = formatoCompleto.parse("${cita.fecha} ${cita.hora}")
+                // Solo incluimos la cita si su hora es DESPUÉS de "ahora" (hace 30 min)
+                fechaHoraCita?.after(ahora.time) ?: false
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        // Devolvemos la lista ordenada para que la más próxima salga arriba
+        return listaFiltrada.sortedBy {
+            try { formatoCompleto.parse("${it.fecha} ${it.hora}") } catch (e: Exception) { null }
+        }
     }
 }

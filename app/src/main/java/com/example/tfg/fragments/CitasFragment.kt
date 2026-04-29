@@ -132,13 +132,13 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
         val formatoCompleto = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val ahora = Calendar.getInstance()
 
-        // Le damos un margen de 30 minutos: la cita no desaparece hasta 30 min después de su hora
-        ahora.add(Calendar.MINUTE, -30)
+        // Le damos un margen de 10 minutos: la cita no desaparece hasta 10 min después de su hora
+        ahora.add(Calendar.MINUTE, -10)
 
         val listaFiltrada = lista.filter { cita ->
             try {
                 val fechaHoraCita = formatoCompleto.parse("${cita.fecha} ${cita.hora}")
-                // Solo incluimos la cita si su hora es DESPUÉS de "ahora" (hace 30 min)
+                // Solo incluimos la cita si su hora es DESPUÉS de "ahora" (hace 10 min)
                 fechaHoraCita?.after(ahora.time) ?: true
             } catch (e: Exception) {
                 true

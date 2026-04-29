@@ -134,4 +134,5 @@
     <string name="contraseña_estilista">Your Password</string>
     <string name="escribir_contraseña">Write your password to confirm your personal data</string>
     <string name="error">Session email not found</string>
+    <string name="cita_pasada">You cannot book an appointment in the past</string>
 </resources>

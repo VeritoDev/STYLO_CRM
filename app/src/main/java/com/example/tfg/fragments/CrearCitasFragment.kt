@@ -163,6 +163,19 @@ class CrearCitasFragment : Fragment() {
             return
         }
 
+        val formatoFechaCompleta = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        try {
+            val fechaCitaSeleccionada = formatoFechaCompleta.parse("$fecha $hora")
+            val ahora = Calendar.getInstance().time
+
+            if (fechaCitaSeleccionada != null && fechaCitaSeleccionada.before(ahora)) {
+                Toast.makeText(requireContext(), getString(R.string.cita_pasada), Toast.LENGTH_LONG).show()
+                return // Detenemos el guardado
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         val duracion = duracionServicios[servicio] ?: 30
 
         // BUSCAMOS CON EL TELÉFONO COMPLETO

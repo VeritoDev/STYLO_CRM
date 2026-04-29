@@ -134,4 +134,5 @@
     <string name="contraseña_estilista">Tu Contraseña</string>
     <string name="escribir_contraseña">Escribe tu contraseña para confirmar los cambios</string>
     <string name="error">No se encontró el email de sesión</string>
+    <string name="cita_pasada">No puedes programar una cita para una hora que ya ha pasado</string>
 </resources>
