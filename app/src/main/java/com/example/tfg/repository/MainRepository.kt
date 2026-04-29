@@ -1,7 +1,6 @@
 package com.example.tfg.repository
 
 import android.util.Log
-import androidx.compose.animation.core.snap
 import com.example.tfg.model.Cita
 import com.example.tfg.model.Cliente
 import com.example.tfg.model.Estilista
@@ -38,35 +37,39 @@ class MainRepository {
         onResult: (Boolean, String) -> Unit
     ) {
         val user = auth.currentUser
+        if (user == null || id.isEmpty()) {
+            onResult(false, "Error: Sesión inválida")
+            return
+        }
 
-        if (user != null && user.email != null) {
-            // 1. REAUTENTICAR POR SEGURIDAD
-            val credential = EmailAuthProvider.getCredential(emailActual, passActual)
-            user.reauthenticate(credential).addOnCompleteListener { authTask ->
-                if (authTask.isSuccessful) {
-                    // 2. ACTUALIZAR EMAIL (Solo si ha cambiado)
-                    if (emailActual != nuevoEmail) {
-                        user.updateEmail(nuevoEmail).addOnCompleteListener { emailTask ->
-                            if (emailTask.isSuccessful) {
-                                continuarActualizacionPerfil(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
-                            } else {
-                                onResult(false, "Error al actualizar el correo electrónico")
-                            }
+        // 1. REAUTENTICAR (Obligatorio para cambiar email o pass)
+        val credential = EmailAuthProvider.getCredential(emailActual, passActual)
+        user.reauthenticate(credential).addOnCompleteListener { authTask ->
+            if (authTask.isSuccessful) {
+
+                // 2. ¿HAY QUE CAMBIAR EL EMAIL EN AUTH?
+                if (emailActual != nuevoEmail) {
+                    user.updateEmail(nuevoEmail).addOnCompleteListener { emailTask ->
+                        if (emailTask.isSuccessful) {
+                            // Email cambiado en Auth, ahora vamos a la base de datos
+                            ejecutarCambiosEnBD(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
+                        } else {
+                            // Error común: El email ya está en uso por otro usuario
+                            val msg = emailTask.exception?.message ?: "Error al cambiar el correo"
+                            onResult(false, msg)
                         }
-                    } else {
-                        // Si el email es el mismo, pasamos directamente a guardar
-                        continuarActualizacionPerfil(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
                     }
                 } else {
-                    onResult(false, "La contraseña actual es incorrecta")
+                    // El email es el mismo, solo actualizamos el resto
+                    ejecutarCambiosEnBD(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
                 }
+            } else {
+                onResult(false, "La contraseña actual es incorrecta")
             }
-        } else {
-            onResult(false, "Sesión inválida")
         }
     }
 
-    private fun continuarActualizacionPerfil(
+    private fun ejecutarCambiosEnBD(
         id: String,
         user: FirebaseUser,
         nuevoNombre: String,
@@ -74,25 +77,63 @@ class MainRepository {
         nuevaPass: String?,
         onResult: (Boolean, String) -> Unit
     ) {
-        // 3. ACTUALIZAR CONTRASEÑA (Solo si se proporcionó una nueva)
+        // 3. Cambiar contraseña si el usuario escribió una nueva
         if (!nuevaPass.isNullOrEmpty()) {
             user.updatePassword(nuevaPass)
         }
 
-        // 4. ACTUALIZAR BASE DE DATOS
-        val updates = mapOf(
-            "nombre" to nuevoNombre.lowercase().trim(),
-            "email" to nuevoEmail.lowercase().trim()
-        )
+        // 4. Recuperamos el nombre viejo para no romper las citas (como hicimos antes)
+        getRefEstilistas().child(id).child("nombre").get().addOnSuccessListener { snapshot ->
+            val nombreAntiguo = snapshot.value?.toString() ?: ""
 
-        getRefEstilistas().child(id).updateChildren(updates)
-            .addOnSuccessListener { onResult(true, "Perfil actualizado correctamente") }
-            .addOnFailureListener { onResult(false, "Error al guardar en la base de datos") }
+            val updates = mapOf(
+                "nombre" to nuevoNombre.trim(),
+                "email" to nuevoEmail.lowercase().trim()
+            )
+
+            // 5. Actualizar los datos en el nodo "estilistas"
+            getRefEstilistas().child(id).updateChildren(updates).addOnSuccessListener {
+
+                // 6. Si el nombre cambió, actualizamos las citas para no perderlas
+                if (nombreAntiguo.isNotEmpty() && nombreAntiguo != nuevoNombre.trim()) {
+                    actualizarNombreEnCitas(nombreAntiguo, nuevoNombre.trim()) {
+                        onResult(true, "Perfil y correo actualizados correctamente")
+                    }
+                } else {
+                    onResult(true, "Perfil actualizado correctamente")
+                }
+            }.addOnFailureListener {
+                onResult(false, "Error al guardar en la base de datos")
+            }
+        }
     }
 
-    //BÚSCAR ESTILISTA POR EMAIL
+    private fun actualizarNombreEnCitas(
+        nombreViejo: String,
+        nombreNuevo: String,
+        callback: () -> Unit
+    ) {
+        getRefCitas().orderByChild("estilista").equalTo(nombreViejo).get()
+            .addOnSuccessListener { snapshot ->
+                val updatesCitas = mutableMapOf<String, Any?>()
+                for (citaSnapshot in snapshot.children) {
+                    val citaId = citaSnapshot.key
+                    if (citaId != null) {
+                        updatesCitas["/$citaId/estilista"] = nombreNuevo
+                    }
+                }
+                if (updatesCitas.isNotEmpty()) {
+                    getRefCitas().updateChildren(updatesCitas)
+                        .addOnCompleteListener { callback() }
+                } else {
+                    callback()
+                }
+            }
+            .addOnFailureListener { callback() }
+    }
+
     fun buscarEstilistaPorEmail(email: String?, callback: (Boolean) -> Unit) {
-        if (email == null){
+        if (email == null) {
             callback(false)
             return
         }
@@ -100,104 +141,83 @@ class MainRepository {
 
         getRefEstilistas().orderByChild("email").equalTo(emailLimpio).get()
             .addOnSuccessListener { snapshot ->
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     callback(true)
                 } else {
                     Log.e("DEBUG_ERROR", "No se encontro estilista con ese email: $emailLimpio")
                     callback(false)
                 }
             }
-            .addOnFailureListener {
-                callback(false)
-            }
+            .addOnFailureListener { callback(false) }
     }
 
-    fun obtenerNombresEstilistas(callback: (List<String>) -> Unit){
-        getRefEstilistas().get().addOnSuccessListener { snapshot  ->
+    fun obtenerNombresEstilistas(callback: (List<String>) -> Unit) {
+        getRefEstilistas().get().addOnSuccessListener { snapshot ->
             val nombres = mutableListOf<String>()
-
-            if(snapshot.exists()){
-                for(data in snapshot.children){
+            if (snapshot.exists()) {
+                for (data in snapshot.children) {
                     val nombre = data.child("nombre").getValue(String::class.java)
-
-                    if(!nombre.isNullOrEmpty()) {
+                    if (!nombre.isNullOrEmpty()) {
                         nombres.add(nombre.capitalizarFormato())
                     }
                 }
             }
             callback(nombres)
-        }.addOnFailureListener {
-            callback(emptyList())
-        }
+        }.addOnFailureListener { callback(emptyList()) }
     }
 
     fun obtenerDatosEstilista(email: String, callback: (Estilista?) -> Unit) {
         database.child("estilistas").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // Sacamos el objeto Estilista entero
-                    val estilista = snapshot.children.firstOrNull()?.getValue(Estilista::class.java)
+                    val snapshotHijo = snapshot.children.firstOrNull()
+                    val estilista = snapshotHijo?.getValue(Estilista::class.java)
+                    if (estilista != null && snapshotHijo != null) {
+                        estilista.id = snapshotHijo.key ?: ""
+                    }
                     callback(estilista)
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    callback(null)
-                }
+                override fun onCancelled(error: DatabaseError) { callback(null) }
             })
     }
 
     fun getCitasPorEstilista(nombreEstilista: String, onResult: (List<Cita>) -> Unit) {
         val nombreLimpio = nombreEstilista.trim()
-
-        getRefCitas()
-            .orderByChild("estilista")
-            .equalTo(nombreLimpio)
+        getRefCitas().orderByChild("estilista").equalTo(nombreLimpio)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
                     onResult(lista.sortedWith(compareBy({ it.fecha }, { it.hora })))
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(emptyList())
-                }
+                override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
             })
     }
+
     fun getNombreEstilistaPorUID(uid: String, callback: (String?) -> Unit) {
-        // IMPORTANTE: Asegúrate de que en Firebase la carpeta se llame "estilistas"
-        // y el campo dentro se llame "nombre"
-        FirebaseDatabase.getInstance().getReference("estilistas").child(uid).child("nombre").get()
-            .addOnSuccessListener { snapshot ->
-                callback(snapshot.value?.toString())
-            }
-            .addOnFailureListener {
-                callback(null)
-            }
+        getRefEstilistas().child(uid).child("nombre").get()
+            .addOnSuccessListener { snapshot -> callback(snapshot.value?.toString()) }
+            .addOnFailureListener { callback(null) }
     }
+
     // --- LÓGICA DE CLIENTES ---
     fun getClientes(onResult: (List<Cliente>) -> Unit) {
         getRefClientes().addValueEventListener(object : ValueEventListener {
-            //DATASNAPSHOT ES UNA "FOTO" DE COMO ESTÁ LA BASE DE DATOS EN ESE MOMENTO
             override fun onDataChange(snapshot: DataSnapshot) {
                 val listaClientes = snapshot.children.mapNotNull { datos ->
-                    //CONVERTIMOS LA FOTO EN UN OBJETO CLIENTE
                     val cliente = datos.getValue(Cliente::class.java)
                     cliente?.copy(id = datos.key ?: "")
                 }
                 onResult(listaClientes)
             }
-            override fun onCancelled(error: DatabaseError) {
-                onResult(emptyList())
-            }
+            override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
         })
     }
+
     fun obtenerDetalleCliente(id: String, callback: (Cliente?) -> Unit) {
         getRefClientes().child(id).get().addOnSuccessListener { snapshot ->
             val cliente = snapshot.getValue(Cliente::class.java)
             callback(cliente)
-        }.addOnFailureListener {
-            callback(null)
-        }
+        }.addOnFailureListener { callback(null) }
     }
 
     fun insertarCliente(cliente: Cliente) {
@@ -208,15 +228,10 @@ class MainRepository {
             email = cliente.email.trim().lowercase()
         )
         getRefClientes().child(id).setValue(clienteNormalizado)
-            .addOnSuccessListener {
-            }
     }
 
     fun buscarClientePorEmail(email: String?, callback: (Cliente?) -> Unit) {
-        if (email == null) {
-            callback(null)
-            return
-        }
+        if (email == null) { callback(null); return }
         val emailLimpio = email.trim().lowercase()
         getRefClientes().orderByChild("email").equalTo(emailLimpio).get()
             .addOnSuccessListener { snapshot ->
@@ -225,37 +240,22 @@ class MainRepository {
                     val cliente = data?.getValue(Cliente::class.java)
                     cliente?.id = data.key ?: ""
                     callback(cliente)
-                } else {
-                    callback(null)
-                }
-            }
-            .addOnFailureListener {
-                callback(null)
-            }
+                } else { callback(null) }
+            }.addOnFailureListener { callback(null) }
     }
 
     fun buscarClientePorTelefono(telefono: String, callback: (Cliente?) -> Unit) {
-        // Buscamos en la carpeta 'clientes' filtrando por el campo 'telefono'
-        getRefClientes()
-            .orderByChild("telefono")
-            .equalTo(telefono.trim()) // Usamos trim() para evitar errores de espacios
+        getRefClientes().orderByChild("telefono").equalTo(telefono.trim())
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        // Cogemos el primer resultado que coincida
                         val data = snapshot.children.first()
                         val cliente = data.getValue(Cliente::class.java)
                         cliente?.id = data.key ?: ""
                         callback(cliente)
-                    } else {
-                        // Si no hay ningún cliente con ese teléfono
-                        callback(null)
-                    }
+                    } else { callback(null) }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    callback(null)
-                }
+                override fun onCancelled(error: DatabaseError) { callback(null) }
             })
     }
 
@@ -264,62 +264,49 @@ class MainRepository {
             .addOnSuccessListener { snapshot ->
                 val rutasABorrar = mutableMapOf<String, Any?>()
                 rutasABorrar["/clientes/$clienteId"] = null
-
                 if (snapshot.exists()) {
                     for (citaSnapshot in snapshot.children) {
                         val citaId = citaSnapshot.key
-                        if (citaId != null) {
-                            rutasABorrar["/citas/$citaId"] = null
-                        }
+                        if (citaId != null) { rutasABorrar["/citas/$citaId"] = null }
                     }
                 }
-
                 database.updateChildren(rutasABorrar)
                     .addOnSuccessListener { callback(true) }
                     .addOnFailureListener { callback(false) }
-            }
-            .addOnFailureListener { callback(false) }
+            }.addOnFailureListener { callback(false) }
     }
-    fun actualizarCliente(id: String, datos: Map<String, Any>, callback: (Boolean) -> Unit) {
-        //CREAMOS UNA COPIA MUTABLE DE LOS DATOS PARA MODIFICAR EL NOMBRE SI EXISTE
-        val datosNormalizados = datos.toMutableMap()
 
+    fun actualizarCliente(id: String, datos: Map<String, Any>, callback: (Boolean) -> Unit) {
+        val datosNormalizados = datos.toMutableMap()
         if (datosNormalizados.containsKey("nombre")) {
             val nombre = datosNormalizados["nombre"].toString()
             datosNormalizados["nombre"] = nombre.lowercase().trim()
         }
-
         getRefClientes().child(id).updateChildren(datosNormalizados)
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
 
     // --- LÓGICA DE CITAS ---
-    // BUSCAR UNA CITA ESPECÍFICA POR SU ID (Para cargar los datos al editar)
     fun getCitaPorId(id: String, callback: (Cita?) -> Unit) {
         getRefCitas().child(id).get().addOnSuccessListener { snapshot ->
             val cita = snapshot.getValue(Cita::class.java)
             callback(cita)
-        }.addOnFailureListener {
-            callback(null)
-        }
+        }.addOnFailureListener { callback(null) }
     }
 
-    // ACTUALIZAR UNA CITA EXISTENTE
     fun actualizarCita(cita: Cita, callback: (Boolean) -> Unit) {
         getRefCitas().child(cita.id).setValue(cita)
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
 
-    // ELIMINAR UNA CITA DE FIREBASE
     fun eliminarCita(citaId: String, callback: (Boolean) -> Unit) {
         getRefCitas().child(citaId).removeValue()
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
 
-    //LÓGICA PARA QUE SE VEA EN LA PANTALLA DE CITAS
     fun getTodasLasCitas(onResult: (List<Cita>) -> Unit) {
         getRefCitas().addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -329,37 +316,30 @@ class MainRepository {
             override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
         })
     }
+
     fun crearCita(cita: Cita, callback: (Boolean) -> Unit) {
         val dbRef = getRefCitas()
         val id = dbRef.push().key
-
         if (id != null) {
             val citaConId = cita.copy(id = id)
             dbRef.child(id).setValue(citaConId)
                 .addOnSuccessListener { callback(true) }
                 .addOnFailureListener { callback(false) }
-        } else {
-            callback(false)
-        }
+        } else { callback(false) }
     }
-    //LÓGICA PARA COMPARAR TODAS LAS HORAS DE LAS CITAS EXISTENTES
+
     fun verificarHorasCitas(fecha: String, horaNueva: String, duracionNueva: Int, onResult: (Boolean) -> Unit) {
         getRefCitas().orderByChild("fecha").equalTo(fecha)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val inicioNueva = horaAMinutos(horaNueva)
                     val finNueva = inicioNueva + duracionNueva
-
                     var hayChoque = false
-
                     for (data in snapshot.children) {
                         val citaExistente = data.getValue(Cita::class.java) ?: continue
-
                         val duracionExistente = extraerDuracion(citaExistente.servicio)
                         val inicioExistente = horaAMinutos(citaExistente.hora)
                         val finExistente = inicioExistente + duracionExistente
-
-                        //LÓGICA PARA COMPARAR LAS HORAS DE LAS CITAS
                         if (inicioNueva < finExistente && finNueva > inicioExistente) {
                             hayChoque = true
                             break
@@ -370,45 +350,36 @@ class MainRepository {
                 override fun onCancelled(error: DatabaseError) = onResult(true)
             })
     }
-    //LÓGICA PARA PONER EL HISTORIAL DEL CLIENTE
+
     fun getHistorialCitasCliente(idCliente: String, onResult: (List<Cita>) -> Unit) {
         getRefCitas().orderByChild("idCliente").equalTo(idCliente)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val historial = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
-                    //ORDENAMOS POR HORA
                     onResult(historial.sortedByDescending { it.hora })
                 }
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(emptyList())
-                }
+                override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
             })
     }
-    //LÓGICA PARA TERMINAR LA CITA
-    fun finalizarCita(citaId: String, callback: (Boolean) -> Unit){
-        val actualizaciones = mapOf("estado" to "finalizado")
 
-        getRefCitas().child(citaId).updateChildren(actualizaciones)
+    fun finalizarCita(citaId: String, callback: (Boolean) -> Unit) {
+        getRefCitas().child(citaId).child("estado").setValue("finalizado")
             .addOnSuccessListener { callback(true) }
             .addOnFailureListener { callback(false) }
     }
-    //LÓGICA PARA OBTENER SOLO CITAS PENDIENTES PARA EL CLIENTE
-    fun getCitasActivasCliente(idCliente: String, onResult: (List<Cita>) -> Unit){
+
+    fun getCitasActivasCliente(idCliente: String, onResult: (List<Cita>) -> Unit) {
         getRefCitas().orderByChild("idCliente").equalTo(idCliente)
-            .addValueEventListener(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
                     val pendientes = lista.filter { it.estado != "finalizado" }
-                    onResult(pendientes.sortedWith (compareBy({it.fecha}, {it.hora})))
+                    onResult(pendientes.sortedWith(compareBy({ it.fecha }, { it.hora })))
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(emptyList())
-                }
+                override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
             })
     }
 
-    // NUEVA FUNCIÓN: Comprobar si el cliente ya tiene cita el mismo día
     fun verificarCitaMismoDiaCliente(idCliente: String, fecha: String, citaIdIgnorar: String?, onResult: (Boolean) -> Unit) {
         getRefCitas().orderByChild("idCliente").equalTo(idCliente)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -416,26 +387,18 @@ class MainRepository {
                     var yaTieneCita = false
                     for (data in snapshot.children) {
                         val cita = data.getValue(Cita::class.java)
-
-                        // Si la cita es del mismo día, NO es la que estamos editando, y NO está finalizada...
                         if (cita != null && cita.fecha == fecha && cita.id != citaIdIgnorar) {
                             if (cita.estado != "finalizado" && cita.estado != "cancelado") {
-                                yaTieneCita = true
-                                break
+                                yaTieneCita = true; break
                             }
                         }
                     }
                     onResult(yaTieneCita)
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(false)
-                }
+                override fun onCancelled(error: DatabaseError) { onResult(false) }
             })
     }
 
-
-    //FUNCIONES AUXILIARES
     private fun horaAMinutos(hora: String): Int {
         val partes = hora.split(":")
         return partes[0].toInt() * 60 + partes[1].toInt()
@@ -463,13 +426,14 @@ class MainRepository {
     fun getUsuarioActual() = auth.currentUser
 }
 
+// --- FUNCIONES DE EXTENSIÓN Y AUXILIARES ---
 fun String.capitalizarFormato(): String {
     return this.lowercase().trim().split(" ").joinToString(" ") { palabra ->
         palabra.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }
 }
 
-fun formatearTelefono(tel:String): String {
+fun formatearTelefono(tel: String): String {
     val limpio = tel.replace(" ", "")
     return if (limpio.length >= 12) {
         val prefijo = limpio.substring(0, 3)
@@ -477,7 +441,5 @@ fun formatearTelefono(tel:String): String {
         val p2 = limpio.substring(5, 7)
         val p3 = limpio.substring(7, 9)
         "$prefijo $p1 $p2 $p3"
-    } else {
-        limpio
-    }
+    } else { limpio }
 }

@@ -129,4 +129,9 @@
     <string name="datos_acceso">Access Data</string>
     <string name="contraseña_actual">ACTUAL PASSWORD:</string>
     <string name="nuevaContraseña"> NEW PASSWORD:</string>
+    <string name="nombre_estilista">Your Name</string>
+    <string name="email_estilista">Your Email</string>
+    <string name="contraseña_estilista">Your Password</string>
+    <string name="escribir_contraseña">Write your password to confirm your personal data</string>
+    <string name="error">Session email not found</string>
 </resources>

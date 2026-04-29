@@ -224,6 +224,15 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginResult.observe(this) { success ->
             if (success) {
                 val email = binding.etEmail.text.toString().trim().lowercase()
+                val pass = binding.etPassword.text.toString().trim()
+
+                val prefs = getSharedPreferences("config_app", MODE_PRIVATE)
+                prefs.edit().apply {
+                    putString("user_email", email)
+                    putString("user_pass", pass)
+                    apply()
+                }
+
                 dirigirSegunRol(email)
             }
         }

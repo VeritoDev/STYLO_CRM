@@ -31,12 +31,18 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
 
     private fun cargarDatos() {
         val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
+        // Recuperamos siempre el email actualizado de las preferencias
         emailGuardado = prefs.getString("user_email", "") ?: ""
 
-        // Cargar datos actuales en los campos
+        if (emailGuardado.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
+            return
+        }
+
         repository.obtenerDatosEstilista(emailGuardado) { estilista ->
             if (estilista != null) {
                 estilistaId = estilista.id
+                // Limpiamos errores previos y seteamos textos nuevos
                 binding.etNombreEditar.setText(estilista.nombre.capitalizarFormato())
                 binding.etEmailEditar.setText(estilista.email)
             }
@@ -44,41 +50,53 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
     }
 
     private fun guardarCambios() {
-        val nuevoNombre = binding.etNombreEditar.text.toString().trim()
-        val nuevoEmail = binding.etEmailEditar.text.toString().trim().lowercase()
+        val inputNombre = binding.etNombreEditar.text.toString().trim()
+        val inputEmail = binding.etEmailEditar.text.toString().trim().lowercase()
         val passActual = binding.etPassActual.text.toString().trim()
         val passNueva = binding.etPassNueva.text.toString().trim()
 
-        if (nuevoNombre.isEmpty() || nuevoEmail.isEmpty() || passActual.isEmpty()) {
-            Toast.makeText(requireContext(), "Rellena los campos obligatorios", Toast.LENGTH_SHORT).show()
+        if (passActual.isEmpty()) {
+            Toast.makeText(requireContext(), getString(R.string.escribir_contraseña), Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Evitar dobles clics
+        // Si el usuario deja el campo de email vacío, mantenemos el que ya tenía
+        val emailAFijar = if (inputEmail.isEmpty()) emailGuardado else inputEmail
+
+        // Si deja el nombre vacío, mantenemos el nombre que cargamos al principio
+        val nombreAFijar = if (inputNombre.isEmpty()) {
+            val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
+            prefs.getString("user_name_key", "") ?: ""
+        } else {
+            inputNombre
+        }
+
         binding.btnGuardarPerfil.isEnabled = false
 
-        // Llamamos al repositorio que maneja la reautenticación
         repository.actualizarDatosEstilista(
             id = estilistaId,
-            emailActual = emailGuardado,
+            emailActual = emailGuardado, // Email con el que entraste
             passActual = passActual,
-            nuevoNombre = nuevoNombre,
-            nuevoEmail = nuevoEmail,
+            nuevoNombre = nombreAFijar,
+            nuevoEmail = emailAFijar,    // Email que quieres ahora
             nuevaPass = passNueva.ifEmpty { null }
         ) { exito, mensaje ->
-
             binding.btnGuardarPerfil.isEnabled = true
             Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
 
             if (exito) {
-                // Actualizamos SharedPreferences para no romper el inicio por huella
+                // ¡MUY IMPORTANTE!: Actualizar las preferencias para la próxima sesión
                 val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
                 prefs.edit().apply {
-                    putString("user_email", nuevoEmail)
-                    putString("user_name_key", nuevoNombre)
+                    putString("user_email", emailAFijar)
+                    putString("user_name_key", nombreAFijar)
                     if (passNueva.isNotEmpty()) putString("user_pass", passNueva)
                     apply()
                 }
+
+                // Actualizamos la variable local para que el fragmento sepa el nuevo correo
+                emailGuardado = emailAFijar
+
                 findNavController().popBackStack()
             }
         }

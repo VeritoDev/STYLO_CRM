@@ -129,4 +129,9 @@
     <string name="datos_acceso">Datos de Acceso</string>
     <string name="contraseña_actual">CONTRASEÑA ACTUAL:</string>
     <string name="nuevaContraseña">NUEVA CONTRASEÑA:</string>
+    <string name="nombre_estilista">Tu Nombre</string>
+    <string name="email_estilista">Tu Email</string>
+    <string name="contraseña_estilista">Tu Contraseña</string>
+    <string name="escribir_contraseña">Escribe tu contraseña para confirmar los cambios</string>
+    <string name="error">No se encontró el email de sesión</string>
 </resources>
