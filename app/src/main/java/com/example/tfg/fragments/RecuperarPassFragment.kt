@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.tfg.R
 import com.google.firebase.auth.FirebaseAuth
 
-//UN DIALOG ES UNA VENTANA FLOTANTE ENCIMA DEL FRAGMENT O ACTIVITY
 class RecuperarPassFragment : DialogFragment() {
 
     override fun onCreateView(

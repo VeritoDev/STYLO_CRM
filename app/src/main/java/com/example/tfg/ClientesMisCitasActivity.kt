@@ -76,6 +76,7 @@ class ClientesMisCitasActivity : AppCompatActivity() {
 
             val fragment = ClienteReservasFragment()
 
+            //ANIMACIONES
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.deslizar_derecha_dentro,

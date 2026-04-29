@@ -110,7 +110,6 @@ class ClienteReservasFragment : Fragment() {
             val cal = Calendar.getInstance()
             TimePickerDialog(requireContext(), { _, h, m ->
                 if (h in 9..19) {
-                    // Horario comercial
                     val hora = String.format("%02d:%02d", h, m)
                     binding.etHoraReserva.setText(hora)
                 } else {
@@ -134,7 +133,7 @@ class ClienteReservasFragment : Fragment() {
 
         var esValido = true
 
-        //Validaciones Spinners
+        //VALIDACIONES
         if (binding.spinnerServicios.selectedItemPosition <= 0) {
             Toast.makeText(requireContext(), getString(R.string.seleccionar_servicio), Toast.LENGTH_SHORT).show()
             esValido = false
@@ -162,7 +161,7 @@ class ClienteReservasFragment : Fragment() {
 
         val duracion = duracionServicios[servicio] ?: 30
 
-        //Buscamos los datos del cliente por su email
+        //BUSCAMOS LOS DATOS DEL CLIENTE POR SU EMAIL
         mainRepository.buscarClientePorEmail(emailActual) { cliente ->
             if (cliente != null) {
                 mainRepository.verificarCitaMismoDiaCliente(cliente.id, fecha, citaIdParaEditar) { yaTieneCita ->
@@ -171,10 +170,7 @@ class ClienteReservasFragment : Fragment() {
                         return@verificarCitaMismoDiaCliente
                     }
 
-                    // AÑADIDO: Pasamos citaIdParaEditar para que ignore choques con sí misma
                     mainRepository.verificarHorasCitas(fecha, hora, duracion, citaIdParaEditar) { ocupado ->
-
-                        // CORREGIDO: Simplemente comprobamos si "ocupado" es true
                         if (ocupado) {
                             Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                         } else {

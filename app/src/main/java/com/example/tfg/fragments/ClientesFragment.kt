@@ -45,15 +45,15 @@ class ClientesFragment : Fragment(R.layout.fragment_clientes) {
                     binding.rvClientes.visibility = View.GONE
                     binding.tvSinClientes.visibility = View.VISIBLE
 
-                    // Si no hay resultados pero hay texto escrito -> Mensaje de "no se encontró X"
+                    //SI NO HAY RESULTADOS PERO HAY TEXTO ESCRITO
                     if (query.isNotEmpty()) {
                         binding.tvSinClientes.text = getString(R.string.sin_resultados_busqueda, query)
                     } else {
-                        // Si la lista está vacía de base -> Mensaje de "no hay clientes"
+                        //SI LA LISTA ESTÁ VACÍA DE BASE
                         binding.tvSinClientes.text = getString(R.string.noClientes)
                     }
                 } else {
-                    // Si hay resultados, mostramos la lista
+                    //SI HAY RESULTADOS, MOSTRAMOS LA LISTA
                     binding.tvSinClientes.visibility = View.GONE
                     binding.rvClientes.visibility = View.VISIBLE
                 }

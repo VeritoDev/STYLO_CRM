@@ -32,11 +32,12 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
             binding.tvTituloFormulario.text = getString(R.string.nuevoCliente)
         }
 
-        //BOTÓN PAR VOLVER HACIA ATRÁS
+        //BOTÓN PARA VOLVER HACIA ATRÁS
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
+        //BOTÓN GUARDAR
         binding.btnGuardarCliente.setOnClickListener {
             guardarDatos()
         }
@@ -68,7 +69,7 @@ class FormularioClientesFragment : Fragment(R.layout.fragment_formulario_cliente
         val notas = binding.etNotas.text.toString().trim()
         val telefonoFinal = "$prefijo $telefono"
 
-        // VALIDACIÓN BÁSICA
+        // VALIDACIÓN
         if (nombre.isEmpty() || email.isEmpty() || telefono.length != 9) {
             Toast.makeText(
                 requireContext(),

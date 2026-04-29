@@ -39,7 +39,7 @@ class CitasAdapter(
                     if (palabra.isNotEmpty()) palabra.replaceFirstChar { it.uppercase() } else ""
                 }
 
-                // FORMATO DE TELÉFONO SEPARADO (Con o sin prefijo)
+                // FORMATO DE TELÉFONO SEPARADO
                 val telLimpio = cita.telefonoCliente.replace(" ", "")
                 val telFormateado = if (telLimpio.length >= 9) {
                     val numero = telLimpio.takeLast(9)

@@ -24,6 +24,7 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
 
         cargarDatos()
 
+        //BOTON GUARDAR
         binding.btnGuardarPerfil.setOnClickListener {
             guardarCambios()
         }
@@ -31,7 +32,6 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
 
     private fun cargarDatos() {
         val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
-        // Recuperamos siempre el email actualizado de las preferencias
         emailGuardado = prefs.getString("user_email", "") ?: ""
 
         if (emailGuardado.isEmpty()) {
@@ -42,7 +42,6 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
         repository.obtenerDatosEstilista(emailGuardado) { estilista ->
             if (estilista != null) {
                 estilistaId = estilista.id
-                // Limpiamos errores previos y seteamos textos nuevos
                 binding.etNombreEditar.setText(estilista.nombre.capitalizarFormato())
                 binding.etEmailEditar.setText(estilista.email)
             }
@@ -60,32 +59,30 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
             return
         }
 
-        // Si el usuario deja el campo de email vacío, mantenemos el que ya tenía
+        //SI EL USUARIO DEJA EL CAMPO DEL EMAIL VACIO, MANTENEMOS EL QUE YA TENIA
         val emailAFijar = if (inputEmail.isEmpty()) emailGuardado else inputEmail
 
-        // Si deja el nombre vacío, mantenemos el nombre que cargamos al principio
-        val nombreAFijar = if (inputNombre.isEmpty()) {
+        //SI DEJA EL NOMBRE VACIO, MANTENEMOS EL NOMBRE QUE TENIAMOS AL PRINCIPIO
+        val nombreAFijar = inputNombre.ifEmpty {
             val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
             prefs.getString("user_name_key", "") ?: ""
-        } else {
-            inputNombre
         }
 
         binding.btnGuardarPerfil.isEnabled = false
 
         repository.actualizarDatosEstilista(
             id = estilistaId,
-            emailActual = emailGuardado, // Email con el que entraste
+            emailActual = emailGuardado,
             passActual = passActual,
             nuevoNombre = nombreAFijar,
-            nuevoEmail = emailAFijar,    // Email que quieres ahora
+            nuevoEmail = emailAFijar,
             nuevaPass = passNueva.ifEmpty { null }
         ) { exito, mensaje ->
             binding.btnGuardarPerfil.isEnabled = true
             Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
 
             if (exito) {
-                // ¡MUY IMPORTANTE!: Actualizar las preferencias para la próxima sesión
+                //ACTUALIZAMOS LAS PREFERENCIAS PARA LA PRÓXIMA SESIÓN
                 val prefs = requireContext().getSharedPreferences("config_app", Context.MODE_PRIVATE)
                 prefs.edit().apply {
                     putString("user_email", emailAFijar)
@@ -94,7 +91,7 @@ class EditarPerfilFragment : Fragment(R.layout.fragment_perfil) {
                     apply()
                 }
 
-                // Actualizamos la variable local para que el fragmento sepa el nuevo correo
+                //ACTUALIZAMOS LA VARIABLE LOCAL PARA QUE EL FRAGMENT SEPA EL NUEVO CORREO
                 emailGuardado = emailAFijar
 
                 findNavController().popBackStack()

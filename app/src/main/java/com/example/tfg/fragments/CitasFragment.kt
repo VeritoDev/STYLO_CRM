@@ -36,6 +36,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             findNavController().navigate(R.id.action_citasFragment_to_crearCitasFragment)
         }
 
+        //FILTRO DE BÚSQUEDA DE CITAS Y DEPENDIENDO DEL RESULTADO SE ACTUALIZA
         binding.tilBuscarCita?.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
@@ -120,7 +121,7 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             mainRepository.eliminarCita(cita.id) { exito ->
                 if (exito) {
                     Toast.makeText(requireContext(), getString(R.string.cita_cancelada), Toast.LENGTH_SHORT).show()
-                    cargarCitas() // Refrescamos la lista
+                    cargarCitas()
                 }
             }
         }
@@ -145,7 +146,6 @@ class CitasFragment : Fragment(R.layout.fragment_citas) {
             }
         }
 
-        // Devolvemos la lista ordenada para que la más próxima salga arriba
         return listaFiltrada.sortedBy {
             try { formatoCompleto.parse("${it.fecha} ${it.hora}") } catch (e: Exception) { null }
         }

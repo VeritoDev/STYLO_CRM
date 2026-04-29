@@ -14,7 +14,7 @@ import com.google.firebase.database.ValueEventListener
 
 class MainRepository {
 
-    // -- REFERENCIAS A LA BASE DE DATOS --
+    // --- REFERENCIAS A LA BASE DE DATOS ---
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().reference
 
@@ -22,8 +22,6 @@ class MainRepository {
     private fun getRefClientes() = database.child("clientes")
     private fun getRefCitas() = database.child("citas")
     private fun getRefEstilistas() = database.child("estilistas")
-
-    // --- LÓGICA DE ESTILISTAS ---
 
     // --- LÓGICA DE ESTILISTAS ---
 
@@ -42,25 +40,20 @@ class MainRepository {
             return
         }
 
-        // 1. REAUTENTICAR (Obligatorio para cambiar email o pass)
         val credential = EmailAuthProvider.getCredential(emailActual, passActual)
         user.reauthenticate(credential).addOnCompleteListener { authTask ->
             if (authTask.isSuccessful) {
 
-                // 2. ¿HAY QUE CAMBIAR EL EMAIL EN AUTH?
                 if (emailActual != nuevoEmail) {
                     user.updateEmail(nuevoEmail).addOnCompleteListener { emailTask ->
                         if (emailTask.isSuccessful) {
-                            // Email cambiado en Auth, ahora vamos a la base de datos
                             ejecutarCambiosEnBD(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
                         } else {
-                            // Error común: El email ya está en uso por otro usuario
                             val msg = emailTask.exception?.message ?: "Error al cambiar el correo"
                             onResult(false, msg)
                         }
                     }
                 } else {
-                    // El email es el mismo, solo actualizamos el resto
                     ejecutarCambiosEnBD(id, user, nuevoNombre, nuevoEmail, nuevaPass, onResult)
                 }
             } else {
@@ -77,12 +70,10 @@ class MainRepository {
         nuevaPass: String?,
         onResult: (Boolean, String) -> Unit
     ) {
-        // 3. Cambiar contraseña si el usuario escribió una nueva
         if (!nuevaPass.isNullOrEmpty()) {
             user.updatePassword(nuevaPass)
         }
 
-        // 4. Recuperamos el nombre viejo para no romper las citas (como hicimos antes)
         getRefEstilistas().child(id).child("nombre").get().addOnSuccessListener { snapshot ->
             val nombreAntiguo = snapshot.value?.toString() ?: ""
 
@@ -91,10 +82,8 @@ class MainRepository {
                 "email" to nuevoEmail.lowercase().trim()
             )
 
-            // 5. Actualizar los datos en el nodo "estilistas"
             getRefEstilistas().child(id).updateChildren(updates).addOnSuccessListener {
 
-                // 6. Si el nombre cambió, actualizamos las citas para no perderlas
                 if (nombreAntiguo.isNotEmpty() && nombreAntiguo != nuevoNombre.trim()) {
                     actualizarNombreEnCitas(nombreAntiguo, nuevoNombre.trim()) {
                         onResult(true, "Perfil y correo actualizados correctamente")
@@ -130,25 +119,6 @@ class MainRepository {
                 }
             }
             .addOnFailureListener { callback() }
-    }
-
-    fun buscarEstilistaPorEmail(email: String?, callback: (Boolean) -> Unit) {
-        if (email == null) {
-            callback(false)
-            return
-        }
-        val emailLimpio = email.trim().lowercase()
-
-        getRefEstilistas().orderByChild("email").equalTo(emailLimpio).get()
-            .addOnSuccessListener { snapshot ->
-                if (snapshot.exists()) {
-                    callback(true)
-                } else {
-                    Log.e("DEBUG_ERROR", "No se encontro estilista con ese email: $emailLimpio")
-                    callback(false)
-                }
-            }
-            .addOnFailureListener { callback(false) }
     }
 
     fun obtenerNombresEstilistas(callback: (List<String>) -> Unit) {
@@ -288,6 +258,7 @@ class MainRepository {
     }
 
     // --- LÓGICA DE CITAS ---
+
     fun getCitaPorId(id: String, callback: (Cita?) -> Unit) {
         getRefCitas().child(id).get().addOnSuccessListener { snapshot ->
             val cita = snapshot.getValue(Cita::class.java)
@@ -328,12 +299,11 @@ class MainRepository {
         } else { callback(false) }
     }
 
-    // MainRepository.kt
     fun verificarHorasCitas(
         fecha: String,
         horaNueva: String,
         duracionNueva: Int,
-        citaIdIgnorar: String?, // Nulo para nuevas, ID para editar
+        citaIdIgnorar: String?,
         onResult: (Boolean) -> Unit
     ) {
         getRefCitas().orderByChild("fecha").equalTo(fecha)
@@ -346,10 +316,8 @@ class MainRepository {
                     for (data in snapshot.children) {
                         val citaExistente = data.getValue(Cita::class.java) ?: continue
 
-                        // Ignoramos la propia cita que estamos editando
                         if (citaIdIgnorar != null && citaExistente.id == citaIdIgnorar) continue
 
-                        // Solo verificamos si no está cancelada/finalizada
                         if (citaExistente.estado != "finalizado" && citaExistente.estado != "cancelado") {
                             val duracionExistente = extraerDuracion(citaExistente.servicio)
                             val inicioExistente = horaAMinutos(citaExistente.hora)
@@ -385,18 +353,6 @@ class MainRepository {
             .addOnFailureListener { callback(false) }
     }
 
-    fun getCitasActivasCliente(idCliente: String, onResult: (List<Cita>) -> Unit) {
-        getRefCitas().orderByChild("idCliente").equalTo(idCliente)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val lista = snapshot.children.mapNotNull { it.getValue(Cita::class.java) }
-                    val pendientes = lista.filter { it.estado != "finalizado" }
-                    onResult(pendientes.sortedWith(compareBy({ it.fecha }, { it.hora })))
-                }
-                override fun onCancelled(error: DatabaseError) { onResult(emptyList()) }
-            })
-    }
-
     fun verificarCitaMismoDiaCliente(idCliente: String, fecha: String, citaIdIgnorar: String?, onResult: (Boolean) -> Unit) {
         getRefCitas().orderByChild("idCliente").equalTo(idCliente)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -416,21 +372,8 @@ class MainRepository {
             })
     }
 
-    private fun horaAMinutos(hora: String): Int {
-        val partes = hora.split(":")
-        return partes[0].toInt() * 60 + partes[1].toInt()
-    }
-
-    private fun extraerDuracion(servicio: String): Int {
-        return when {
-            servicio.contains("60") -> 60
-            servicio.contains("45") -> 45
-            servicio.contains("20") -> 20
-            else -> 30
-        }
-    }
-
     // --- LÓGICA DE USUARIOS ---
+
     fun login(email: String, pass: String, onResult: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
@@ -443,7 +386,7 @@ class MainRepository {
     fun getUsuarioActual() = auth.currentUser
 }
 
-// --- FUNCIONES DE EXTENSIÓN Y AUXILIARES ---
+    // --- FUNCIONES DE EXTENSIÓN Y AUXILIARES ---
 fun String.capitalizarFormato(): String {
     return this.lowercase().trim().split(" ").joinToString(" ") { palabra ->
         palabra.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
@@ -459,4 +402,19 @@ fun formatearTelefono(tel: String): String {
         val p3 = limpio.substring(7, 9)
         "$prefijo $p1 $p2 $p3"
     } else { limpio }
+}
+
+
+private fun horaAMinutos(hora: String): Int {
+    val partes = hora.split(":")
+    return partes[0].toInt() * 60 + partes[1].toInt()
+}
+
+private fun extraerDuracion(servicio: String): Int {
+    return when {
+        servicio.contains("60") -> 60
+        servicio.contains("45") -> 45
+        servicio.contains("20") -> 20
+        else -> 30
+    }
 }

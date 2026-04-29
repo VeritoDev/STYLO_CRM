@@ -72,14 +72,17 @@ class CrearCitasFragment : Fragment() {
     @SuppressLint("DefaultLocale")
     private fun setupListeners() {
 
+        //BOTÓN VOLVER
         binding.btnBackCita.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        //BOTÓN GUARDAR
         binding.btnGuardarCita.setOnClickListener {
             validarYGuardarCita()
         }
 
+        //AÑADIR LA FECHA DE LA CITA
         binding.etCitaFecha.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -95,6 +98,7 @@ class CrearCitasFragment : Fragment() {
             picker.show()
         }
 
+        //AÑADIR LA HORA DE LA CITA
         binding.etCitaHora.setOnClickListener {
             val calendar = Calendar.getInstance()
             val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -102,6 +106,7 @@ class CrearCitasFragment : Fragment() {
 
             val timePicker = TimePickerDialog(requireContext(), { _, selectedHour, selectedMinute ->
 
+                //HORARIO DE LA PELUQUERIA
                 if (selectedHour in 9..20) {
                     if (selectedHour == 20 && selectedMinute > 0) {
                         Toast.makeText(requireContext(), context?.getString(R.string.horario), Toast.LENGTH_SHORT).show()
@@ -138,6 +143,7 @@ class CrearCitasFragment : Fragment() {
 
         var esValido = true
 
+        //VALIDACIONES
         if (numeroBase.isEmpty()) {
             binding.tilCitaCliente.error = " "
             esValido = false
@@ -163,6 +169,7 @@ class CrearCitasFragment : Fragment() {
             return
         }
 
+        //JUNTAMOS LA FECHA CON LA HORA
         val formatoFechaCompleta = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         try {
             val fechaCitaSeleccionada = formatoFechaCompleta.parse("$fecha $hora")
@@ -170,7 +177,7 @@ class CrearCitasFragment : Fragment() {
 
             if (fechaCitaSeleccionada != null && fechaCitaSeleccionada.before(ahora)) {
                 Toast.makeText(requireContext(), getString(R.string.cita_pasada), Toast.LENGTH_LONG).show()
-                return // Detenemos el guardado
+                return
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -185,15 +192,15 @@ class CrearCitasFragment : Fragment() {
                 return@buscarClientePorTelefono
             }
 
-            // Comprobamos si ya tiene cita ese día
+            //COMPROBAMOS SI YA TIENE CITA ESE DIA
             mainRepository.verificarCitaMismoDiaCliente(cliente.id, fecha, citaIdParaEditar) { yaTieneCita ->
                 if (yaTieneCita) {
-                    // Si ya tiene cita, avisamos y DETENEMOS el proceso
+                    //SI YA TIENE CITA, AVISAMOS Y DETENEMOS EL PROCESO
                     Toast.makeText(requireContext(), getString(R.string.error_cita_mismo_dia), Toast.LENGTH_SHORT).show()
                 } else {
                     // PASAMOS citaIdParaEditar AL REPOSITORIO PARA QUE IGNORE ESTA CITA AL VERIFICAR CHOQUES
                     mainRepository.verificarHorasCitas(fecha, hora, duracion, citaIdParaEditar) { choque ->
-                        // AHORA SIMPLEMENTE COMPROBAMOS SI HAY CHOQUE (ya está filtrado en el repo)
+                        // AHORA SIMPLEMENTE COMPROBAMOS SI HAY CHOQUE
                         if (choque) {
                             Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG).show()
                         } else {
@@ -213,7 +220,7 @@ class CrearCitasFragment : Fragment() {
                             if (citaIdParaEditar != null) {
                                 mainRepository.actualizarCita(nuevaCita) { exitoso ->
                                     if (exitoso) {
-                                        programarNotificacion(nuevaCita) // Programar tras editar
+                                        programarNotificacion(nuevaCita)
                                         Toast.makeText(requireContext(), context?.getString(R.string.citaActualizado), Toast.LENGTH_SHORT).show()
                                         findNavController().popBackStack()
                                     }
@@ -221,7 +228,7 @@ class CrearCitasFragment : Fragment() {
                             } else {
                                 mainRepository.crearCita(nuevaCita) { exitoso ->
                                     if (exitoso) {
-                                        programarNotificacion(nuevaCita) // Programar tras crear
+                                        programarNotificacion(nuevaCita)
                                         Toast.makeText(requireContext(), context?.getString(R.string.citaConfirmada), Toast.LENGTH_SHORT).show()
                                         findNavController().popBackStack()
                                     }
@@ -280,7 +287,7 @@ class CrearCitasFragment : Fragment() {
         val formato = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val fechaCita = formato.parse("${cita.fecha} ${cita.hora}") ?: return
 
-        // Calculamos cuánto tiempo falta para la cita
+        // CALCULAMOS CUANTO TIEMPO FALTA PARA LA CITA
         val ahora = System.currentTimeMillis()
         val delay = (fechaCita.time - 3600000) - ahora
         val delayFinal = if (delay > 0) delay else 10000L

@@ -83,7 +83,6 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             if (uid != null) {
                 mainRepository.getNombreEstilistaPorUID(uid) { nombreBD ->
                     if (!nombreBD.isNullOrEmpty()) {
-                        // Lo guardamos para que la próxima vez el Paso 1 funcione
                         prefs.edit { putString("user_name_key", nombreBD) }
                         ejecutarConsultaFirebase(nombreBD)
                     } else {
@@ -95,19 +94,16 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         }
     }
 
-    // Función auxiliar para no repetir código
     private fun ejecutarConsultaFirebase(nombre: String) {
         mainRepository.getCitasPorEstilista(nombre) { listaCitas ->
 
             if (!isAdded) return@getCitasPorEstilista
 
-            // 1. Filtramos las finalizadas y las canceladas
             val listaPendientes = listaCitas.filter {
                 val estado = it.estado.trim().lowercase()
                 estado != "finalizado" && estado != "cancelado"
             }
 
-            // 2. Limpiamos las citas que ya han pasado (igual que en el CitasFragment)
             val listaValida = limpiarCitasPasadasYFiltrar(listaPendientes)
 
             if (listaValida.isEmpty()) {
@@ -169,7 +165,6 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
             }
         }
 
-        // Devolvemos la lista ordenada para que la más próxima salga arriba
         return listaFiltrada.sortedBy {
             try { formatoCompleto.parse("${it.fecha} ${it.hora}") } catch (e: Exception) { null }
         }

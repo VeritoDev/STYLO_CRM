@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
 
             var esValido = true
 
+            //VALIDACIONES
             if (email.isEmpty()) {
                 binding.tilEmail?.error = " "
                 esValido = false
@@ -138,6 +139,7 @@ class LoginActivity : AppCompatActivity() {
             mostrarDialogoIdioma()
         }
 
+        //ANIMACIÓN DE CAMBIO DE MODO (CLARO A OSCURO / OSCURO A CLARO)
         binding.btnThemeLogin?.setOnClickListener {
             binding.btnThemeLogin!!.animate()
                 .rotationBy(360f)
@@ -288,7 +290,6 @@ class LoginActivity : AppCompatActivity() {
                     binding.etEmail.setText(email)
                     binding.etPassword.setText(pass)
 
-                    // LLAMAMOS AL LOGIN
                     viewModel.entrar(email, pass)
                 }
             }

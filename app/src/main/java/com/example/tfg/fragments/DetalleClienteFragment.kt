@@ -61,15 +61,16 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             }
         }
 
+        //BOTÓN ATRÁS
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
+        //BOTÓN EDITAR
         binding.btnEditar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
                 val bundle = Bundle().apply {
                     putString("clienteId", clienteId)
-                    // Extraemos solo el valor después de los dos puntos ":"
                     putString("nombre", binding.tvNombreDetalle.text.toString().substringAfter(": ").trim())
                     // PASAMOS EL TELÉFONO ORIGINAL PARA QUE NO SE ROMPA EL SPLIT DEL FORMULARIO
                     putString("telefono", telefonoSinFormato)
@@ -80,6 +81,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             }
         }
 
+        //BOTÓN ELIMINAR
         binding.btnEliminar.setOnClickListener {
             if (clienteId.isNotEmpty()) {
                 val dialog = EliminarClienteDialogFragment(onConfirm = {
@@ -94,6 +96,7 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
             }
         }
 
+        //BOTÓN AÑADIR CITA
         binding.btnAAdirCita.setOnClickListener {
             val bundle = Bundle().apply {
                 putString("TELEFONO_CLIENTE", telefonoSinFormato)
@@ -104,11 +107,11 @@ class DetalleClienteFragment : Fragment(R.layout.fragment_detalle_cliente) {
 
     @SuppressLint("SetTextI18n")
     private fun rellenarInterfaz(cliente: Cliente) {
-        telefonoSinFormato = cliente.telefono // GUARDAMOS EN MEMORIA
+        telefonoSinFormato = cliente.telefono
 
         binding.tvNombreDetalle.text = getString(R.string.label_nombre_param, cliente.nombre.capitalizarFormato())
 
-        //FORMATEAR PARA MOSTRAR (+34 600 111 222)
+        //FORMATEAR PARA MOSTRAR
         val telLimpio = cliente.telefono.replace(" ", "")
         val telFormateado = if (telLimpio.startsWith("+") && telLimpio.length >= 12) {
             "${telLimpio.substring(0, 3)} ${telLimpio.substring(3, 6)} ${telLimpio.substring(6, 9)} ${telLimpio.substring(9)}"

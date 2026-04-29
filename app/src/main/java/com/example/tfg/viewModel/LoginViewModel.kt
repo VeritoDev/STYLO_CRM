@@ -31,13 +31,4 @@ class LoginViewModel: ViewModel() {
             }
         }
     }
-    fun comprobarSesion(){
-        if(mainRepository.isUsuarioLogueado()){
-            _sesionActiva.value = true
-        }
-    }
-
-    fun obtenerEmailUsuarioActual(): String?{
-        return FirebaseAuth.getInstance().currentUser?.email?.trim()
-    }
 }
