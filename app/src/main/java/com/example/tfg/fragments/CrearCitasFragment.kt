@@ -178,9 +178,10 @@ class CrearCitasFragment : Fragment() {
                     // Si ya tiene cita, avisamos y DETENEMOS el proceso
                     Toast.makeText(requireContext(), getString(R.string.error_cita_mismo_dia), Toast.LENGTH_SHORT).show()
                 } else {
-                    // SI NO TIENE CITA, procedemos a mirar si el ESTILISTA está libre
-                    mainRepository.verificarHorasCitas(fecha, hora, duracion) { choque ->
-                        if (choque && citaIdParaEditar == null) {
+                    // PASAMOS citaIdParaEditar AL REPOSITORIO PARA QUE IGNORE ESTA CITA AL VERIFICAR CHOQUES
+                    mainRepository.verificarHorasCitas(fecha, hora, duracion, citaIdParaEditar) { choque ->
+                        // AHORA SIMPLEMENTE COMPROBAMOS SI HAY CHOQUE (ya está filtrado en el repo)
+                        if (choque) {
                             Toast.makeText(requireContext(), context?.getString(R.string.estilistaOcupado), Toast.LENGTH_LONG).show()
                         } else {
                             val nuevaCita = Cita(

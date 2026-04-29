@@ -328,25 +328,42 @@ class MainRepository {
         } else { callback(false) }
     }
 
-    fun verificarHorasCitas(fecha: String, horaNueva: String, duracionNueva: Int, onResult: (Boolean) -> Unit) {
+    // MainRepository.kt
+    fun verificarHorasCitas(
+        fecha: String,
+        horaNueva: String,
+        duracionNueva: Int,
+        citaIdIgnorar: String?, // Nulo para nuevas, ID para editar
+        onResult: (Boolean) -> Unit
+    ) {
         getRefCitas().orderByChild("fecha").equalTo(fecha)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val inicioNueva = horaAMinutos(horaNueva)
                     val finNueva = inicioNueva + duracionNueva
                     var hayChoque = false
+
                     for (data in snapshot.children) {
                         val citaExistente = data.getValue(Cita::class.java) ?: continue
-                        val duracionExistente = extraerDuracion(citaExistente.servicio)
-                        val inicioExistente = horaAMinutos(citaExistente.hora)
-                        val finExistente = inicioExistente + duracionExistente
-                        if (inicioNueva < finExistente && finNueva > inicioExistente) {
-                            hayChoque = true
-                            break
+
+                        // Ignoramos la propia cita que estamos editando
+                        if (citaIdIgnorar != null && citaExistente.id == citaIdIgnorar) continue
+
+                        // Solo verificamos si no está cancelada/finalizada
+                        if (citaExistente.estado != "finalizado" && citaExistente.estado != "cancelado") {
+                            val duracionExistente = extraerDuracion(citaExistente.servicio)
+                            val inicioExistente = horaAMinutos(citaExistente.hora)
+                            val finExistente = inicioExistente + duracionExistente
+
+                            if (inicioNueva < finExistente && finNueva > inicioExistente) {
+                                hayChoque = true
+                                break
+                            }
                         }
                     }
                     onResult(hayChoque)
                 }
+
                 override fun onCancelled(error: DatabaseError) = onResult(true)
             })
     }

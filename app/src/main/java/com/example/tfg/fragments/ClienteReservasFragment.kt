@@ -171,8 +171,11 @@ class ClienteReservasFragment : Fragment() {
                         return@verificarCitaMismoDiaCliente
                     }
 
-                    mainRepository.verificarHorasCitas(fecha, hora, duracion) { ocupado ->
-                        if (ocupado && citaIdParaEditar == null) {
+                    // AÑADIDO: Pasamos citaIdParaEditar para que ignore choques con sí misma
+                    mainRepository.verificarHorasCitas(fecha, hora, duracion, citaIdParaEditar) { ocupado ->
+
+                        // CORREGIDO: Simplemente comprobamos si "ocupado" es true
+                        if (ocupado) {
                             Toast.makeText(requireContext(), context?.getString(R.string.hora_reservada), Toast.LENGTH_LONG).show()
                         } else {
                             val nuevaCita = Cita(
