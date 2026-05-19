@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="10dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -20,6 +22,7 @@
             android:background="?attr/colorPrimary"
             android:padding="20dp">
 
+            <!-- Cabecera -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,14 +35,14 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_back"
-                    app:tint="@color/toolbar_claro" />
+                    app:tint="?attr/colorOnPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/detalle_cliente"
-                    android:textColor="@color/toolbar_claro"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold|italic" />
 
@@ -55,9 +58,10 @@
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconSize="24dp"
-                    app:iconTint="@color/toolbar_claro" />
+                    app:iconTint="?attr/colorOnPrimary" />
             </RelativeLayout>
 
+            <!-- Datos del Cliente -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,14 +71,14 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_home"
-                    app:tint="@color/toolbar_claro"/>
+                    app:tint="?attr/colorOnPrimary"/>
                 <TextView
                     android:id="@+id/tvNombreDetalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/label_nombre_param"
-                    android:textColor="@color/toolbar_claro" />
+                    android:textColor="?attr/colorOnPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,14 +90,14 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_phone"
-                    app:tint="@color/toolbar_claro"/>
+                    app:tint="?attr/colorOnPrimary"/>
                 <TextView
                     android:id="@+id/tvTelefonoDetalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/label_telefono_param"
-                    android:textColor="@color/toolbar_claro" />
+                    android:textColor="?attr/colorOnPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -105,14 +109,14 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_email"
-                    app:tint="@color/toolbar_claro"/>
+                    app:tint="?attr/colorOnPrimary"/>
                 <TextView
                     android:id="@+id/tvEmailDetalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/email_param"
-                    android:textColor="@color/toolbar_claro" />
+                    android:textColor="?attr/colorOnPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,20 +128,20 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/ic_notes"
-                    app:tint="@color/toolbar_claro"/>
+                    app:tint="?attr/colorOnPrimary"/>
                 <TextView
                     android:id="@+id/tvNotasDetalle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/notas_param"
-                    android:textColor="@color/toolbar_claro" />
+                    android:textColor="?attr/colorOnPrimary" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?attr/colorOnSurface"
+                android:background="?attr/colorSurfaceVariant"
                 android:layout_marginVertical="10dp"/>
 
             <TextView
@@ -146,68 +150,64 @@
                 android:text="@string/historial"
                 android:textAlignment="center"
                 android:textStyle="bold|italic"
-                android:textColor="@color/toolbar_claro"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_marginBottom="10dp"/>
 
+            <!-- Listado Historial -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvHistorialCitas"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/toolbar_claro"
+                android:background="?attr/colorSurfaceVariant"
                 tools:listitem="@layout/item_historial_simple" />
 
+            <!-- Estado Vacío -->
             <TextView
                 android:id="@+id/tvSinCitas"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/toolbar_claro"
+                android:background="?attr/colorSurfaceVariant"
                 android:gravity="center"
                 android:text="@string/noCitas"
-                android:textColor="@color/toolbar_oscuro"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            </LinearLayout>
-
+            <!-- Botones de Acción de Contraste -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:weightSum="2">
-                <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnEditar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="5dp"
-                android:text="@string/editar"
-                android:backgroundTint="@color/toolbar_claro"
-                android:textColor="@color/toolbar_oscuro"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_edit"
-                app:iconTint="@color/toolbar_oscuro"
-                app:iconGravity="textStart" />
-                <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAñadirCita"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:text="@string/añadirCita"
-                android:backgroundTint="@color/toolbar_claro"
-                android:textColor="@color/toolbar_oscuro"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_calendar"
-                app:iconTint="@color/toolbar_oscuro"
-                app:iconGravity="textStart" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEditar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/editar"
+                    android:backgroundTint="?attr/colorSurfaceContainer"
+                    android:textColor="?attr/colorOnSurface"
+                    app:icon="@drawable/ic_edit"
+                    app:iconTint="?attr/colorOnSurface"
+                    app:iconGravity="textStart" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAñadirCita"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/añadirCita"
+                    android:backgroundTint="?attr/colorSurfaceContainer"
+                    android:textColor="?attr/colorOnSurface"
+                    app:icon="@drawable/ic_calendar"
+                    app:iconTint="?attr/colorOnSurface"
+                    app:iconGravity="textStart" />
             </LinearLayout>
 
         </LinearLayout>

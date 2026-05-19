@@ -8,7 +8,8 @@
     android:layout_gravity="center"
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
-    app:strokeColor="@color/marron_boton"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:strokeColor="?attr/colorSurfaceVariant"
     app:strokeWidth="1dp"
     tools:ignore="MissingDefaultResource">
 
@@ -17,8 +18,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorSurface">
 
+        <!-- Icono del Diálogo -->
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -26,6 +28,7 @@
             android:src="@drawable/ic_calendar"
             app:tint="?attr/colorOnSurface" />
 
+        <!-- Texto de Pregunta -->
         <TextView
             android:id="@+id/tvPregunta"
             android:layout_width="match_parent"
@@ -36,40 +39,44 @@
             android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:lineSpacingExtra="4sp" /> <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+            android:lineSpacingExtra="4sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSi"
-            android:layout_width="0dp"
+        <!-- Contenedor de Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="@string/afirmar"
-            android:textColor="@color/toolbar_oscuro"
-            android:textSize="12sp"
-            app:backgroundTint="@color/blanco_puro"
-            app:cornerRadius="12dp" />
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNo"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="@string/negar"
-            android:textSize="11sp"
-            android:textColor="@color/blanco_puro"
-            app:backgroundTint="@color/toolbar_oscuro"
-            app:cornerRadius="12dp"
-            app:strokeColor="@color/marron_oscuro_fondo"
-            app:strokeWidth="1dp" />
+            <!-- Botón Confirmar (Relleno de Acento) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/afirmar"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="12sp"
+                app:backgroundTint="?attr/colorPrimary"
+                app:cornerRadius="12dp" />
 
-    </LinearLayout>
+            <!-- Botón Cancelar (Estilo Outlined) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="@string/negar"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurface"
+                app:cornerRadius="12dp"
+                app:strokeColor="?attr/colorSurfaceVariant"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

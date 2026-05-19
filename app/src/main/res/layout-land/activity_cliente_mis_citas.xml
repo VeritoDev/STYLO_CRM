@@ -37,34 +37,69 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:text="Mis Reservas"
+                    android:text="@string/reservas"
                     android:textColor="@color/gris_oscuro_fondo"
                     android:textSize="22sp"
                     android:textStyle="bold|italic" />
 
-                <FrameLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMisCitas"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="vertical" />
-
-                    <TextView
-                        android:id="@+id/tvSinCitas"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="No tienes ninguna cita reservada aún"
-                        android:textColor="@color/gris_oscuro_fondo"
-                        android:textSize="14sp"
-                        android:textStyle="italic"
-                        android:visibility="gone" />
-                </FrameLayout>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTituloPendientes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/proximasCitas"
+                            android:textColor="@color/gris_oscuro_fondo"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:visibility="gone"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvCitasPendientes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                        <TextView
+                            android:id="@+id/tvTituloFinalizadas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/historial"
+                            android:textColor="@color/gris_oscuro_fondo"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="4dp"
+                            android:visibility="gone"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvCitasFinalizadas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                        <TextView
+                            android:id="@+id/tvSinCitas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/noCitas"
+                            android:textColor="@color/gris_oscuro_fondo"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
 
             <LinearLayout
@@ -80,7 +115,7 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:text="Nueva Reserva"
+                    android:text="@string/nueva_reserva"
                     app:icon="@drawable/ic_calendar"
                     android:textColor="@color/gris_oscuro_fondo"
                     app:cornerRadius="15dp" />

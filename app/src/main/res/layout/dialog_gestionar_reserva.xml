@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/fecha_param"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/system_shadow_dark"
                 android:textSize="14sp" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/servicio_param"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/system_shadow_dark"
                 android:textSize="14sp" />
             <TextView
                 android:id="@+id/tvDialogEstilista"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/estilista_param"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/system_shadow_dark"
                 android:textSize="14sp" />
 
             <View
