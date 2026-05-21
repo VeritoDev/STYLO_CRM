@@ -260,8 +260,6 @@ class CrearCitasFragment : Fragment() {
     }
 
     private fun configurarModoEdicion(id: String) {
-        binding.btnGuardarCita.text = context?.getString(R.string.editar)
-
         mainRepository.getCitaPorId(id) { cita ->
             if (cita != null) {
                 // SEPARAR EL PREFIJO AL EDITAR LA CITA

@@ -67,7 +67,6 @@
                         app:boxCornerRadiusTopStart="15dp"
                         app:boxStrokeColor="?attr/colorPrimary"
                         app:hintTextColor="?attr/colorOnSurface"
-                        app:defaultHintTextColor="?attr/colorOnSurface"
                         android:hint="@string/pais">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -91,8 +90,7 @@
                         app:boxCornerRadiusTopEnd="15dp"
                         app:boxCornerRadiusTopStart="15dp"
                         app:boxStrokeColor="?attr/colorPrimary"
-                        app:hintTextColor="?attr/colorOnSurface"
-                        app:defaultHintTextColor="?attr/colorOnSurface">
+                        app:hintTextColor="?attr/colorOnSurface">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCitaCliente"
@@ -117,7 +115,6 @@
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface"
                     app:endIconTint="?attr/colorOnSurface">
 
                     <AutoCompleteTextView
@@ -142,7 +139,6 @@
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface"
                     app:endIconDrawable="@drawable/ic_calendar"
                     app:endIconMode="custom"
                     app:endIconTint="?attr/colorOnSurface">
@@ -169,7 +165,6 @@
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface"
                     app:endIconDrawable="@drawable/ic_clock"
                     app:endIconMode="custom"
                     app:endIconTint="?attr/colorOnSurface">

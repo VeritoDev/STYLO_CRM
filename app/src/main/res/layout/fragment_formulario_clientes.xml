@@ -63,8 +63,7 @@
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
-                    app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface">
+                    app:hintTextColor="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNombreCliente"
@@ -93,8 +92,7 @@
                         app:boxCornerRadiusTopEnd="15dp"
                         app:boxCornerRadiusTopStart="15dp"
                         app:boxStrokeColor="?attr/colorPrimary"
-                        app:hintTextColor="?attr/colorOnSurface"
-                        app:defaultHintTextColor="?attr/colorOnSurface">
+                        app:hintTextColor="?attr/colorOnSurface">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPrefijo"
@@ -118,8 +116,7 @@
                         app:boxCornerRadiusTopEnd="15dp"
                         app:boxCornerRadiusTopStart="15dp"
                         app:boxStrokeColor="?attr/colorPrimary"
-                        app:hintTextColor="?attr/colorOnSurface"
-                        app:defaultHintTextColor="?attr/colorOnSurface">
+                        app:hintTextColor="?attr/colorOnSurface">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTelefonoCliente"
@@ -144,8 +141,7 @@
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
-                    app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface">
+                    app:hintTextColor="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
@@ -168,8 +164,7 @@
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
                     app:boxStrokeColor="?attr/colorPrimary"
-                    app:hintTextColor="?attr/colorOnSurface"
-                    app:defaultHintTextColor="?attr/colorOnSurface">
+                    app:hintTextColor="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNotas"
